@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require_once __DIR__.'/admin.php';
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
