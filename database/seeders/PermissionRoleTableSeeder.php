@@ -20,6 +20,7 @@ class PermissionRoleTableSeeder extends Seeder
             'senior_index',
             'senior_create',
             'senior_edit',
+            'senior_update',
             'senior_delete',
             'transfer_log',
             'make_transfer',

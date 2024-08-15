@@ -21,6 +21,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                <div class="card-header">
+                    <a href="{{ route('admin.senior.create')}}" class="btn btn-primary">Create Senior</a>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <table id="mytable" class="table table-bordered table-hover">

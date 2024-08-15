@@ -4,12 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeniorRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+   public function authorize(): bool
     {
         return true;
     }
@@ -22,11 +22,8 @@ class SeniorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_name' => 'required', 'string', 'unique:users,user_name',
-            'name' => 'required|min:3|string',
-            'phone' => 'required|regex:/(09)[0-9]{9}/',
+            'user_name' => ['required'],
             'password' => 'required|min:6',
-            'amount' => 'nullable|numeric'
         ];
     }
 }

@@ -21,11 +21,19 @@ class SeniorController extends Controller
 
     public function index()
     {
-        $query = User::query()->roleLimited()->with('wallet');
+        // $query = User::query()->roleLimited()->with('wallet');
 
-        $users = $query->hasRole(self::SENIOR_ROLE)
-            ->orderBy('id', 'desc')
-            ->get();
+        // $users = $query->hasRole(self::SENIOR_ROLE)
+        //     ->orderBy('id', 'desc')
+        //     ->get();
+        $users = User::with(['roles', 'wallet'])
+        ->whereHas('roles', function ($query) {
+            $query->where('role_id', self::SENIOR_ROLE);
+        })
+        ->where('agent_id', auth()->id())
+        ->orderBy('id', 'desc')
+        ->get();
+
 
         return view('admin.senior.index', compact('users'));
     }
@@ -41,10 +49,10 @@ class SeniorController extends Controller
     {
 
         $admin = Auth::user();
-        dd($admin->balanceFloat);
+        //dd($admin->balanceFloat);
         $inputs = $request->validated();
 
-        if (isset($inputs['amount']) && $inputs['amount'] > $admin->balanceFloat) {
+        if (isset($inputs['amount']) && $inputs['amount'] > $admin->wallet->balance) {
             throw ValidationException::withMessages([
                 'amount' => 'Insufficient balance for transfer.',
             ]);
@@ -76,13 +84,43 @@ class SeniorController extends Controller
 
     public function edit(string $id)
     {
-        //
+        abort_if(
+            Gate::denies('senior_edit') || ! $this->ifChildOfParent(request()->user()->id, $id),
+            Response::HTTP_FORBIDDEN,
+            '403 Forbidden |You cannot  Access this page because you do not have permission'
+        );
+
+        $senior = User::find($id);
+
+        return view('admin.senior.edit', compact('senior'));
     }
 
     public function update(Request $request, string $id)
     {
-        //
+        abort_if(
+            Gate::denies('senior_update') || ! $this->ifChildOfParent(request()->user()->id, $id),
+            Response::HTTP_FORBIDDEN,
+            '403 Forbidden |You cannot  Access this page because you do not have permission'
+        );
+
+        $request->validate([
+            'user_name' => 'required|string',
+            'name' => 'required|min:3|unique:users,name,'.$id,
+            'phone' => ['nullable', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'unique:users,phone,'.$id],
+        ]);
+
+        $user = User::find($id);
+        $user->update([
+            'user_name' => $request->user_name,
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'amount' => $request->amount
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Senior Updated successfully');
     }
+
 
     public function destroy(string $id)
     {

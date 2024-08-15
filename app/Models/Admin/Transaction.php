@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin;
 
+use App\Models\User;
 use App\Enums\TransactionName;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,8 +41,6 @@ class Transaction extends Model
     {
         return $this->belongsTo(Wager::class);
     }
-
-    
 
     public function targetUser()
     {
