@@ -18,9 +18,13 @@
 </section>
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-primary">
+        <div class="col-lg-8 col-md-8 col-sm-10 col-12 offset-lg-2  offset-md-2  offset-sm-1 ">
+                <div class="card mt-lg-4 mt-md-3 mt-sm-2 mt-2">
+                    <div class="card-header">
+                        <a href="{{ url('/admin/bannerText') }}" class="btn btn-dark ">
+                            <i class="fas fa-arrow-left"  ></i> Back
+                        </a>
+                    </div>
                     <form action="{{ route('admin.bannerText.update', $bannerText->id) }}" method="post">
                         @csrf
                         @method('PUT')
@@ -30,12 +34,13 @@
                                 <input type="text" name="text" class="form-control" id="" value="{{$bannerText->text}}">
                             </div>
                         </div>
+                        <div class="card-footer">
+                           <div class="text-right">
+                            <button type="submit" class="btn btn-dark">Update</button>
+                           </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-                </form>
-            </div>
         </div>
         <div class="col-md-6">
 

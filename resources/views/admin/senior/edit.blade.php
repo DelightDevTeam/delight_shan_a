@@ -19,11 +19,11 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <div class="card card-primary">
+        <div class="card ">
             <div class="card-header">
                 <h3 class="card-title">
                     <span>
-                   <a href="{{ route('admin.senior.index') }}" class="btn btn-success">
+                   <a href="{{ route('admin.senior.index') }}" class="btn btn-dark">
                        <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
                    </a>
             </span>
@@ -64,7 +64,7 @@
 
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Update Senior</button>
+                        <button type="submit" class="btn btn-dark">Update Senior</button>
                 </div>
             </form>
         </div>

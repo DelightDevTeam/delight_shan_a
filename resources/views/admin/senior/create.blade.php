@@ -19,11 +19,11 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <div class="card card-primary">
+        <div class="card ">
              <div class="card-header">
                 <h3 class="card-title">
                     <span>
-                   <a href="{{ route('admin.senior.index') }}" class="btn btn-success">
+                   <a href="{{ route('admin.senior.index') }}" class="btn btn-dark">
                        <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
                    </a>
             </span>
@@ -35,8 +35,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>SeniorId<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="user_name" value="{{$user_name}}">
+                                <label>Senior Id<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="user_name" value="{{$user_name}}" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Name<span class="text-danger">*</span></label>
@@ -63,7 +63,7 @@
 
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-dark">Submit</button>
                 </div>
             </form>
         </div>

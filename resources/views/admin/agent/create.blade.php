@@ -23,8 +23,8 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>SeniorId</label>
-                  <input type="text" class="form-control">
+                  <label>Senior Id</label>
+                  <input type="text" class="form-control" readonly>
                   </div>
                 <div class="form-group">
                   <label>Name</label>
@@ -49,7 +49,7 @@
                 </div>
               </div>
             </div>
-        
+
           </div>
           <!-- /.card-body -->
           <div class="card-footer">

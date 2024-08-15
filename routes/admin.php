@@ -15,7 +15,7 @@ Route::group([
     Route::get('logs/{id}', [HomeController::class, 'logs'])
         ->name('logs');
        // Players
-    
+
     Route::resource('banners', BannerController::class);
     Route::resource('bannerText', BannerTextController::class);
     Route::resource('senior', SeniorController::class);

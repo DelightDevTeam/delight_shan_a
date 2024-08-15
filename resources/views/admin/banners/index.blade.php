@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="float-sm-right">
-                    <a href="{{route('admin.banners.create')}}" class="btn btn-success">Create</a>
+                    <a href="{{route('admin.banners.create')}}" class="btn btn-dark">Create</a>
                 </div>
             </div>
         </div>
@@ -37,9 +37,9 @@
                                 </td>
                                 <td class="text-sm font-weight-normal">{{ $banner->created_at->format('F j, Y') }}</td>
                                 <td class="project-actions">
-                                    <a href="{{ route('admin.banners.edit', $banner->id) }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</a>
+                                    <a href="{{ route('admin.banners.edit', $banner->id) }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('admin.banners.edit', $banner->id) }}" class="btn btn-danger btn-sm" onclick="event.preventDefault();
-                                                     document.getElementById('banner-form').submit();"><i class="fas fa-trash"></i>Delete</a>
+                                                     document.getElementById('banner-form').submit();"><i class="fas fa-trash"></i></a>
                                     <form id="banner-form" action="{{ route('admin.banners.destroy', $banner->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
