@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Create Senior</h1>
+                {{-- <h1>Update Senior</h1> --}}
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -21,7 +21,13 @@
     <div class="container-fluid">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Create Senior</h3>
+                <h3 class="card-title">
+                    <span>
+                   <a href="{{ route('admin.senior.index') }}" class="btn btn-success">
+                       <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
+                   </a>
+            </span>
+            </h3>
             </div>
             <form method="POST" action="{{ route('admin.senior.update',$senior->id) }}">
                   @csrf

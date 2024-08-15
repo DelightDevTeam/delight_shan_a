@@ -65,6 +65,14 @@
                                         <a href="{{route('admin.senior.edit', $user->id)}}">
                                             <i class="fas fa-edit text-info" style="font-size: 20px;"></i>
                                         </a>
+
+                                         <a href="{{route('admin.logs', $user->id)}}">Logs 
+                                            <i class="fas fa-sign-in-alt text-info" style="font-size: 20px;"></i>
+                                            {{-- <i class="fas fa-user-lock text-info" style="font-size: 20px;"></i> --}}
+                                            {{-- <i class="fas fa-key text-info" style="font-size: 20px;"></i> --}}
+
+
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach

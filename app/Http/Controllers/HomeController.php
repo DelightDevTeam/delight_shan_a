@@ -88,7 +88,7 @@ class HomeController extends Controller
     {
         $logs = UserLog::with('user')->where('user_id', $id)->get();
 
-        return view('admin.logs', compact('logs'));
+        return view('admin.login_logs.index', compact('logs'));
     }
 }
 

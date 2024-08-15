@@ -20,12 +20,18 @@
 <section class="content">
     <div class="container-fluid">
         <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title">Create Senior</h3>
+             <div class="card-header">
+                <h3 class="card-title">
+                    <span>
+                   <a href="{{ route('admin.senior.index') }}" class="btn btn-success">
+                       <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
+                   </a>
+            </span>
+            </h3>
             </div>
             <form action="{{route('admin.senior.store')}}" method="POST">
                 @csrf
-                <div class="card-body">
+                <div class="card-body mt-2">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">

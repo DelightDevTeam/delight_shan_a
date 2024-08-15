@@ -20,17 +20,29 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card card-primary">
                     <form role="form" action="{{ route('admin.banners.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="" name="image">
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
-                            </div>
+                            </div> --}}
+                    <div class="form-group">
+                    <label for="exampleInputFile">File input</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="exampleInputFile" name="image">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                      </div>
+                    </div>
+                  </div>
 
                         </div>
                         <div class="card-footer">
