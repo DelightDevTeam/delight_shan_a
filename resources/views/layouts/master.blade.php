@@ -95,6 +95,7 @@
                                 </p>
                             </a>
                         </li>
+                        @can('senior_index')
                         <li class="nav-item">
                             <a href="{{route('admin.senior.index')}}" class="nav-link">
                                 <i class="nav-icon far fa-image"></i>
@@ -103,6 +104,38 @@
                                 </p>
                             </a>
                         </li>
+                        @endcan
+                        @can('master_index')
+                        <li class="nav-item">
+                            <a href="{{route('admin.master.index')}}" class="nav-link">
+                                <i class="nav-icon far fa-image"></i>
+                                <p>
+                                    Master List
+                                </p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('agent_index')
+                        <li class="nav-item">
+                            <a href="{{route('admin.agent.index')}}" class="nav-link">
+                                <i class="nav-icon far fa-image"></i>
+                                <p>
+                                    Agent List
+                                </p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('player_index')
+                            <li class="nav-item">
+                                <a href="{{route('admin.player.index')}}" class="nav-link">
+                                    <i class="nav-icon far fa-image"></i>
+                                    <p>
+                                        Player List
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('admin_access')
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tools"></i>
@@ -124,7 +157,15 @@
                                         <p>Banner Text</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.paymentType.index')}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Payment Type</p>
+                                    </a>
+                                </li>
                             </ul>
+                        </li>
+                    @endcan
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>

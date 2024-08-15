@@ -20,17 +20,13 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile', 2000)->nullable();
-            //$table->integer('balance')->default(0);
             $table->decimal('max_score')->default(0.00);
             $table->integer('status')->default(1);
-            $table->integer('is_changed_password')->default(1);
             $table->unsignedBigInteger('agent_id')->nullable();
             $table->string('type')->nullable();
-
-
-            //$table->string('referral_code')->unique()->nullable();
             $table->rememberToken();
             $table->timestamps();
+
             $table->foreign('agent_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

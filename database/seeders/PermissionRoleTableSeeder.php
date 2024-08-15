@@ -63,6 +63,6 @@ class PermissionRoleTableSeeder extends Seeder
             'withdraw'
         ])->pluck('id');
 
-        Role::findOrFail(4)->permissions()->sync($master_permissions);
+        Role::findOrFail(4)->permissions()->sync($agent_permissions);
     }
 }

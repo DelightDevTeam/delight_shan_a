@@ -479,7 +479,6 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
-  height: 100vh;
   -ms-flex-pack: center;
   justify-content: center;
 }

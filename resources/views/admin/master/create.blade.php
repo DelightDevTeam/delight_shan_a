@@ -23,13 +23,13 @@
                 <div class="card-header">
                     <h3 class="card-title">
                     <span>
-                       <a href="{{ route('admin.senior.index') }}" class="btn btn-success">
+                       <a href="{{ route('admin.master.index') }}" class="btn btn-success">
                            <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
                        </a>
                     </span>
                     </h3>
                 </div>
-                <form action="{{route('admin.senior.store')}}" method="POST">
+                <form action="{{route('admin.master.store')}}" method="POST">
                     @csrf
                     <div class="card-body mt-2">
                         <div class="row">
