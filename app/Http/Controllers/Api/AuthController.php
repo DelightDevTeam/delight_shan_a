@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\PlayerResource;
 use App\Http\Resources\UserResource;
 use App\Models\Admin\UserLog;
 use App\Models\User;
@@ -49,7 +50,9 @@ class AuthController extends Controller
 
     public function getUser(): JsonResponse
     {
-        return $this->success(new UserResource(Auth::user()), 'User Success');
+        $user = Auth::user();
+
+        return $this->success(new PlayerResource($user) , 'User Success');
     }
 
 }
