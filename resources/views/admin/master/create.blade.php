@@ -35,8 +35,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>SeniorId<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="user_name" value="{{$user_name}}">
+                                    <label>MasterId<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="user_name" value="{{$user_name}}" readonly>
                                     @error('user_name')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror

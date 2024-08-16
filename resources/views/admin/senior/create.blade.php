@@ -36,7 +36,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>SeniorId<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="user_name" value="{{$user_name}}">
+                                <input type="text" class="form-control" name="user_name" value="{{$user_name}}" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Name<span class="text-danger">*</span></label>
