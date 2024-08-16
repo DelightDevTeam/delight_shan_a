@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PaymentTypeController;
 use App\Http\Controllers\Admin\PlayerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -28,4 +29,5 @@ Route::group([
     Route::post('agent/{id}/ban', [AgentController::class, 'ban'])->name('agent.ban');
     Route::resource('player', PlayerController::class);
     Route::post('player/{id}/ban', [PlayerController::class, 'ban'])->name('player.ban');
+    Route::get('paymentType', [PaymentTypeController::class, 'index'])->name('paymentType.index');
 });
