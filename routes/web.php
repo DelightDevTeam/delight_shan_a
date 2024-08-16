@@ -18,7 +18,7 @@ use App\Http\Controllers\Admin\LoginController;
 
 require_once __DIR__.'/admin.php';
 
-Auth::routes();
-
+Route::get('login',[LoginController::class,'index'])->name('login');
+Route::post('login',[LoginController::class,'login'])->name('login');
+Route::post('logout',[LoginController::class,'logout'])->name('logout');
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
