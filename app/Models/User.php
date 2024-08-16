@@ -7,6 +7,10 @@ use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
 use App\Models\Admin\Transaction;
 use App\Models\Admin\Wallet;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
@@ -30,13 +34,11 @@ class User extends Authenticatable
         'password',
         'profile',
         'phone',
-       // 'balance',
         'max_score',
         'agent_id',
         'status',
         'type',
         'is_changed_password'
-        //'referral_code'
     ];
 
     /**
@@ -58,73 +60,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getIsAdminAttribute()
-    {
-        return $this->roles()->where('id', 1)->exists();
-    }
 
-    public function getIsSeniorAttribute()
-    {
-        return $this->roles()->where('id', 2)->exists();
-    }
-
-    public function getIsMasterAttribute()
-    {
-        return $this->roles()->where('id', 3)->exists();
-    }
-
-    public function getIsAgentAttribute()
-    {
-        return $this->roles()->where('id', 4)->exists();
-    }
-
-    public function getIsUserAttribute()
-    {
-        return $this->roles()->where('id', 5)->exists();
-    }
-
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
 
-    public function permissions()
+    public function permissions(): belongsToMany
     {
         return $this->belongsToMany(Permission::class);
     }
 
-    public function hasRole($role)
-    {
-        return $this->roles->contains('title', $role);
-    }
-
-    public function hasPermission($permission)
-    {
-        return $this->roles->flatMap->permissions->pluck('title')->contains($permission);
-    }
-
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // Other users that this user (a master) has created (agents)
-    public function createdAgents()
-    {
-        return $this->hasMany(User::class, 'agent_id');
-    }
 
-    // The master that created this user (an agent)
-    public function createdByMaster()
-    {
-        return $this->belongsTo(User::class, 'agent_id');
-    }
-
-    public static function adminUser()
-    {
-        return self::where('type', UserType::Admin)->first();
-    }
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(User::class, 'agent_id');
     }
@@ -138,26 +91,17 @@ class User extends Authenticatable
         return $query;
     }
 
-    public static function getPlayersByAgentId(int $agentId)
+    public function scopeHasRole($query, $roleId)
     {
-        return self::where('agent_id', $agentId)
-            ->whereHas('roles', function ($query) {
-                $query->where('title', '!=', 'Agent');
-            })
-            ->get();
+        return $query->whereRelation('roles', 'role_id', $roleId);
     }
 
-    public function agent()
-    {
-        return $this->belongsTo(User::class, 'agent_id');
-    }
-
-    public function wallet()
+    public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class);
     }
 
-     public function transactions()
+     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class, 'user_id');
     }

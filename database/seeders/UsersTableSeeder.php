@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
-    
+
     public function run(): void
     {
         $admin = $this->createUser(UserType::Admin, 'Owner', 'shan', '09123456789');
@@ -40,7 +40,6 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('delightmyanmar'),
             'agent_id' => $parent_id,
             'status' => 1,
-            'is_changed_password' => 1,
             'type' => $type->value
         ]);
 

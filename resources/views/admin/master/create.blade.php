@@ -4,12 +4,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Create Agent</h1>
+                    <h1>Create Master</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">create Agent</li>
+                        <li class="breadcrumb-item active">create Master</li>
                     </ol>
                 </div>
             </div>
@@ -23,13 +23,13 @@
                 <div class="card-header">
                     <h3 class="card-title">
                     <span>
-                       <a href="{{ route('admin.agent.index') }}" class="btn btn-success">
+                       <a href="{{ route('admin.master.index') }}" class="btn btn-success">
                            <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
                        </a>
                     </span>
                     </h3>
                 </div>
-                <form action="{{route('admin.agent.store')}}" method="POST">
+                <form action="{{route('admin.master.store')}}" method="POST">
                     @csrf
                     <div class="card-body mt-2">
                         <div class="row">
@@ -38,7 +38,7 @@
                                     <label>SeniorId<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="user_name" value="{{$user_name}}">
                                     @error('user_name')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -46,14 +46,14 @@
                                     <label>Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="name" value="{{old('name')}}">
                                     @error('name')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Phone<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="phone" value="{{old('phone')}}">
                                     @error('phone')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                     <label>Password<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="password" value="{{old('password')}}">
                                     @error('password')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">

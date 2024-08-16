@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\TransactionName;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SeniorRequest;
+use App\Http\Requests\MasterRequest;
 use App\Models\User;
 use App\Services\WalletService;
 use Illuminate\Contracts\View\View;
@@ -15,49 +15,48 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use mysql_xdevapi\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class SeniorController extends Controller
+class MasterController extends Controller
 {
-    private const  SENIOR_ROLE = 2;
+    private const  MASTER_ROLE = 3;
 
     public function index(): View
     {
-        if (! Gate::allows('senior_index')) {
+        if (! Gate::allows('master_index')) {
             abort(403);
         }
 
-        $query = User::query()->roleLimited()->with('wallet');
+         $query = User::query()->roleLimited()->with('wallet');
 
-         $users = $query->hasRole(self::SENIOR_ROLE)
+         $users = $query->hasRole(self::MASTER_ROLE)
              ->orderBy('id', 'desc')
              ->get();
 
-        return view('admin.senior.index', compact('users'));
+        return view('admin.master.index', compact('users'));
     }
 
     public function create(): View
     {
-        if (! Gate::allows('senior_create')) {
+        if (! Gate::allows('master_create')) {
             abort(403);
         }
 
         $user_name = $this->generateRandomString();
 
-        return view('admin.senior.create', compact('user_name'));
+        return view('admin.master.create', compact('user_name'));
     }
 
-    public function store(SeniorRequest $request): RedirectResponse
+    public function store(MasterRequest $request): RedirectResponse
     {
-        if (! Gate::allows('senior_create')) {
+        if (! Gate::allows('master_create')) {
             abort(403);
         }
 
-        $admin = Auth::user();
+        $senior = Auth::user();
         $inputs = $request->validated();
 
-        if (isset($inputs['amount']) && $inputs['amount'] > $admin->wallet->balance) {
+        if (isset($inputs['amount']) && $inputs['amount'] > $senior->wallet->balance) {
             throw ValidationException::withMessages([
                 'amount' => 'Insufficient balance for transfer.',
             ]);
@@ -67,19 +66,19 @@ class SeniorController extends Controller
             [
                 'password' => Hash::make($inputs['password']),
                 'agent_id' => Auth::id(),
-                'type' => UserType::Senior,
+                'type' => UserType::Master,
             ]
         );
 
-        $senior = User::create($userPrepare);
-        $senior->roles()->sync(self::SENIOR_ROLE);
+        $master = User::create($userPrepare);
+        $master->roles()->sync(self::MASTER_ROLE);
 
         if (isset($inputs['amount'])) {
-            app(WalletService::class)->transfer($admin, $senior, $inputs['amount'], TransactionName::CreditTransfer);
+            app(WalletService::class)->transfer($senior, $master, $inputs['amount'], TransactionName::CreditTransfer);
         }
 
-        return redirect()->route('admin.senior.index')
-            ->with('success', 'Senior created successfully');
+        return redirect()->route('admin.master.index')
+            ->with('success', 'Master created successfully');
     }
 
     public function show(string $id)
@@ -89,18 +88,18 @@ class SeniorController extends Controller
 
     public function edit(string $id): View
     {
-        if (! Gate::allows('senior_edit')) {
+        if (! Gate::allows('master_edit')) {
             abort(403);
         }
 
-        $senior = User::find($id);
+        $master = User::find($id);
 
-        return view('admin.senior.edit', compact('senior'));
+        return view('admin.master.edit', compact('master'));
     }
 
     public function update(Request $request, string $id): RedirectResponse
     {
-        if (! Gate::allows('senior_edit')) {
+        if (! Gate::allows('master_edit')) {
             abort(403);
         }
 
@@ -108,11 +107,11 @@ class SeniorController extends Controller
         $user->update([
             'user_name' => $request->user_name,
             'name' => $request->name,
-            'phone' => $request->phone
+            'phone' => $request->phone,
         ]);
 
         return redirect()->back()
-            ->with('success', 'Senior Updated successfully');
+            ->with('success', 'Master Updated successfully');
     }
 
 
@@ -121,7 +120,7 @@ class SeniorController extends Controller
         //
     }
 
-    public function ban($id)
+    public function ban($id): RedirectResponse
     {
         $user = User::find($id);
         $user->update(['status' => $user->status == 1 ? 2 : 1]);
@@ -132,7 +131,7 @@ class SeniorController extends Controller
         );
     }
 
-    private function generateRandomString()
+    private function generateRandomString(): string
     {
         $randomNumber = mt_rand(10000000, 99999999);
 
