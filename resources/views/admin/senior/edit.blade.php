@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                 <h1>Update Senior</h1>
+                {{-- <h1>Update Senior</h1> --}}
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -19,7 +19,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <div class="card">
+        <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">
                     <span>
@@ -49,12 +49,22 @@
                             </div>
                         </div>
                         <div class="col-md-6">
+                            {{-- <div class="form-group">
+                                <label>Password<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="password" value="{{old('password')}}">
+                            </div> --}}
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <span class="badge badge-success">Max:{{ number_format(optional(auth()->user()->wallet)->balance, 2) }}</span>
+                                <input type="text" class="form-control" name="amount" value="{{ $senior->wallet->balance }}">
+                            </div>
+
                         </div>
                     </div>
 
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Update Senior</button>
                 </div>
             </form>
         </div>

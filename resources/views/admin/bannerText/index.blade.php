@@ -8,7 +8,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="float-sm-right">
-                    <a href="{{route('admin.bannerText.create')}}" class="btn btn-success">Create</a>
+                    <a href="{{route('admin.bannerText.create')}}" class="btn btn-dark">Create</a>
                 </div>
             </div>
         </div>
@@ -28,17 +28,19 @@
                         <tbody>
                             <tr data-widget="expandable-table" aria-expanded="false">
                                 <td class="text-sm font-weight-normal">{{ $bannerText->id }}</td>
-                                <td>
+                                <td class="text-sm font-weight-normal">
                                     {{$bannerText->text}}
                                 </td>
                                 <td class="project-action">
-                                    <a href="{{ route('admin.bannerText.edit', $bannerText->id) }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Edit</a>
-                                    <a href="{{ route('admin.bannerText.edit', $bannerText->id) }}" class="btn btn-danger btn-sm" onclick="event.preventDefault();
-                                                     document.getElementById('bannerText-form').submit();"><i class="fas fa-trash"></i>Delete</a>
-                                    <form id="bannerText-form" action="{{ route('admin.bannerText.destroy', $bannerText->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
+                                   <div class="d-flex">
+                                        <a href="{{ route('admin.bannerText.edit', $bannerText->id) }}" class="btn btn-info btn-sm " style="margin-right: 5px"><i class="fas fa-edit"></i></a>
+                                        <a href="{{ route('admin.bannerText.edit', $bannerText->id) }}" class="btn btn-danger btn-sm " onclick="event.preventDefault();
+                                                        document.getElementById('bannerText-form').submit();"><i class="fas fa-trash"></i></a>
+                                        <form id="bannerText-form" action="{{ route('admin.bannerText.destroy', $bannerText->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                   </div>
                                 </td>
                             </tr>
                         </tbody>
