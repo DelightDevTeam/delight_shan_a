@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-header">
-                    <a href="{{ route('admin.senior.create')}}" class="btn btn-primary">Create Senior</a>
+                    <a href="{{ route('admin.senior.create')}}" class="btn btn-primary">Create</a>
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -62,17 +62,13 @@
                                         <form class="d-none" id="banUser-{{ $user->id }}" action="{{ route('admin.senior.ban', $user->id) }}" method="post">
                                             @csrf
                                         </form>
-                                        <a href="{{route('admin.senior.edit', $user->id)}}">
-                                            <i class="fas fa-edit text-info" style="font-size: 20px;"></i>
-                                        </a>
+                                            <a href="{{ route('admin.senior.edit', $user->id) }}" class="btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i>Edit</a>
 
-                                         <a href="{{route('admin.logs', $user->id)}}">Logs
-                                            <i class="fas fa-sign-in-alt text-info" style="font-size: 20px;"></i>
-                                            {{-- <i class="fas fa-user-lock text-info" style="font-size: 20px;"></i> --}}
-                                            {{-- <i class="fas fa-key text-info" style="font-size: 20px;"></i> --}}
+                                            <a href="{{route('admin.logs', $user->id)}}" class="btn btn-success btn-sm"><i class="fas fa-sign-in-alt" style="font-size: 20px;"></i>Logs</a>
 
+                                            <a href="{{route('admin.senior.deposit', $user->id)}}" class="btn btn-success btn-sm"><i class="fas fa-exchange-alt" style="font-size: 20px"></i>Deposit</a>
+                                            <a href="{{route('admin.senior.withdraw', $user->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-exchange-alt" style="font-size: 20px"></i>WithDraw</a>
 
-                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
