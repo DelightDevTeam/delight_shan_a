@@ -38,6 +38,10 @@ class AgentController extends Controller
 
     public function create()
     {
+        if (! Gate::allows('agent_create')) {
+            abort(403);
+        }
+
         $user_name = $this->generateRandomString();
 
         return view('admin.agent.create', compact('user_name'));
@@ -45,7 +49,7 @@ class AgentController extends Controller
 
     public function store(AgentRequest $request): RedirectResponse
     {
-        if (! Gate::allows('agent_store')) {
+        if (! Gate::allows('agent_create')) {
             abort(403);
         }
 
@@ -107,7 +111,7 @@ class AgentController extends Controller
             'phone' => $request->phone
         ]);
 
-        return redirect()->back()
+        return redirect()->route('admin.agent.index')
             ->with('success', 'Agent Updated successfully');
     }
 
