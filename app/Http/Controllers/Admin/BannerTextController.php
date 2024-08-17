@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class BannerTextController extends Controller
 {
-
     public function index()
     {
         $bannerText = BannerText::latest()->first();

@@ -60,7 +60,7 @@ class PermissionRoleTableSeeder extends Seeder
             'transfer_log',
             'make_transfer',
             'deposit',
-            'withdraw'
+            'withdraw',
         ])->pluck('id');
 
         Role::findOrFail(4)->permissions()->sync($agent_permissions);

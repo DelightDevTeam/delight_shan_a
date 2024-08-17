@@ -3,8 +3,8 @@
 namespace App\Models\Admin;
 
 use App\Enums\TransactionStatus;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class SeamlessTransaction extends Model
 {

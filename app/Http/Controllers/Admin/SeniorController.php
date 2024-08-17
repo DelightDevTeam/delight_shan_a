@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SeniorController extends Controller
 {
-    private const  SENIOR_ROLE = 2;
+    private const SENIOR_ROLE = 2;
 
     public function index(): View
     {
@@ -30,9 +30,9 @@ class SeniorController extends Controller
 
         $query = User::query()->roleLimited()->with('wallet');
 
-         $users = $query->hasRole(self::SENIOR_ROLE)
-             ->orderBy('id', 'desc')
-             ->get();
+        $users = $query->hasRole(self::SENIOR_ROLE)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('admin.senior.index', compact('users'));
     }
@@ -103,7 +103,7 @@ class SeniorController extends Controller
         $user->update([
             'user_name' => $request->user_name,
             'name' => $request->name,
-            'phone' => $request->phone
+            'phone' => $request->phone,
         ]);
 
         return redirect()->back()
@@ -117,7 +117,7 @@ class SeniorController extends Controller
 
     public function makeDeposit(Request $request, User $senior): RedirectResponse
     {
-        if (!Gate::allows('make_transfer')) {
+        if (! Gate::allows('make_transfer')) {
             abort(403);
         }
         $admin = Auth::user();
@@ -138,7 +138,7 @@ class SeniorController extends Controller
 
     public function makeWithdraw(Request $request, User $senior): RedirectResponse
     {
-        if (!Gate::allows('make_transfer')) {
+        if (! Gate::allows('make_transfer')) {
             abort(403);
         }
         $admin = Auth::user();
@@ -160,7 +160,7 @@ class SeniorController extends Controller
 
         return redirect()->back()->with(
             'success',
-            'User ' . ($user->status == 1 ? 'activated' : 'banned') . ' successfully'
+            'User '.($user->status == 1 ? 'activated' : 'banned').' successfully'
         );
     }
 

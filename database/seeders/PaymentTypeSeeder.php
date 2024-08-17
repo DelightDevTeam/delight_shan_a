@@ -53,7 +53,7 @@ class PaymentTypeSeeder extends Seeder
             [
                 'name' => 'UABPay',
                 'image' => 'UABPay.png',
-            ]
+            ],
         ];
 
         DB::table('payment_types')->insert($types);

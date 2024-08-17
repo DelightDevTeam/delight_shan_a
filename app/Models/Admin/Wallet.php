@@ -2,13 +2,14 @@
 
 namespace App\Models\Admin;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Wallet extends Model
 {
     use HasFactory;
-     protected $fillable = [
+
+    protected $fillable = [
         'user_id',
         'balance',
     ];

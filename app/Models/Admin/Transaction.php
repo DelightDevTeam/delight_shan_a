@@ -2,28 +2,27 @@
 
 namespace App\Models\Admin;
 
-use App\Models\User;
 use App\Enums\TransactionName;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-    'user_id',
-    'wallet_id',
-    'amount',
-    'transaction_name',
-    'type',
-    'meta',
-    'uuid',
-    'payable_type',
-    'payable_id',
-    'target_user_id',
-];
-
+        'user_id',
+        'wallet_id',
+        'amount',
+        'transaction_name',
+        'type',
+        'meta',
+        'uuid',
+        'payable_type',
+        'payable_id',
+        'target_user_id',
+    ];
 
     protected $casts = [
         'wallet_id' => 'int',
@@ -46,6 +45,4 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    
 }

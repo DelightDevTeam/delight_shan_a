@@ -16,7 +16,7 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public  function login(Request $request): RedirectResponse
+    public function login(Request $request): RedirectResponse
     {
         $request->validate([
             'user_name' => 'required|string',
@@ -24,15 +24,17 @@ class LoginController extends Controller
         ]);
         $credentials = $this->credentials($request);
 
-        if (!Auth::attempt($credentials)) {
+        if (! Auth::attempt($credentials)) {
             return back()->with('error', 'The credentials does not match our records.');
         }
+
         return redirect()->route('home');
     }
 
     public function logout(): RedirectResponse
     {
         Auth::logout();
+
         return redirect()->route('login');
     }
 

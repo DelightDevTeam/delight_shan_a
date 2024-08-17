@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AgentController extends Controller
 {
-    private const  AGENT_ROLE = 4;
+    private const AGENT_ROLE = 4;
 
     public function index(): View
     {
@@ -27,11 +27,11 @@ class AgentController extends Controller
             abort(403);
         }
 
-         $query = User::query()->roleLimited()->with('wallet');
+        $query = User::query()->roleLimited()->with('wallet');
 
-         $users = $query->hasRole(self::AGENT_ROLE)
-             ->orderBy('id', 'desc')
-             ->get();
+        $users = $query->hasRole(self::AGENT_ROLE)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('admin.agent.index', compact('users'));
     }
@@ -108,13 +108,12 @@ class AgentController extends Controller
         $user->update([
             'user_name' => $request->user_name,
             'name' => $request->name,
-            'phone' => $request->phone
+            'phone' => $request->phone,
         ]);
 
         return redirect()->route('admin.agent.index')
             ->with('success', 'Agent Updated successfully');
     }
-
 
     public function destroy(string $id)
     {
@@ -128,7 +127,7 @@ class AgentController extends Controller
 
         return redirect()->back()->with(
             'success',
-            'User ' . ($user->status == 1 ? 'activated' : 'banned') . ' successfully'
+            'User '.($user->status == 1 ? 'activated' : 'banned').' successfully'
         );
     }
 

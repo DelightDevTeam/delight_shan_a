@@ -7,15 +7,15 @@ use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
 use App\Models\Admin\Transaction;
 use App\Models\Admin\Wallet;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -38,7 +38,7 @@ class User extends Authenticatable
         'agent_id',
         'status',
         'type',
-        'is_changed_password'
+        'is_changed_password',
     ];
 
     /**
@@ -60,7 +60,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
@@ -75,7 +74,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class);
     }
-
 
     public function parent(): BelongsTo
     {
@@ -101,9 +99,8 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
-     public function transactions(): HasMany
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class, 'user_id');
     }
-
 }

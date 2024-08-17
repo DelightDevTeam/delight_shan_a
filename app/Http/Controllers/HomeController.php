@@ -33,40 +33,40 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-   public function index()
-{
-    $user = Auth::user();
-    $isAdmin = $user->hasRole('Admin');
+    public function index()
+    {
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('Admin');
 
-    $getUserCounts = function ($roleTitle) use ($isAdmin, $user) {
-        return User::whereHas('roles', function ($query) use ($roleTitle) {
-            $query->where('title', '=', $roleTitle);
-        })->when(! $isAdmin, function ($query) use ($user) {
-            $query->where('agent_id', $user->id);
-        })->count();
-    };
+        $getUserCounts = function ($roleTitle) use ($isAdmin, $user) {
+            return User::whereHas('roles', function ($query) use ($roleTitle) {
+                $query->where('title', '=', $roleTitle);
+            })->when(! $isAdmin, function ($query) use ($user) {
+                $query->where('agent_id', $user->id);
+            })->count();
+        };
 
-    $deposit = $user->transactions()->with('targetUser')
-        ->select(DB::raw('SUM(transactions.amount) as amount'))
-        ->where('transactions.type', 'deposit')
-        ->first();
+        $deposit = $user->transactions()->with('targetUser')
+            ->select(DB::raw('SUM(transactions.amount) as amount'))
+            ->where('transactions.type', 'deposit')
+            ->first();
 
-    $withdraw = $user->transactions()->with('targetUser')
-        ->select(DB::raw('SUM(transactions.amount) as amount'))
-        ->where('transactions.type', 'withdraw')
-        ->first();
+        $withdraw = $user->transactions()->with('targetUser')
+            ->select(DB::raw('SUM(transactions.amount) as amount'))
+            ->where('transactions.type', 'withdraw')
+            ->first();
 
-    $agent_count = $getUserCounts('Agent');
-    $player_count = $getUserCounts('Player');
+        $agent_count = $getUserCounts('Agent');
+        $player_count = $getUserCounts('Player');
 
-    return view('admin.dashboard', compact(
-        'agent_count',
-        'player_count',
-        'user',
-        'deposit',
-        'withdraw'
-    ));
-}
+        return view('admin.dashboard', compact(
+            'agent_count',
+            'player_count',
+            'user',
+            'deposit',
+            'withdraw'
+        ));
+    }
 
     public function balanceUp(Request $request)
     {
@@ -91,5 +91,3 @@ class HomeController extends Controller
         return view('admin.login_logs.index', compact('logs'));
     }
 }
-
-

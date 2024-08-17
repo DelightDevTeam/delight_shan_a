@@ -1,21 +1,22 @@
 <?php
+
 // app/Services/WalletService.php
 
 namespace App\Services;
 
-use Illuminate\Support\Str;
 use App\Enums\TransactionName;
 use App\Models\Admin\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class WalletService
 {
     public function deposit(User $user, float $amount, TransactionName $transactionName)
     {
 
-        Log::info('Wallet ID in Service: ' . $user->wallet->id);
+        Log::info('Wallet ID in Service: '.$user->wallet->id);
 
         DB::transaction(function () use ($user, $amount, $transactionName) {
             $wallet = $user->wallet;
@@ -47,10 +48,10 @@ class WalletService
         });
     }
 
-    private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, User $targetUser = null)
+    private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, ?User $targetUser = null)
     {
         try {
-            if (!$user->wallet) {
+            if (! $user->wallet) {
                 throw new \Exception('User does not have a wallet');
             }
 
@@ -68,7 +69,7 @@ class WalletService
                 'type' => $type,
                 'payable_type' => get_class($user),
                 'payable_id' => $user->id,
-                'target_user_id' => $targetUser ? $targetUser->id : null
+                'target_user_id' => $targetUser ? $targetUser->id : null,
             ]);
 
             Transaction::create([
@@ -81,16 +82,16 @@ class WalletService
                 'uuid' => Str::uuid(),
                 'payable_type' => get_class($user),
                 'payable_id' => $user->id,
-                'target_user_id' => $targetUser ? $targetUser->id : null
+                'target_user_id' => $targetUser ? $targetUser->id : null,
             ]);
 
             Log::info('Transaction created successfully.');
         } catch (\Exception $e) {
-            Log::error('Transaction creation failed: ' . $e->getMessage());
+            Log::error('Transaction creation failed: '.$e->getMessage());
         }
     }
 
-    // still use 
+    // still use
 
     //     private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, User $targetUser = null)
     // {
@@ -124,7 +125,6 @@ class WalletService
     //     ]);
     // }
 
-
     public static function buildTransferMeta(User $user, User $targetUser, TransactionName $transactionName, array $meta = [])
     {
         return array_merge([
@@ -134,7 +134,7 @@ class WalletService
         ], $meta);
     }
 
-    public static function buildDepositMeta(User $user, User $targetUser = null, TransactionName $transactionName, array $meta = [])
+    public static function buildDepositMeta(User $user, ?User $targetUser, TransactionName $transactionName, array $meta = [])
     {
         return array_merge([
             'name' => $transactionName->value,
@@ -143,8 +143,6 @@ class WalletService
         ], $meta);
     }
 }
-
-
 
 // class WalletService
 // {

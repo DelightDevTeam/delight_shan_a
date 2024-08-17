@@ -22,5 +22,4 @@ class PaymentTypeController extends Controller
 
         return $this->success($paymentTypes, 'Payment Type successfully.');
     }
-
 }

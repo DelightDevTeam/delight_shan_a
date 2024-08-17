@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         $user = User::where('user_name', $request->user_name)->first();
 
-        if (!Auth::attempt($credentials)) {
+        if (! Auth::attempt($credentials)) {
             return $this->error('', 'Credentials do not match!', 401);
         }
         $user = Auth::user();
@@ -52,7 +52,6 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        return $this->success(new PlayerResource($user) , 'User Success');
+        return $this->success(new PlayerResource($user), 'User Success');
     }
-
 }

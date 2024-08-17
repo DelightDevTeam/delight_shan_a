@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\TransactionName;
 use App\Enums\UserType;
 use App\Models\Admin\Wallet;
-use App\Enums\TransactionName;
 use App\Models\User;
 use App\Services\WalletService;
 use Illuminate\Database\Seeder;
@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
-
     public function run(): void
     {
         $admin = $this->createUser(UserType::Admin, 'Owner', 'shan', '09123456789');
@@ -31,7 +30,7 @@ class UsersTableSeeder extends Seeder
         (new WalletService)->transfer($agent, $player, 30000, TransactionName::CreditTransfer);
     }
 
-    private function createUser(UserType $type, string $name, string $user_name, string $phone, int $parent_id = null, string $referral_code = null): User
+    private function createUser(UserType $type, string $name, string $user_name, string $phone, ?int $parent_id = null, ?string $referral_code = null): User
     {
         $user = User::create([
             'name' => $name,
@@ -40,7 +39,7 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('delightmyanmar'),
             'agent_id' => $parent_id,
             'status' => 1,
-            'type' => $type->value
+            'type' => $type->value,
         ]);
 
         // Create a wallet for the user
@@ -48,5 +47,4 @@ class UsersTableSeeder extends Seeder
 
         return $user;
     }
-
 }

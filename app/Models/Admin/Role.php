@@ -3,12 +3,13 @@
 namespace App\Models\Admin;
 
 use App\Models\Admin\Permission;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
     use HasFactory;
+
     public $table = 'roles';
 
     protected $date = ['created_at', 'updated_at'];

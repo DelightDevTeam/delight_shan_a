@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MasterController extends Controller
 {
-    private const  MASTER_ROLE = 3;
+    private const MASTER_ROLE = 3;
 
     public function index(): View
     {
@@ -27,11 +27,11 @@ class MasterController extends Controller
             abort(403);
         }
 
-         $query = User::query()->roleLimited()->with('wallet');
+        $query = User::query()->roleLimited()->with('wallet');
 
-         $users = $query->hasRole(self::MASTER_ROLE)
-             ->orderBy('id', 'desc')
-             ->get();
+        $users = $query->hasRole(self::MASTER_ROLE)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('admin.master.index', compact('users'));
     }
@@ -114,7 +114,6 @@ class MasterController extends Controller
             ->with('success', 'Master Updated successfully');
     }
 
-
     public function destroy(string $id)
     {
         //
@@ -127,7 +126,7 @@ class MasterController extends Controller
 
         return redirect()->back()->with(
             'success',
-            'User ' . ($user->status == 1 ? 'activated' : 'banned') . ' successfully'
+            'User '.($user->status == 1 ? 'activated' : 'banned').' successfully'
         );
     }
 

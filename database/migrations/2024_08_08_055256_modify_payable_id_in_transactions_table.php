@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-             $table->unsignedBigInteger('payable_id')->default(0)->change();
+            $table->unsignedBigInteger('payable_id')->default(0)->change();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-             // Remove the default or modify as needed
+            // Remove the default or modify as needed
             $table->unsignedBigInteger('payable_id')->change();
         });
     }

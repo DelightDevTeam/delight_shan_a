@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             RoleUserTableSeeder::class,
             BannerSeeder::class,
             BannerTextSeeder::class,
-            PaymentTypeSeeder::class
+            PaymentTypeSeeder::class,
+            GameTypeSeeder::class,
         ]);
     }
 }

@@ -21,7 +21,7 @@ class AgentRequest extends FormRequest
             'name' => 'required|min:3|string',
             'phone' => 'required|regex:/(09)[0-9]{9}/',
             'password' => 'required|min:6',
-            'amount' => 'nullable|numeric'
+            'amount' => 'nullable|numeric',
         ];
     }
 }

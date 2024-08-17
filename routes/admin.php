@@ -1,18 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\PaymentTypeController;
-use App\Http\Controllers\Admin\PlayerController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerTextController;
-use App\Http\Controllers\Admin\SeniorController;
 use App\Http\Controllers\Admin\MasterController;
-use App\Http\Controllers\Admin\AgentController;
+use App\Http\Controllers\Admin\PaymentTypeController;
+use App\Http\Controllers\Admin\PlayerController;
+use App\Http\Controllers\Admin\SeniorController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => 'admin', 'as' => 'admin.',
-    'middleware' => ['auth', 'checkBanned']
+    'middleware' => ['auth', 'checkBanned'],
 ], function () {
 
     Route::post('balance-up', [HomeController::class, 'balanceUp'])->name('balanceUp');

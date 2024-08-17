@@ -12,7 +12,7 @@ class BannerController extends Controller
     public function index()
     {
         $banners = Banner::latest()->get();
-        
+
         return view('admin.banners.index', compact('banners'));
     }
 
@@ -29,7 +29,7 @@ class BannerController extends Controller
 
         $image = $request->file('image');
         $ext = $image->getClientOriginalExtension();
-        $filename = uniqid('banner') . '.' . $ext;
+        $filename = uniqid('banner').'.'.$ext;
         $image->move(public_path('assets/img/banners/'), $filename);
         Banner::create([
             'image' => $filename,
@@ -57,12 +57,12 @@ class BannerController extends Controller
             'image' => 'required',
         ]);
         //remove banner from localstorage
-        File::delete(public_path('assets/img/banners/' . $banner->image));
+        File::delete(public_path('assets/img/banners/'.$banner->image));
 
         // image
         $image = $request->file('image');
         $ext = $image->getClientOriginalExtension();
-        $filename = uniqid('banner') . '.' . $ext; // Generate a unique filename
+        $filename = uniqid('banner').'.'.$ext; // Generate a unique filename
         $image->move(public_path('assets/img/banners/'), $filename); // Save the file
 
         $banner->update([
@@ -78,7 +78,7 @@ class BannerController extends Controller
             return redirect()->back()->with('error', 'Banner Not Found');
         }
         //remove banner from localstorage
-        File::delete(public_path('assets/img/banners/' . $banner->image));
+        File::delete(public_path('assets/img/banners/'.$banner->image));
         $banner->delete();
 
         return redirect()->back()->with('success', 'Banner Deleted.');
