@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
             BannerTextSeeder::class,
             PaymentTypeSeeder::class,
             GameTypeSeeder::class,
+            ProductTableSeeder::class,
+            GameTypeProductTableSeeder::class,
+            Live22GameListSeeder::class
         ]);
     }
 }
