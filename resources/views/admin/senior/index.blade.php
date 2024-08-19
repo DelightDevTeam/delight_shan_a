@@ -64,10 +64,10 @@
                                         </form>
                                             <a href="{{ route('admin.senior.edit', $user->id) }}" class="btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i>Edit</a>
 
-                                            <a href="{{route('admin.logs', $user->id)}}" class="btn btn-success btn-sm"><i class="fas fa-sign-in-alt" style="font-size: 20px;"></i>Logs</a>
+                                            <a href="{{route('admin.logs', $user->id)}}" class="btn btn-success btn-sm"><i class="fas fa-sign-in-alt"></i>Logs</a>
 
-                                            <a href="{{route('admin.senior.deposit', $user->id)}}" class="btn btn-success btn-sm"><i class="fas fa-exchange-alt" style="font-size: 20px"></i>Deposit</a>
-                                            <a href="{{route('admin.senior.withdraw', $user->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-exchange-alt" style="font-size: 20px"></i>WithDraw</a>
+                                            <a href="{{route('admin.senior.deposit', $user->id)}}" class="btn btn-warning btn-sm"><i class="fas fa-plus"></i>Dep</a>
+                                            <a href="{{route('admin.senior.withdraw', $user->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-minus" ></i>With</a>
 
                                     </td>
                                 </tr>

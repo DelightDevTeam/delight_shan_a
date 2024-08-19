@@ -81,11 +81,6 @@ class MasterController extends Controller
             ->with('success', 'Master created successfully');
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
     public function edit(string $id): View
     {
         if (! Gate::allows('master_edit')) {
@@ -114,9 +109,48 @@ class MasterController extends Controller
             ->with('success', 'Master Updated successfully');
     }
 
-    public function destroy(string $id)
+    public function deposit(User $master): View
     {
-        //
+        return view('admin.master.deposit', compact('master'));
+    }
+
+    public function makeDeposit(Request $request, User $master): RedirectResponse
+    {
+        if (! Gate::allows('make_transfer')) {
+            abort(403);
+        }
+        $senior = Auth::user();
+
+        if ($senior->wallet->balance < $request->amount) {
+            return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
+        }
+
+        app(WalletService::class)->transfer($senior, $master, $request->amount, TransactionName::CreditTransfer);
+
+        return redirect()->route('admin.master.index')->with('success', 'Master transfer completed successfully');
+    }
+
+    public function withdraw(User $master): View
+    {
+        return \view('admin.master.withdraw', compact('master'));
+    }
+
+    public function makeWithdraw(Request $request, User $master): RedirectResponse
+    {
+        if (! Gate::allows('make_transfer')) {
+            abort(403);
+        }
+
+        $senior = Auth::user();
+
+        if ($senior->wallet->balance < $request->amount) {
+            return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
+        }
+
+        app(WalletService::class)->transfer($master, $senior, $request->amount, TransactionName::DebitTransfer);
+
+        return redirect()->route('admin.master.index')->with('success', 'Master transfer completed successfully');
+
     }
 
     public function ban($id): RedirectResponse

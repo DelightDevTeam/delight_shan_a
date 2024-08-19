@@ -62,13 +62,18 @@
                                         <form class="d-none" id="banUser-{{ $user->id }}" action="{{ route('admin.master.ban', $user->id) }}" method="post">
                                             @csrf
                                         </form>
-                                        <a href="{{route('admin.master.edit', $user->id)}}">
-                                            <i class="fas fa-edit text-info" style="font-size: 20px;"></i>
+                                        <a href="{{route('admin.master.edit', $user->id)}}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-edit" style="font-size: 20px;"></i>Edit
                                         </a>
 
-                                         <a href="{{route('admin.logs', $user->id)}}">
-                                            <i class="fas fa-sign-in-alt text-info" style="font-size: 20px;"></i>
+                                         <a href="{{route('admin.logs', $user->id)}}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-sign-in-alt" style="font-size: 20px;"></i>Logs
                                         </a>
+                                            <a href="{{route('admin.master.deposit', $user->id)}}"
+                                               class="btn btn-warning btn-sm"><i class="fas fa-plus"></i>Dep</a>
+                                            <a href="{{route('admin.master.withdraw', $user->id)}}"
+                                               class="btn btn-primary btn-sm"><i class="fas fa-minus"></i>With</a>
+
                                     </td>
                                 </tr>
                                 @endforeach

@@ -261,9 +261,48 @@ class PlayerController extends Controller
             ->with('success', 'Player Updated successfully');
     }
 
-    public function destroy(string $id)
+    public function deposit(User $player): View
     {
-        //
+        return view('admin.player.deposit', compact('player'));
+    }
+
+    public function makeDeposit(Request $request, User $player): RedirectResponse
+    {
+        if (! Gate::allows('make_transfer')) {
+            abort(403);
+        }
+        $agent = Auth::user();
+
+        if ($agent->wallet->balance < $request->amount) {
+            return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
+        }
+
+        app(WalletService::class)->transfer($agent, $player, $request->amount, TransactionName::CreditTransfer);
+
+        return redirect()->route('admin.player.index')->with('success', 'Agent transfer completed successfully');
+    }
+
+    public function withdraw(User $player): View
+    {
+        return \view('admin.player.withdraw', compact('player'));
+    }
+
+    public function makeWithdraw(Request $request, User $player): RedirectResponse
+    {
+        if (! Gate::allows('make_transfer')) {
+            abort(403);
+        }
+
+        $agent = Auth::user();
+
+        if ($agent->wallet->balance < $request->amount) {
+            return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
+        }
+
+        app(WalletService::class)->transfer($player, $agent, $request->amount, TransactionName::DebitTransfer);
+
+        return redirect()->route('admin.player.index')->with('success', 'Agent transfer completed successfully');
+
     }
 
     public function ban($id): RedirectResponse

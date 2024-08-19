@@ -82,11 +82,6 @@ class AgentController extends Controller
             ->with('success', 'Agent created successfully');
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
     public function edit(string $id): View
     {
         if (! Gate::allows('agent_edit')) {
@@ -115,9 +110,48 @@ class AgentController extends Controller
             ->with('success', 'Agent Updated successfully');
     }
 
-    public function destroy(string $id)
+    public function deposit(User $agent): View
     {
-        //
+        return view('admin.agent.deposit', compact('agent'));
+    }
+
+    public function makeDeposit(Request $request, User $agent): RedirectResponse
+    {
+        if (! Gate::allows('make_transfer')) {
+            abort(403);
+        }
+        $master = Auth::user();
+
+        if ($master->wallet->balance < $request->amount) {
+            return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
+        }
+
+        app(WalletService::class)->transfer($master, $agent, $request->amount, TransactionName::CreditTransfer);
+
+        return redirect()->route('admin.agent.index')->with('success', 'Agent transfer completed successfully');
+    }
+
+    public function withdraw(User $agent): View
+    {
+        return \view('admin.agent.withdraw', compact('agent'));
+    }
+
+    public function makeWithdraw(Request $request, User $agent): RedirectResponse
+    {
+        if (! Gate::allows('make_transfer')) {
+            abort(403);
+        }
+
+        $master = Auth::user();
+
+        if ($master->wallet->balance < $request->amount) {
+            return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
+        }
+
+        app(WalletService::class)->transfer($agent, $master, $request->amount, TransactionName::DebitTransfer);
+
+        return redirect()->route('admin.agent.index')->with('success', 'Agent transfer completed successfully');
+
     }
 
     public function ban($id): RedirectResponse
