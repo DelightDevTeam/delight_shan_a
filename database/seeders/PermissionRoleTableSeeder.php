@@ -61,6 +61,7 @@ class PermissionRoleTableSeeder extends Seeder
             'make_transfer',
             'deposit',
             'withdraw',
+            'bank'
         ])->pluck('id');
 
         Role::findOrFail(4)->permissions()->sync($agent_permissions);

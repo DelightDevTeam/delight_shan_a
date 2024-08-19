@@ -36,7 +36,7 @@ $.extend( $.validator.messages, {
 	accept: "Geben Sie bitte einen Wert mit einem gültigen MIME-Typ ein.",
 	alphanumeric: "Geben Sie bitte nur Buchstaben (keine Umlaute), Zahlen oder Unterstriche ein.",
 	bankaccountNL: "Geben Sie bitte eine gültige Kontonummer ein.",
-	bankorgiroaccountNL: "Geben Sie bitte eine gültige Bank- oder Girokontonummer ein.",
+	bankorgiroaccountNL: "Geben Sie bitte eine gültige bank- oder Girokontonummer ein.",
 	bic: "Geben Sie bitte einen gültigen BIC-Code ein.",
 	cifES: "Geben Sie bitte eine gültige CIF-Nummer ein.",
 	cpfBR: "Geben Sie bitte eine gültige CPF-Nummer ein.",

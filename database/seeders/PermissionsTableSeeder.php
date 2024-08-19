@@ -124,6 +124,12 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'title' => 'bank',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
         ];
 
         Permission::insert($permissions);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AgentController;
+use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerTextController;
 use App\Http\Controllers\Admin\MasterController;
@@ -22,6 +23,8 @@ Route::group([
     Route::resource('banners', BannerController::class);
     Route::resource('bannerText', BannerTextController::class);
     Route::resource('senior', SeniorController::class);
+    Route::resource('bank', BankController::class);
+
     Route::post('senior/{senior}/ban', [SeniorController::class, 'ban'])->name('senior.ban');
     Route::get('senior/{senior}/deposit', [SeniorController::class, 'deposit'])->name('senior.deposit');
     Route::post('senior/{senior}/deposit', [SeniorController::class, 'makeDeposit'])->name('senior.makeDeposit');
@@ -47,4 +50,5 @@ Route::group([
     Route::post('player/{player}/withdraw', [PlayerController::class, 'makeWithdraw'])->name('player.makeWithdraw');
     Route::get('paymentType', [PaymentTypeController::class, 'index'])->name('paymentType.index');
 
+//    Route::post('transaction', )
 });
