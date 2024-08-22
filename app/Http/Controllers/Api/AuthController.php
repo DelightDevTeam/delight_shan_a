@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\HomeResource;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\UserResource;
+use App\Models\Admin\BannerText;
 use App\Models\Admin\UserLog;
 use App\Models\User;
 use App\Traits\HttpResponses;
@@ -22,8 +24,6 @@ class AuthController extends Controller
     {
 
         $credentials = $request->only('user_name', 'password');
-
-        $user = User::where('user_name', $request->user_name)->first();
 
         if (! Auth::attempt($credentials)) {
             return $this->error('', 'Credentials do not match!', 401);
@@ -53,5 +53,14 @@ class AuthController extends Controller
         $user = Auth::user();
 
         return $this->success(new PlayerResource($user), 'User Success');
+    }
+
+    public function home(): JsonResponse
+    {
+        $user = Auth::user();
+        $bannerText = BannerText::latest()->first();
+
+        $result = ['user' => $user, 'bannerText' => $bannerText];
+        return $this->success(new HomeResource($result), 'User Success');
     }
 }

@@ -20,8 +20,6 @@ class GameTypeProductTableSeeder extends Seeder
                 'image' => 'live33.jpeg',
                 'rate' => '1.0000',
             ],
-            
-            
         ];
 
         GameTypeProduct::insert($data);

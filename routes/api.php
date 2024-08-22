@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PaymentTypeController;
+use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\TransferController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,11 +19,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('home', [AuthController::class, 'home']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'getUser']);
     Route::get('paymentType', [PaymentTypeController::class, 'index']);
     Route::get('agent-bank', [PaymentTypeController::class, 'getAgentBank']);
     Route::post('withdraw', [TransferController::class, 'withdraw']);
     Route::post('deposit', [TransferController::class, 'deposit']);
-    Route::post('transactions', [\App\Http\Controllers\Api\TransactionController::class, 'index']);
+    Route::post('transactions', [TransactionController::class, 'index']);
+    Route::get('deposit-history', [TransferController::class, 'depositHistory']);
+    Route::get('withdraw-history', [TransferController::class, 'withdrawHistory']);
 });
