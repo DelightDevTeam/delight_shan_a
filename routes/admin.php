@@ -4,11 +4,13 @@ use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerTextController;
+use App\Http\Controllers\Admin\DepositRequestController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PaymentTypeController;
 use App\Http\Controllers\Admin\PlayerController;
 use App\Http\Controllers\Admin\SeniorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\WithdrawRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -50,5 +52,14 @@ Route::group([
     Route::post('player/{player}/withdraw', [PlayerController::class, 'makeWithdraw'])->name('player.makeWithdraw');
     Route::get('paymentType', [PaymentTypeController::class, 'index'])->name('paymentType.index');
 
-//    Route::post('transaction', )
+    Route::group(['prefix' => 'deposit', 'as' => 'deposit.'], function () {
+        Route::get('/', [DepositRequestController::class, 'index'])->name('index');
+        Route::post('/{deposit}/approve', [DepositRequestController::class, 'approve'])->name('approve');
+        Route::post('/{deposit}/reject', [DepositRequestController::class, 'reject'])->name('reject');
+    });
+    Route::group(['prefix' => 'withdraw', 'as' => 'withdraw.'], function () {
+        Route::get('/', [WithdrawRequestController::class, 'index'])->name('index');
+        Route::post('/{withdraw}/approve', [WithdrawRequestController::class, 'approve'])->name('approve');
+        Route::post('/{withdraw}/reject', [WithdrawRequestController::class, 'reject'])->name('reject');
+    });
 });

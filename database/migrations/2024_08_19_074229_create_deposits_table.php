@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('agent_id');
             $table->unsignedBigInteger('bank_id');
             $table->string('reference_number');
             $table->integer('amount');
@@ -21,6 +22,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('bank_id')->references('id')->on('banks');
+            $table->foreign('agent_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

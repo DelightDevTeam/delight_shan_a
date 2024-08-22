@@ -11,7 +11,7 @@ class WithdrawRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'status', 'account_name', 'account_number', 'payment_type_id', 'user_id'];
+    protected $fillable = ['amount', 'status', 'account_name', 'account_number', 'payment_type_id', 'user_id', 'agent_id'];
 
     public function paymentType(): BelongsTo
     {

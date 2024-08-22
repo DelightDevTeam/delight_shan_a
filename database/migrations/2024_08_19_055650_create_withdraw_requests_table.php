@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('withdraw_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('agent_id');
             $table->unsignedBigInteger('payment_type_id');
             $table->string('amount');
             $table->string('account_number');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->integer('status')->default(0);
             $table->timestamps();
 
+            $table->foreign('agent_id')->references('id')->on('users');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('cascade');
 

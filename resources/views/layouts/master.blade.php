@@ -138,6 +138,26 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('deposit')
+                            <li class="nav-item">
+                                <a href="{{route('admin.deposit.index')}}" class="nav-link">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <p>
+                                        Deposit Request
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('withdraw')
+                            <li class="nav-item">
+                                <a href="{{route('admin.withdraw.index')}}" class="nav-link">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <p>
+                                        Withdraw Request
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
                         @can('bank')
                             <li class="nav-item">
                                 <a href="{{route('admin.bank.index')}}" class="nav-link">

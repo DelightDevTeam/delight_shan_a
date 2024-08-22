@@ -34,13 +34,14 @@ class TransferController extends Controller
             $withdraw = WithdrawRequest::create([
                 'amount' => $inputs['amount'],
                 'user_id' => $player->id,
+                'agent_id' => $player->agent_id,
                 'account_number' => $inputs['account_number'],
                 'account_name' => $inputs['account_name'],
                 'payment_type_id' => $inputs['payment_type_id'],
             ]);
 
             return $this->success($withdraw, 'Withdraw Success');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error('', $e->getMessage(), 401);
         }
     }
@@ -54,6 +55,7 @@ class TransferController extends Controller
             'bank_id' => $request->agent_bank_id,
             'reference_number' => $request->reference_number,
             'user_id' => $player->id,
+            'agent_id' => $player->agent_id,
         ]);
 
         return $this->success($deposit, 'Deposit Success');
