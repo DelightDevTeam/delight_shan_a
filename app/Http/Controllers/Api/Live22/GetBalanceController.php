@@ -7,6 +7,7 @@ use App\Services\GameService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\SlotWebhookRequest;
 
 class GetBalanceController extends Controller
 {
@@ -38,6 +39,7 @@ class GetBalanceController extends Controller
 
         // Pass the token to the GameService's getBalance method
         $response = $this->gameService->getBalance($token);
+            $balance = $request->getMember()->wallet->balance;
 
         // Check if the API request was successful
         if ($response instanceof \Illuminate\Http\JsonResponse) {
@@ -45,7 +47,9 @@ class GetBalanceController extends Controller
 
             // Assuming the API response contains the 'Balance' and you want to replace it with your site's wallet balance
             if (isset($responseData['Balance'])) {
-                $responseData['Balance'] = Auth::user()->wallet->balance;
+                //$responseData['Balance'] = Auth::user()->wallet->balance;
+                $responseData['Balance'] = $balance;
+
             }
 
             // Build the final response to match the expected structure
