@@ -40,6 +40,6 @@ class SlotWebhookRequest extends FormRequest
 
     public function getMemberName()
     {
-        return $this->get('MemberName');
+        return $this->get('PlayerId');
     }
 }
