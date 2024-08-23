@@ -17,7 +17,7 @@ class GameLoginController extends Controller
     }
 
     // Method to handle game login
-    public function login(Request $request)
+    public function Gamelogin(Request $request)
     {
         // Validate the incoming request
         $validated = $request->validate([

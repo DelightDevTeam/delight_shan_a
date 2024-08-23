@@ -32,6 +32,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('withdraw-history', [TransferController::class, 'withdrawHistory']);
 
     Route::group(['prefix' => 'live22sm'], function () {
-       Route::post('/game/login', [GameLoginController::class, 'login'])->name('api.game.login');
+       Route::post('/game/login', [GameLoginController::class, 'Gamelogin'])->name('api.game.login');
     });
 });
