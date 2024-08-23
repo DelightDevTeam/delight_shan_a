@@ -77,7 +77,7 @@ class GameService
     $secretKey = config('game.api.secret_key');
     $apiUrl = config('game.api.url') . 'GetBalance';
     $currency = config('game.api.currency');
-    $playerId = auth()->user()->id;
+    $playerId = auth()->user()->user_name;
     $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
 
     $signature = md5('GetBalance' . $requestDateTime . $operatorId . $secretKey . $playerId);
