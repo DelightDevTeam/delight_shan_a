@@ -19,19 +19,19 @@ class GetBalanceController extends Controller
         $this->gameService = $gameService;
     }
 
-      public function getBalance(Request $request)
+    public function getBalance(SlotWebhookRequest $request) // Change the type of $request to SlotWebhookRequest
     {
-        
         $user = Auth::user();
 
-    // Check if user has an associated wallet
-    if ($user && $user->wallet) {
-        Log::info('User Wallet Balance:', ['balance' => $user->wallet->balance]);
-    } else {
-        Log::warning('No wallet associated with the user');
-    }
+        // Check if user has an associated wallet
+        if ($user && $user->wallet) {
+            Log::info('User Wallet Balance:', ['balance' => $user->wallet->balance]);
+        } else {
+            Log::warning('No wallet associated with the user');
+        }
+
         // Ensure the user is authenticated and retrieve the current access token
-        $token = Auth::user()->currentAccessToken()->token;
+        $token = $user->currentAccessToken()->token;
 
         if (!$token) {
             return response()->json(['error' => 'Authentication token is missing or invalid.'], 401);
@@ -39,7 +39,9 @@ class GetBalanceController extends Controller
 
         // Pass the token to the GameService's getBalance method
         $response = $this->gameService->getBalance($token);
-            $balance = $request->getMember()->wallet->balance;
+
+        // Get the balance from the member associated with the request
+        $balance = $request->getMember()->wallet->balance;
 
         // Check if the API request was successful
         if ($response instanceof \Illuminate\Http\JsonResponse) {
@@ -47,9 +49,7 @@ class GetBalanceController extends Controller
 
             // Assuming the API response contains the 'Balance' and you want to replace it with your site's wallet balance
             if (isset($responseData['Balance'])) {
-                //$responseData['Balance'] = Auth::user()->wallet->balance;
                 $responseData['Balance'] = $balance;
-
             }
 
             // Build the final response to match the expected structure
@@ -69,5 +69,56 @@ class GetBalanceController extends Controller
             'details' => $response->getData(true),
         ], 500);
     }
+
+    //   public function getBalance(Request $request)
+    // {
+        
+    //     $user = Auth::user();
+
+    // // Check if user has an associated wallet
+    // if ($user && $user->wallet) {
+    //     Log::info('User Wallet Balance:', ['balance' => $user->wallet->balance]);
+    // } else {
+    //     Log::warning('No wallet associated with the user');
+    // }
+    //     // Ensure the user is authenticated and retrieve the current access token
+    //     $token = Auth::user()->currentAccessToken()->token;
+
+    //     if (!$token) {
+    //         return response()->json(['error' => 'Authentication token is missing or invalid.'], 401);
+    //     }
+
+    //     // Pass the token to the GameService's getBalance method
+    //     $response = $this->gameService->getBalance($token);
+    //         $balance = $request->getMember()->wallet->balance;
+
+    //     // Check if the API request was successful
+    //     if ($response instanceof \Illuminate\Http\JsonResponse) {
+    //         $responseData = $response->getData(true);
+
+    //         // Assuming the API response contains the 'Balance' and you want to replace it with your site's wallet balance
+    //         if (isset($responseData['Balance'])) {
+    //             //$responseData['Balance'] = Auth::user()->wallet->balance;
+    //             $responseData['Balance'] = $balance;
+
+    //         }
+
+    //         // Build the final response to match the expected structure
+    //         $finalResponse = [
+    //             'Status' => 200,
+    //             'Description' => 'Success',
+    //             'ResponseDateTime' => now()->setTimezone('UTC')->format('Y-m-d H:i:s'),
+    //             'Balance' => $responseData['Balance'] ?? null,
+    //         ];
+
+    //         return response()->json($finalResponse);
+    //     }
+
+    //     // Handle the case where the API request fails
+    //     return response()->json([
+    //         'error' => 'API request failed',
+    //         'details' => $response->getData(true),
+    //     ], 500);
+    // }
 
 }
