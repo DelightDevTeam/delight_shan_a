@@ -17,7 +17,7 @@ class GetBalanceController extends Controller
         $this->gameService = $gameService;
     }
 
-     public function getBalance(Request $request)
+      public function getBalance(Request $request)
     {
         // Ensure the user is authenticated and retrieve the current access token
         $token = Auth::user()->currentAccessToken()->token;
@@ -29,16 +29,31 @@ class GetBalanceController extends Controller
         // Pass the token to the GameService's getBalance method
         $response = $this->gameService->getBalance($token);
 
-        // Convert the JsonResponse to an array
-        $responseArray = $response->getData(true);
+        // Check if the API request was successful
+        if ($response instanceof \Illuminate\Http\JsonResponse) {
+            $responseData = $response->getData(true);
 
-        // Assuming the API response contains the balance, but you want to replace it with your site's wallet balance
-        if (isset($responseArray['Balance'])) {
-            $responseArray['Balance'] = Auth::user()->wallet->balance;
+            // Assuming the API response contains the 'Balance' and you want to replace it with your site's wallet balance
+            if (isset($responseData['Balance'])) {
+                $responseData['Balance'] = Auth::user()->wallet->balance;
+            }
+
+            // Build the final response to match the expected structure
+            $finalResponse = [
+                'Status' => 200,
+                'Description' => 'Success',
+                'ResponseDateTime' => now()->setTimezone('UTC')->format('Y-m-d H:i:s'),
+                'Balance' => $responseData['Balance'] ?? null,
+            ];
+
+            return response()->json($finalResponse);
         }
 
-        // Return the modified response
-        return response()->json($responseArray);
+        // Handle the case where the API request fails
+        return response()->json([
+            'error' => 'API request failed',
+            'details' => $response->getData(true),
+        ], 500);
     }
 
 }
