@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\TransferController;
 use App\Http\Controllers\Api\PaymentTypeController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\Live22\GameLoginController;
+use App\Http\Controllers\Api\Live22\GetBalanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::group(['prefix' => 'live22sm'], function () {
        Route::post('/game/login', [GameLoginController::class, 'Gamelogin'])->name('api.game.login');
+       Route::post('/game/get-balance', [GetBalanceController::class, 'getBalance'])->name('game.get-balance');
     });
 });
