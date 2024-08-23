@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Live22;
 use Illuminate\Http\Request;
 use App\Services\GameService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class GetBalanceController extends Controller
 {
@@ -15,11 +16,17 @@ class GetBalanceController extends Controller
         $this->gameService = $gameService;
     }
 
-    public function getBalance(Request $request)
+     public function getBalance(Request $request)
     {
-        $authToken = $request->input('auth_token');
-        
-        $response = $this->gameService->getBalance($authToken);
+        // Ensure the user is authenticated and retrieve the current access token
+        $token = Auth::user()->currentAccessToken()->token;
+
+        if (!$token) {
+            return response()->json(['error' => 'Authentication token is missing or invalid.'], 401);
+        }
+
+        // Pass the token to the GameService's getBalance method
+        $response = $this->gameService->getBalance($token);
 
         return response()->json($response);
     }
