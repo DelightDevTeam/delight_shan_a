@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SlotWebhookRequest extends FormRequest
@@ -32,7 +33,15 @@ class SlotWebhookRequest extends FormRequest
     public function getMember()
     {
         if (! isset($this->member)) {
-            $this->member = User::where('user_name', $this->getMemberName())->first();
+            $playerId = $this->getMemberName();
+            Log::info('Searching for user with PlayerId:', ['PlayerId' => $playerId]);
+            $this->member = User::where('user_name', $playerId)->first();
+
+            if (!$this->member) {
+                Log::warning('No user found with PlayerId:', ['PlayerId' => $playerId]);
+            } else {
+                Log::info('User found:', ['UserId' => $this->member->id]);
+            }
         }
 
         return $this->member;
