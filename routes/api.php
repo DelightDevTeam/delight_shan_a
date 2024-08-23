@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TransferController;
 use App\Http\Controllers\Api\PaymentTypeController;
 use App\Http\Controllers\Api\TransactionController;
-use App\Http\Controllers\Api\TransferController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Live22\GameLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('transactions', [TransactionController::class, 'index']);
     Route::get('deposit-history', [TransferController::class, 'depositHistory']);
     Route::get('withdraw-history', [TransferController::class, 'withdrawHistory']);
+
+    Route::group(['prefix' => 'live22sm'], function () {
+       Route::post('/game/login', [GameLoginController::class, 'login'])->name('api.game.login');
+    });
 });
