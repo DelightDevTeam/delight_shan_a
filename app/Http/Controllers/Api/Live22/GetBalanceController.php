@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Live22;
 
 use Illuminate\Http\Request;
 use App\Services\GameService;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +20,15 @@ class GetBalanceController extends Controller
 
       public function getBalance(Request $request)
     {
+        
+        $user = Auth::user();
+
+    // Check if user has an associated wallet
+    if ($user && $user->wallet) {
+        Log::info('User Wallet Balance:', ['balance' => $user->wallet->balance]);
+    } else {
+        Log::warning('No wallet associated with the user');
+    }
         // Ensure the user is authenticated and retrieve the current access token
         $token = Auth::user()->currentAccessToken()->token;
 
