@@ -71,7 +71,7 @@ class GameService
 
 
     // get balance 
-    public function getBalance(string $authToken)
+    public function getBalance(string $authToken, $playerId)
 {
     $operatorId = config('game.api.operator_code');
     $secretKey = config('game.api.secret_key');

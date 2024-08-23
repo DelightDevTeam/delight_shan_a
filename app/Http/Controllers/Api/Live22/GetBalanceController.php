@@ -29,7 +29,7 @@ class GetBalanceController extends Controller
         } else {
             Log::warning('No wallet associated with the user');
         }
-
+        $playerID = $request->input($user->user_name);
         // Ensure the user is authenticated and retrieve the current access token
         $token = $user->currentAccessToken()->token;
 
@@ -45,7 +45,7 @@ class GetBalanceController extends Controller
         }
 
         // Pass the token to the GameService's getBalance method
-        $response = $this->gameService->getBalance($token);
+        $response = $this->gameService->getBalance($token, $playerID);
 
         $balance = $member->wallet->balance;
 
