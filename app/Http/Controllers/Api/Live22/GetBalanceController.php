@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GetBalanceController extends Controller
 {
+    
     protected $gameService;
 
     public function __construct(GameService $gameService)
@@ -16,7 +17,7 @@ class GetBalanceController extends Controller
         $this->gameService = $gameService;
     }
 
-     public function getBalance(Request $request)
+    public function getBalance(Request $request)
     {
         // Ensure the user is authenticated and retrieve the current access token
         $token = Auth::user()->currentAccessToken()->token;
@@ -28,6 +29,12 @@ class GetBalanceController extends Controller
         // Pass the token to the GameService's getBalance method
         $response = $this->gameService->getBalance($token);
 
+        // Assuming the API response contains the balance, but you want to replace it with your site's wallet balance
+        if ($response && isset($response['Balance'])) {
+            $response['Balance'] = Auth::user()->wallet->balance;
+        }
+
         return response()->json($response);
     }
+
 }
