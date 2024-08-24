@@ -110,6 +110,7 @@ class GameService
             ]);
 
             if ($response->successful()) {
+                 $apiResponse = $response->json(); // Retrieve the JSON response from the API
                 // Add DisplayName and PlayerBalance to the response
                 $apiResponse['DisplayName'] = $user->name;
                 $apiResponse['PlayerBalance'] = $user->wallet->balance;
