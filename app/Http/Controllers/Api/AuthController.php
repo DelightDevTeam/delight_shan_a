@@ -61,6 +61,7 @@ class AuthController extends Controller
         $bannerText = BannerText::latest()->first();
 
         $result = ['user' => $user, 'bannerText' => $bannerText];
+
         return $this->success(new HomeResource($result), 'User Success');
     }
 }

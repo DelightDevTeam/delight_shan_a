@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Live22;
 
-use Illuminate\Http\Request;
-use App\Services\GameService;
 use App\Http\Controllers\Controller;
+use App\Services\GameService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GameLoginController extends Controller
@@ -28,7 +28,7 @@ class GameLoginController extends Controller
 
         // Get the authenticated user's ID
         $playerId = Auth::user()->id;
-        
+
         // Call the gameLogin method from the GameService
         $response = $this->gameService->gameLogin(
             $playerId,

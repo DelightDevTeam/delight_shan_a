@@ -1,14 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\TransferController;
-use App\Http\Controllers\Api\PaymentTypeController;
-use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\Live22\GameLoginController;
 use App\Http\Controllers\Api\Live22\GetBalanceController;
-
-
+use App\Http\Controllers\Api\PaymentTypeController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\TransferController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -32,5 +30,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // });
     Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
 
-    
 });

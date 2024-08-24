@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class GameListSeeder extends Seeder
 {
@@ -26,7 +26,7 @@ class GameListSeeder extends Seeder
                 'is_h5_support' => true,
                 'maintenance' => '1|2|3|4|5|6',
                 'game_lobby_config' => '0|0|1|1692181611',
-                'other_name' => json_encode(["zh-cn|糖果工房"]),
+                'other_name' => json_encode(['zh-cn|糖果工房']),
                 'has_demo' => true,
                 'sequence' => 1,
                 'game_event' => json_encode([]),

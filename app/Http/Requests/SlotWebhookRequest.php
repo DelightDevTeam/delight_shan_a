@@ -3,14 +3,14 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use App\Services\SlotWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class SlotWebhookRequest extends FormRequest
 {
     private ?User $member;
-   
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -60,7 +60,7 @@ class SlotWebhookRequest extends FormRequest
             Log::info('Searching for user with PlayerId:', ['PlayerId' => $playerId]);
             $this->member = User::where('user_name', $playerId)->first();
 
-            if (!$this->member) {
+            if (! $this->member) {
                 Log::warning('No user found with PlayerId:', ['PlayerId' => $playerId]);
             } else {
                 Log::info('User found:', ['UserId' => $this->member->id]);
@@ -117,7 +117,6 @@ class SlotWebhookRequest extends FormRequest
     //     Log::warning('No method matched. Defaulting to null.');
     //     return null;
     // }
-
 
     public function getOperatorCode()
     {

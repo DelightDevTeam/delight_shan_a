@@ -1,21 +1,27 @@
-<?php 
+<?php
+
 namespace App\Services;
 
 use App\Enums\StatusCode;
-use App\Models\Admin\Wager;
-use Illuminate\Support\Facades\Log;
-use App\Services\RequestTransaction;
-use App\Services\SlotWebhookService;
 use App\Http\Requests\SlotWebhookRequest;
 use App\Models\Admin\SeamlessTransaction;
+use App\Models\Admin\Wager;
+use App\Services\RequestTransaction;
+use App\Services\SlotWebhookService;
+use Illuminate\Support\Facades\Log;
 
 class SlotWebhookValidator
 {
     protected ?SeamlessTransaction $existingTransaction = null;
+
     protected ?Wager $existingWager = null;
+
     protected float $totalTransactionAmount = 0;
+
     protected float $before_balance = 0;
+
     protected float $after_balance = 0;
+
     protected array $response = [];
 
     /**
@@ -23,7 +29,7 @@ class SlotWebhookValidator
      */
     protected $requestTransactions = [];
 
-    protected function __construct(protected SlotWebhookRequest $request) 
+    protected function __construct(protected SlotWebhookRequest $request)
     {
         Log::info('SlotWebhookValidator initialized', ['request' => $request->all()]);
     }
@@ -34,11 +40,13 @@ class SlotWebhookValidator
 
         if (! $this->isValidSignature()) {
             Log::warning('Invalid signature detected');
+
             return $this->response(StatusCode::InvalidSignature);
         }
 
         if (! $this->request->getMember()) {
             Log::warning('Invalid player detected');
+
             return $this->response(StatusCode::InvalidPlayer);
         }
 
@@ -50,6 +58,7 @@ class SlotWebhookValidator
 
             if (! in_array($this->request->getMethodName(), ['bet', 'buyin', 'buyout']) && $this->isNewWager($requestTransaction)) {
                 Log::warning('Invalid game ID detected', ['transaction' => $requestTransaction]);
+
                 return $this->response(StatusCode::InvalidGameId);
             }
 
@@ -57,39 +66,40 @@ class SlotWebhookValidator
         }
 
         Log::info('Validation passed');
+
         return $this;
     }
 
     protected function isValidSignature()
-{
-    //$method = $this->request->getMethodName();
-    $method = 'GetBalance';
-    $requestTime = $this->request->getRequestTime();
-    $operatorCode = $this->request->getOperatorCode();
-    $secretKey = $this->getSecretKey();
-    $playerId = $this->request->getMemberName();
+    {
+        //$method = $this->request->getMethodName();
+        $method = 'GetBalance';
+        $requestTime = $this->request->getRequestTime();
+        $operatorCode = $this->request->getOperatorCode();
+        $secretKey = $this->getSecretKey();
+        $playerId = $this->request->getMemberName();
 
-    // Log the values used for signature generation
-    Log::info('Generating signature', [
-        'method' => $method,
-        'requestTime' => $requestTime,
-        'operatorCode' => $operatorCode,
-        'secretKey' => $secretKey,
-        'playerId' => $playerId,
-    ]);
+        // Log the values used for signature generation
+        Log::info('Generating signature', [
+            'method' => $method,
+            'requestTime' => $requestTime,
+            'operatorCode' => $operatorCode,
+            'secretKey' => $secretKey,
+            'playerId' => $playerId,
+        ]);
 
-    // Generate the signature
-    $signature = md5($method . $requestTime . $operatorCode . $secretKey . $playerId);
-    
-    Log::info('Generated signature', ['signature' => $signature]);
+        // Generate the signature
+        $signature = md5($method.$requestTime.$operatorCode.$secretKey.$playerId);
 
-    return $this->request->getSign() === $signature;
-}
+        Log::info('Generated signature', ['signature' => $signature]);
 
+        return $this->request->getSign() === $signature;
+    }
 
     protected function isNewWager(RequestTransaction $transaction)
     {
         Log::info('Checking if wager is new', ['wagerId' => $transaction->WagerID]);
+
         return ! $this->getExistingWager($transaction);
     }
 
@@ -106,6 +116,7 @@ class SlotWebhookValidator
     protected function isNewTransaction(RequestTransaction $transaction)
     {
         Log::info('Checking if transaction is new', ['transactionId' => $transaction->TransactionID]);
+
         return ! $this->getExistingTransaction($transaction);
     }
 
@@ -150,6 +161,7 @@ class SlotWebhookValidator
     public function getRequestTransactions()
     {
         Log::info('Returning request transactions', ['transactions' => $this->requestTransactions]);
+
         return $this->requestTransactions;
     }
 
@@ -157,8 +169,22 @@ class SlotWebhookValidator
     {
         $secretKey = config('game.api.secret_key');
         Log::info('Fetched secret key');
+
         return $secretKey;
     }
+
+    // protected function response(StatusCode $responseCode)
+    // {
+    //     Log::info('Building response', ['responseCode' => $responseCode->name]);
+
+    //     $this->response = SlotWebhookService::buildResponse(
+    //         $responseCode,
+    //         $this->request->getMember() ? $this->getAfterBalance() : 0,
+    //         $this->request->getMember() ? $this->getBeforeBalance() : 0
+    //     );
+
+    //     return $this;
+    // }
 
     protected function response(StatusCode $responseCode)
     {
@@ -170,12 +196,15 @@ class SlotWebhookValidator
             $this->request->getMember() ? $this->getBeforeBalance() : 0
         );
 
+        Log::info('Response built', ['response' => $this->response]);
+
         return $this;
     }
 
     public function getResponse()
     {
         Log::info('Returning response', ['response' => $this->response]);
+
         return $this->response;
     }
 

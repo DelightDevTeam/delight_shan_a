@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\GameList;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+
 class Live22GameListSeeder extends Seeder
 {
     /**
@@ -12,7 +13,7 @@ class Live22GameListSeeder extends Seeder
      */
     public function run(): void
     {
-         // Load the JSON file
+        // Load the JSON file
         $json = File::get(base_path('game_json/live_22.json'));
         $data = json_decode($json, true);
 

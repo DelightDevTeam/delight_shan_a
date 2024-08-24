@@ -18,7 +18,7 @@ class ProductTableSeeder extends Seeder
                 'name' => 'Live 22',
                 'short_name' => 'L22',
                 'order' => 1,
-                'status' => 1
+                'status' => 1,
             ],
             [
                 'code' => '1001',
@@ -26,14 +26,14 @@ class ProductTableSeeder extends Seeder
                 'short_name' => 'SKM',
                 'order' => 11,
                 'game_list_status' => '0',
-                'status' => 1
+                'status' => 1,
             ],
             [
                 'code' => '1002',
                 'name' => 'Buu Gyi',
                 'short_name' => 'BG',
                 'order' => 12,
-                'status' => 1
+                'status' => 1,
 
             ],
             [
@@ -42,7 +42,7 @@ class ProductTableSeeder extends Seeder
                 'short_name' => 'PK',
                 'order' => 13,
                 'game_list_status' => '0',
-                'status' => 1
+                'status' => 1,
 
             ],
             [
@@ -50,10 +50,10 @@ class ProductTableSeeder extends Seeder
                 'name' => 'BlackJack 21',
                 'short_name' => 'BJ',
                 'order' => 14,
-                'status' => 1
+                'status' => 1,
 
             ],
-            
+
         ];
 
         //Product::insert($data);

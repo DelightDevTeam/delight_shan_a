@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Product;
 use App\Models\Admin\GameType;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class GameList extends Model
 {
     use HasFactory;
+
     protected $fillable = ['code', 'name', 'click_count', 'game_type_id', 'product_id', 'image_url', 'status', 'hot_status'];
 
     public function product()

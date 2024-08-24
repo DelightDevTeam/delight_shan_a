@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Models\Admin\GameType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = ['code', 'name', 'short_name', 'order', 'status', 'game_list_status'];
 
     protected $appends = ['imgUrl']; // Changed from 'image' to 'imgUrl'

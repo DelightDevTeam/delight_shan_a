@@ -14,7 +14,7 @@ class GameTypeSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            
+
             [
                 'name' => 'Slots',
                 'name_mm' => 'စလော့',

@@ -22,5 +22,4 @@ class Bank extends Model
     {
         return $this->belongsTo(PaymentType::class);
     }
-
 }

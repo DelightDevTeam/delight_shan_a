@@ -29,7 +29,7 @@ class BankTableSeeder extends Seeder
                 'payment_type_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ];
 
         DB::table('banks')->insert($banks);

@@ -3,16 +3,16 @@
 namespace App\Services;
 
 use App\Enums\StatusCode;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GameService
 {
     // public function gameLogin(string $playerId, string $gameCode, string $playerIp, bool $launchDemo = false)
     // {
     //     // Retrieve values from the config/game.php file
-    //     $operatorId = config('game.api.operator_code'); 
+    //     $operatorId = config('game.api.operator_code');
     //     $secretKey = config('game.api.secret_key');
     //     $apiUrl = config('game.api.url') . 'GameLogin'; // Append the endpoint to the base URL
     //     $currency = config('game.api.currency');
@@ -74,13 +74,13 @@ class GameService
     // }
     public function gameLogin(string $playerId, string $gameCode, string $playerIp, bool $launchDemo = false)
     {
-        $operatorId = config('game.api.operator_code'); 
+        $operatorId = config('game.api.operator_code');
         $secretKey = config('game.api.secret_key');
-        $apiUrl = config('game.api.url') . 'GameLogin';
+        $apiUrl = config('game.api.url').'GameLogin';
         $currency = config('game.api.currency');
         $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
 
-        $signature = md5('GameLogin' . $requestDateTime . $operatorId . $secretKey . $playerId);
+        $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$playerId);
         $user = Auth::user();
 
         $data = [
@@ -110,10 +110,11 @@ class GameService
             ]);
 
             if ($response->successful()) {
-                 $apiResponse = $response->json(); // Retrieve the JSON response from the API
+                $apiResponse = $response->json(); // Retrieve the JSON response from the API
                 // Add DisplayName and PlayerBalance to the response
                 $apiResponse['DisplayName'] = $user->name;
                 $apiResponse['PlayerBalance'] = $user->wallet->balance;
+
                 return response()->json($response->json(), StatusCode::OK->value);
             }
 
@@ -134,20 +135,18 @@ class GameService
         }
     }
 
-
-    // get balance 
-    
+    // get balance
 
     public function getBalance(string $authToken, $playerId)
     {
         $operatorId = config('game.api.operator_code');
         $secretKey = config('game.api.secret_key');
-        $apiUrl = config('game.api.url') . 'GetBalance';
+        $apiUrl = config('game.api.url').'GetBalance';
         $currency = config('game.api.currency');
         $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
 
         // Generate the signature using MD5 hashing
-        $signature = md5('GetBalance' . $requestDateTime . $operatorId . $secretKey . $playerId);
+        $signature = md5('GetBalance'.$requestDateTime.$operatorId.$secretKey.$playerId);
 
         $data = [
             'OperatorId' => $operatorId,
@@ -173,7 +172,7 @@ class GameService
             ]);
 
             if ($response->status() == 200) {
-                return $response->json(); 
+                return $response->json();
             }
 
             return response()->json([
