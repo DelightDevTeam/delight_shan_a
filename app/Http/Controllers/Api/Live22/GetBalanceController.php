@@ -13,7 +13,7 @@ use App\Http\Requests\SlotWebhookRequest;
 
 class GetBalanceController extends Controller
 {
-    public function getBalance(SlotWebhookRequest $request)
+    public function GetBalance(SlotWebhookRequest $request)
     {
         Log::info('GetBalance request initiated', ['request_data' => $request->all()]);
 
