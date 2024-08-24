@@ -19,7 +19,7 @@ class GetBalanceController extends Controller
         $this->gameService = $gameService;
     }
 
-    public function getBalance(SlotWebhookRequest $request)
+    public function getBalance(Request $request)
     {
         $user = Auth::user();
 
@@ -31,7 +31,7 @@ class GetBalanceController extends Controller
         }
 
         // Retrieve the PlayerId from the request
-        $playerId = $request->input('PlayerId');
+        //$playerId = $request->input('PlayerId');
         $playerId = $user->user_name;
 
 
@@ -46,12 +46,7 @@ class GetBalanceController extends Controller
             return response()->json(['error' => 'Authentication token is missing or invalid.'], 401);
         }
 
-        // Retrieve the member from the request
-        // $member = $request->getMember();
-
-        // if (!$member || !$member->wallet) {
-        //     return response()->json(['error' => 'Member not found or wallet not associated with the member.'], 404);
-        // }
+        
 
         // Pass the token and PlayerId to the GameService's getBalance method
         $response = $this->gameService->getBalance($token, $playerId);
