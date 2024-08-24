@@ -15,7 +15,7 @@ class GetBalanceController extends Controller
 {
     public function getBalance(SlotWebhookRequest $request)
     {
-        return 'this is direct respond';
+        //return 'this is direct respond';
         Log::info('GetBalance request initiated', ['request_data' => $request->all()]);
 
         DB::beginTransaction();
