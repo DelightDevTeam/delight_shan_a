@@ -32,6 +32,8 @@ class GetBalanceController extends Controller
 
         // Retrieve the PlayerId from the request
         $playerId = $request->input('PlayerId');
+        $playerId = $user->user_name;
+
 
         if (!$playerId) {
             return response()->json(['error' => 'PlayerId is missing from the request.'], 400);
@@ -54,7 +56,7 @@ class GetBalanceController extends Controller
         // Pass the token and PlayerId to the GameService's getBalance method
         $response = $this->gameService->getBalance($token, $playerId);
 
-        $balance = $member->wallet->balance;
+        $balance = $user->wallet->balance;
 
         // Check if the API request was successful
         if ($response instanceof \Illuminate\Http\JsonResponse) {
