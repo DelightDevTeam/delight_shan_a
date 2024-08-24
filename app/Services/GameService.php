@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\StatusCode;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class GameService
@@ -19,6 +20,7 @@ class GameService
 
         // Generate the signature using MD5 hashing
         $signature = md5('GameLogin' . $requestDateTime . $operatorId . $secretKey . $playerId);
+        $user = Auth::user();
 
         // Prepare the data to be sent in the request
         $data = [
@@ -29,6 +31,8 @@ class GameService
             'Ip' => $playerIp,
             'GameCode' => $gameCode,
             'Currency' => $currency,
+            'DisplayName' => $user->name,
+            'PlayerBalance' => $user->wallet->balance,
             'LaunchDemo' => $launchDemo,
         ];
 
