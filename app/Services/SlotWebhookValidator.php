@@ -61,23 +61,30 @@ class SlotWebhookValidator
     }
 
     protected function isValidSignature()
-    {
-        Log::info('Validating signature');
+{
+    $method = $this->request->getMethodName();
+    $operatorCode = $this->request->getOperatorCode();
+    $requestTime = $this->request->getRequestTime();
+    $secretKey = $this->getSecretKey();
+    $playerId = $this->request->getMemberName();
 
-        $method = $this->request->getMethodName();
-        $operatorCode = $this->request->getOperatorCode();
-        $requestTime = $this->request->getRequestTime();
+    // Log the values used for signature generation
+    Log::info('Generating signature', [
+        'method' => $method,
+        'requestTime' => $requestTime,
+        'operatorCode' => $operatorCode,
+        'secretKey' => $secretKey,
+        'playerId' => $playerId,
+    ]);
 
-        $secretKey = $this->getSecretKey();
-        $playerId = $this->request->getMemberName(); // Assuming getMemberName() returns PlayerId
+    // Generate the signature
+    $signature = md5($method . $requestTime . $operatorCode . $secretKey . $playerId);
+    
+    Log::info('Generated signature', ['signature' => $signature]);
 
-        // Generate the signature: MD5 (FunctionName + RequestDateTime + OperatorId + SecretKey + PlayerId)
-        $signature = md5($method . $requestTime . $operatorCode . $secretKey . $playerId);
+    return $this->request->getSign() === $signature;
+}
 
-        Log::info('Generated signature', ['signature' => $signature]);
-
-        return $this->request->getSign() === $signature;
-    }
 
     protected function isNewWager(RequestTransaction $transaction)
     {
