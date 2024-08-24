@@ -75,11 +75,12 @@ class SlotWebhookRequest extends FormRequest
         return $this->get('PlayerId');
     }
 
-    // public function getMethodName()
-    // {
-    //      //return str($this->url())->explode('/')->last();
-    //     return strtolower(str($this->url())->explode('/')->last());
-    // }
+    public function getMethodName()
+    {
+         //return str($this->url())->explode('/')->last();
+        //return strtolower(str($this->url())->explode('/')->last());
+        return 'GetBalance';
+    }
     // public function getMethodName()
     // {
     //     // Get the full URL
@@ -97,27 +98,27 @@ class SlotWebhookRequest extends FormRequest
     //     return $methodName;
     // }
 
-    public function getMethodName()
-{
-    // Define an array of possible method names
-    $methods = ['GameLogin', 'GetBalance', 'Bet', 'GameResult', 'RollBack', 'CashOut'];
+    // public function getMethodName()
+    // {
+    //     // Define an array of possible method names
+    //     $methods = ['GameLogin', 'GetBalance', 'Bet', 'GameResult', 'RollBack', 'CashOut'];
 
-    // Get the last segment of the URL path
-    $lastSegment = request()->segment(count(request()->segments()));
+    //     // Get the last segment of the URL path
+    //     $lastSegment = request()->segment(count(request()->segments()));
 
-    // Log the last segment for debugging
-    Log::info('Last URL segment:', ['last_segment' => $lastSegment]);
+    //     // Log the last segment for debugging
+    //     Log::info('Last URL segment:', ['last_segment' => $lastSegment]);
 
-    // Check if the last segment matches any of the predefined methods
-    if (in_array($lastSegment, $methods)) {
-        Log::info('Matched method:', ['method' => $lastSegment]);
-        return $lastSegment;
-    }
+    //     // Check if the last segment matches any of the predefined methods
+    //     if (in_array($lastSegment, $methods)) {
+    //         Log::info('Matched method:', ['method' => $lastSegment]);
+    //         return $lastSegment;
+    //     }
 
-    // Return null or handle cases where there is no match
-    Log::warning('No method matched. Defaulting to null.');
-    return null;
-}
+    //     // Return null or handle cases where there is no match
+    //     Log::warning('No method matched. Defaulting to null.');
+    //     return null;
+    // }
 
 
     public function getOperatorCode()
