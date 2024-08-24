@@ -47,11 +47,11 @@ class GetBalanceController extends Controller
         }
 
         // Retrieve the member from the request
-        $member = $request->getMember();
+        // $member = $request->getMember();
 
-        if (!$member || !$member->wallet) {
-            return response()->json(['error' => 'Member not found or wallet not associated with the member.'], 404);
-        }
+        // if (!$member || !$member->wallet) {
+        //     return response()->json(['error' => 'Member not found or wallet not associated with the member.'], 404);
+        // }
 
         // Pass the token and PlayerId to the GameService's getBalance method
         $response = $this->gameService->getBalance($token, $playerId);
