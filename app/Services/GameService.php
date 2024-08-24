@@ -156,10 +156,9 @@ class GameService
             'Currency' => $currency,
             'AuthToken' => $authToken,
         ];
-
+         Log::info('API URL:', ['url' => $apiUrl]);
         try {
             Log::info('Sending GetBalance request to API', $data);
-            Log::info('Get Api Url GetBalance request to API', $apiUrl);
 
 
             $response = Http::withHeaders([
