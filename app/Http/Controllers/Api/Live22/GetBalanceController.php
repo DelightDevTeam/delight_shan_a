@@ -1,17 +1,13 @@
-<?php
-
+<?php 
 namespace App\Http\Controllers\Api\Live22;
 
 use Illuminate\Http\Request;
 use App\Services\GameService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\SlotWebhookRequest;
 
 class GetBalanceController extends Controller
 {
-    
     protected $gameService;
 
     public function __construct(GameService $gameService)
@@ -21,37 +17,30 @@ class GetBalanceController extends Controller
 
     public function getBalance(Request $request)
     {
-        $user = Auth::user();
+        // Retrieve the PlayerId and AuthToken directly from the request
+        $playerId = $request->input('PlayerId');
+        $authToken = $request->input('AuthToken');
 
-        // Log if the user is authenticated and has a wallet
+        if (!$playerId) {
+            return response()->json(['error' => 'PlayerId is missing from the request.'], 400);
+        }
+
+        if (!$authToken) {
+            return response()->json(['error' => 'AuthToken is missing from the request.'], 400);
+        }
+
+        // Retrieve the user's wallet balance if the user is authenticated
+        $user = $request->user();
         if ($user && $user->wallet) {
             Log::info('User Wallet Balance:', ['balance' => $user->wallet->balance]);
         } else {
             Log::warning('No wallet associated with the user');
         }
 
-        // Retrieve the PlayerId from the request
-        //$playerId = $request->input('PlayerId');
-        $playerId = $user->user_name;
-
-
-        if (!$playerId) {
-            return response()->json(['error' => 'PlayerId is missing from the request.'], 400);
-        }
-
-        // Ensure the user is authenticated and retrieve the current access token
-        $token = $user->currentAccessToken()->token;
-
-        if (!$token) {
-            return response()->json(['error' => 'Authentication token is missing or invalid.'], 401);
-        }
-
-        
-
         // Pass the token and PlayerId to the GameService's getBalance method
-        $response = $this->gameService->getBalance($token, $playerId);
+        $response = $this->gameService->getBalance($authToken, $playerId);
 
-        $balance = $user->wallet->balance;
+        $balance = $user ? $user->wallet->balance : null;
 
         // Check if the API request was successful
         if ($response instanceof \Illuminate\Http\JsonResponse) {
@@ -79,6 +68,4 @@ class GetBalanceController extends Controller
             'details' => $response->getData(true),
         ], 500);
     }
-
-
 }

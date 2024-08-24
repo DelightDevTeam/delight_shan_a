@@ -146,6 +146,7 @@ class GameService
         $currency = config('game.api.currency');
         $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
 
+        // Generate the signature using MD5 hashing
         $signature = md5('GetBalance' . $requestDateTime . $operatorId . $secretKey . $playerId);
 
         $data = [
@@ -156,10 +157,10 @@ class GameService
             'Currency' => $currency,
             'AuthToken' => $authToken,
         ];
-         Log::info('API URL:', ['url' => $apiUrl]);
+
+        Log::info('API URL:', ['url' => $apiUrl]);
         try {
             Log::info('Sending GetBalance request to API', $data);
-
 
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -190,5 +191,4 @@ class GameService
             ], 500);
         }
     }
-
 }
