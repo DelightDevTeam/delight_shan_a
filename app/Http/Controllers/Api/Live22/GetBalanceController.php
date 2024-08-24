@@ -7,9 +7,9 @@ use App\Services\GameService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Services\SlotWebhookService;
 use App\Services\SlotWebhookValidator;
 use App\Http\Requests\SlotWebhookRequest;
-use App\Services\Slot\SlotWebhookService;
 
 class GetBalanceController extends Controller
 {

@@ -5,9 +5,9 @@ use App\Enums\StatusCode;
 use App\Models\Admin\Wager;
 use Illuminate\Support\Facades\Log;
 use App\Services\RequestTransaction;
+use App\Services\SlotWebhookService;
 use App\Http\Requests\SlotWebhookRequest;
 use App\Models\Admin\SeamlessTransaction;
-use App\Services\Slot\SlotWebhookService;
 
 class SlotWebhookValidator
 {
