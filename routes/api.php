@@ -8,21 +8,12 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\Live22\GameLoginController;
 use App\Http\Controllers\Api\Live22\GetBalanceController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+
 
 Route::post('login', [AuthController::class, 'login']);
 
-Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
-
+//Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
+Route::post('GetBalance', [GetBalanceController::class, 'getBalance'])->withoutMiddleware(['auth:sanctum']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
     Route::post('logout', [AuthController::class, 'logout']);
