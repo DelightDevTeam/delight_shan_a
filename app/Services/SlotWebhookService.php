@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Slot;
+namespace App\Services;
 
 use App\Enums\StatusCode;
 
