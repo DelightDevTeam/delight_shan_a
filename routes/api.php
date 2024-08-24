@@ -12,8 +12,8 @@ use App\Http\Controllers\Api\Live22\GetBalanceController;
 
 Route::post('login', [AuthController::class, 'login']);
 
-//Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
-Route::post('GetBalance', [GetBalanceController::class, 'GetBalance'])->withoutMiddleware(['auth']);
+Route::post('GetBalance', [GetBalanceController::class, 'GetBalance']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
     Route::post('logout', [AuthController::class, 'logout']);
