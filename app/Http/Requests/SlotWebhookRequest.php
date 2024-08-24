@@ -75,11 +75,27 @@ class SlotWebhookRequest extends FormRequest
         return $this->get('PlayerId');
     }
 
+    // public function getMethodName()
+    // {
+    //      //return str($this->url())->explode('/')->last();
+    //     return strtolower(str($this->url())->explode('/')->last());
+    // }
     public function getMethodName()
-    {
-         //return str($this->url())->explode('/')->last();
-        return strtolower(str($this->url())->explode('/')->last());
-    }
+{
+    // Get the full URL
+    $fullUrl = $this->url();
+
+    // Log the full URL for debugging
+    Log::info('Full URL:', ['url' => $fullUrl]);
+
+    // Extract the last segment of the URL
+    $methodName = collect(explode('/', $fullUrl))->last();
+
+    // Log the extracted method name for debugging
+    Log::info('Extracted method name:', ['method_name' => $methodName]);
+
+    return $methodName;
+}
 
     public function getOperatorCode()
     {
