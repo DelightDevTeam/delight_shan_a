@@ -10,3 +10,7 @@ crontab -e
 
 
 php artisan make:migration add_agent_link_to_users_table --table=users
+
+sudo chown -R www-data:www-data /var/www/html/delight_shan_a/bootstrap/cache
+sudo chmod -R 775 /var/www/html/delight_shan_a/bootstrap/cache
+

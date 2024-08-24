@@ -20,6 +20,8 @@ use App\Http\Controllers\Api\Live22\GetBalanceController;
 */
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
+Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -36,6 +38,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //    Route::post('/game/login', [GameLoginController::class, 'Gamelogin'])->name('api.game.login');
     //    Route::post('/game/get-balance', [GetBalanceController::class, 'getBalance'])->name('game.get-balance');
     // });
-    Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
-    Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
+    
 });
