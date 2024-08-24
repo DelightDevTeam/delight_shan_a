@@ -80,22 +80,45 @@ class SlotWebhookRequest extends FormRequest
     //      //return str($this->url())->explode('/')->last();
     //     return strtolower(str($this->url())->explode('/')->last());
     // }
+    // public function getMethodName()
+    // {
+    //     // Get the full URL
+    //     $fullUrl = $this->url();
+
+    //     // Log the full URL for debugging
+    //     Log::info('Full URL:', ['url' => $fullUrl]);
+
+    //     // Extract the last segment of the URL
+    //     $methodName = collect(explode('/', $fullUrl))->last();
+
+    //     // Log the extracted method name for debugging
+    //     Log::info('Extracted method name:', ['method_name' => $methodName]);
+
+    //     return $methodName;
+    // }
+
     public function getMethodName()
 {
-    // Get the full URL
-    $fullUrl = $this->url();
+    // Define an array of possible method names
+    $methods = ['GameLogin', 'GetBalance', 'Bet', 'GameResult', 'RollBack', 'CashOut'];
 
-    // Log the full URL for debugging
-    Log::info('Full URL:', ['url' => $fullUrl]);
+    // Get the last segment of the URL path
+    $lastSegment = request()->segment(count(request()->segments()));
 
-    // Extract the last segment of the URL
-    $methodName = collect(explode('/', $fullUrl))->last();
+    // Log the last segment for debugging
+    Log::info('Last URL segment:', ['last_segment' => $lastSegment]);
 
-    // Log the extracted method name for debugging
-    Log::info('Extracted method name:', ['method_name' => $methodName]);
+    // Check if the last segment matches any of the predefined methods
+    if (in_array($lastSegment, $methods)) {
+        Log::info('Matched method:', ['method' => $lastSegment]);
+        return $lastSegment;
+    }
 
-    return $methodName;
+    // Return null or handle cases where there is no match
+    Log::warning('No method matched. Defaulting to null.');
+    return null;
 }
+
 
     public function getOperatorCode()
     {
