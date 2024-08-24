@@ -77,9 +77,7 @@ class SlotWebhookRequest extends FormRequest
 
     public function getMethodName()
     {
-         //return str($this->url())->explode('/')->last();
-        //return strtolower(str($this->url())->explode('/')->last());
-        return 'GetBalance';
+        return strtolower(str($this->url())->explode('/')->last());
     }
     // public function getMethodName()
     // {
