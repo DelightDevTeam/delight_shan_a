@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
         $agent = $this->createUser(UserType::Agent, 'Agent', 'SKM324343', '09112345674', $master->id);
         (new WalletService)->transfer($master, $agent, 5 * 100_000, TransactionName::CreditTransfer);
 
-        $player = $this->createUser(UserType::Player, 'Player 1', 'P111111', '09111111111', $agent->id);
+        $player = $this->createUser(UserType::Player, 'Player 1', 'Player001', '09111111111', $agent->id);
         (new WalletService)->transfer($agent, $player, 30000, TransactionName::CreditTransfer);
     }
 
