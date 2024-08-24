@@ -77,7 +77,8 @@ class SlotWebhookRequest extends FormRequest
 
     public function getMethodName()
     {
-        return strtolower(str($this->url())->explode('/')->last());
+         return str($this->url())->explode('/')->last();
+        //return strtolower(str($this->url())->explode('/')->last());
     }
 
     public function getOperatorCode()
