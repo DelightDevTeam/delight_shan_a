@@ -110,6 +110,9 @@ class GameService
             ]);
 
             if ($response->successful()) {
+                // Add DisplayName and PlayerBalance to the response
+                $apiResponse['DisplayName'] = $user->name;
+                $apiResponse['PlayerBalance'] = $user->wallet->balance;
                 return response()->json($response->json(), StatusCode::OK->value);
             }
 
