@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use App\Services\SlotWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SlotWebhookRequest extends FormRequest
@@ -25,9 +26,31 @@ class SlotWebhookRequest extends FormRequest
      */
     public function rules(): array
     {
+        $transaction_rules = [];
+
+        if (in_array($this->getMethodName(), ['getbalance', 'buyin', 'buyout'])) {
+            $transaction_rules['Transactions'] = ['nullable'];
+            if ($this->getMethodName() !== 'getbalance') {
+                $transaction_rules['Transaction'] = ['required'];
+            }
+        } else {
+            $transaction_rules['Transactions'] = ['required'];
+        }
+
         return [
-            //
+            'PlayerId' => ['required'],
+            'OperatorId' => ['required'],
+            'RequestDateTime' => ['required'],
+            'Signature' => ['required'],
+            ...$transaction_rules,
         ];
+    }
+
+    public function check()
+    {
+        $validator = SlotWebhookValidator::make($this)->validate();
+
+        return $validator;
     }
 
     public function getMember()
@@ -50,5 +73,42 @@ class SlotWebhookRequest extends FormRequest
     public function getMemberName()
     {
         return $this->get('PlayerId');
+    }
+
+    public function getMethodName()
+    {
+        return strtolower(str($this->url())->explode('/')->last());
+    }
+
+    public function getOperatorCode()
+    {
+        return $this->get('OperatorId');
+    }
+
+    public function getRequestTime()
+    {
+        return $this->get('RequestDateTime');
+    }
+
+    public function getSign()
+    {
+        return $this->get('Signature');
+    }
+
+    public function getTransactions()
+    {
+        $transactions = $this->get('Transactions', []);
+
+        if ($transactions) {
+            return $transactions;
+        }
+
+        $transaction = $this->get('Transaction', []);
+
+        if ($transaction) {
+            return [$transaction];
+        }
+
+        return [];
     }
 }
