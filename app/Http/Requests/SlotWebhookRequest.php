@@ -27,11 +27,7 @@ class SlotWebhookRequest extends FormRequest
     public function rules(): array
 {
     return [
-        // 'PlayerId' => ['required', 'string', 'exists:users,user_name'],
-        // 'OperatorId' => ['required', 'string'],
-        // 'RequestDateTime' => ['required', 'date_format:Y-m-d H:i:s'],
-        // 'Signature' => ['required', 'string'],
-        // 'AuthToken' => ['nullable', 'string'],
+       
     ];
 }
 

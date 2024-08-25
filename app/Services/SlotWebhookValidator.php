@@ -37,7 +37,7 @@ class SlotWebhookValidator
 
         if (! $this->request->getMember()) {
             Log::warning('Invalid player detected');
-            return $this->response(StatusCode::InvalidPlayer);
+            return $this->response(StatusCode::InvalidPlayerPassword);
         }
 
         foreach ($this->request->getTransactions() as $transaction) {
@@ -49,7 +49,7 @@ class SlotWebhookValidator
             if (! in_array($this->request->getMethodName(), ['bet', 'buyin', 'buyout']) && $this->isNewWager($requestTransaction)) {
                 Log::warning('Invalid game ID detected', ['transaction' => $requestTransaction]);
 
-                return $this->response(StatusCode::InvalidGameId);
+                return $this->response(StatusCode::BetTransactionNotFound);
             }
 
             $this->totalTransactionAmount += $requestTransaction->TransactionAmount;
