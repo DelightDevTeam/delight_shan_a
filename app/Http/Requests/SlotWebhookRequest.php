@@ -25,27 +25,15 @@ class SlotWebhookRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-       return [];
-        // $transaction_rules = [];
-
-        // if (in_array($this->getMethodName(), ['GetBalance', 'BuyIn', 'BuyOut'])) {
-        //     $transaction_rules['Transactions'] = ['nullable'];
-        //     if ($this->getMethodName() !== 'GetBalance') {
-        //         $transaction_rules['Transaction'] = ['required'];
-        //     }
-        // } else {
-        //     $transaction_rules['Transactions'] = ['required'];
-        // }
-
-        // return [
-        //     'OperatorId' => ['required'],
-        //     'RequestDateTime' => ['required'],
-        //     'Signature' => ['required'],
-        //     'PlayerId' => ['required'],
-        //     ...$transaction_rules,
-        // ];
-    }
+{
+    return [
+        'PlayerId' => ['required', 'string', 'exists:users,user_name'],
+        'OperatorId' => ['required', 'string'],
+        'RequestDateTime' => ['required', 'date_format:Y-m-d H:i:s'],
+        'Signature' => ['required', 'string'],
+        'AuthToken' => ['nullable', 'string'],
+    ];
+}
 
     public function check()
     {
