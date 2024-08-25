@@ -92,20 +92,36 @@ class SlotWebhookValidator
         return $secretKey;
     }
 
+    // protected function response(StatusCode $responseCode)
+    // {
+    //     Log::info('Building response', ['responseCode' => $responseCode->name]);
+
+    //     $this->response = SlotWebhookService::buildResponse(
+    //         $responseCode,
+    //         0, // Balance will be 0 in case of an invalid player or invalid signature
+    //         0
+    //     );
+
+    //     Log::info('Response built', ['response' => $this->response]);
+
+    //     return $this;
+    // }
+
     protected function response(StatusCode $responseCode)
-    {
-        Log::info('Building response', ['responseCode' => $responseCode->name]);
+{
+    Log::info('Building response', ['responseCode' => $responseCode->name]);
 
-        $this->response = SlotWebhookService::buildResponse(
-            $responseCode,
-            0, // Balance will be 0 in case of an invalid player or invalid signature
-            0
-        );
+    $this->response = SlotWebhookService::buildResponse(
+        $responseCode,
+        $this->request->getMember() ? $this->getAfterBalance() : 0,
+        $this->request->getMember() ? $this->getBeforeBalance() : 0
+    );
 
-        Log::info('Response built', ['response' => $this->response]);
+    Log::info('Response built', ['response' => $this->response]);
 
-        return $this;
-    }
+    return $this;
+}
+
 
     public function getResponse()
     {
