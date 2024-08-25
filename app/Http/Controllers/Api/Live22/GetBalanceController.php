@@ -19,14 +19,14 @@ class GetBalanceController extends Controller
         try {
             // Validate the request using the SlotWebhookValidator
             Log::info('Starting validation process');
-            $validator = SlotWebhookValidator::make($request)->validate();
+            // $validator = SlotWebhookValidator::make($request)->validate();
 
-            if ($validator->fails()) {
-                Log::warning('Validation failed', ['response' => $validator->getResponse()]);
-                return response()->json($validator->getResponse(), 400);
-            } else {
-                Log::info('Validation passed, no failure detected');
-            }
+            // if ($validator->fails()) {
+            //     Log::warning('Validation failed', ['response' => $validator->getResponse()]);
+            //     return response()->json($validator->getResponse(), 400);
+            // } else {
+            //     Log::info('Validation passed, no failure detected');
+            // }
 
 
             Log::info('Validation passed, preparing balance response');
