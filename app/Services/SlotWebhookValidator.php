@@ -116,12 +116,10 @@ class SlotWebhookValidator
 
     public function fails()
     {
-        // $fails = isset($this->response);
-        // Log::info('Checking if validation fails', ['fails' => $fails]);
+        $fails = isset($this->response);
+        Log::info('Checking if validation fails', ['fails' => $fails]);
 
-        // return $fails;
-        return isset($this->response);
-
+        return $fails;
     }
 
     public static function make(SlotWebhookRequest $request)

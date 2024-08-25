@@ -24,7 +24,10 @@ class GetBalanceController extends Controller
             if ($validator->fails()) {
                 Log::warning('Validation failed', ['response' => $validator->getResponse()]);
                 return response()->json($validator->getResponse(), 400);
+            } else {
+                Log::info('Validation passed, no failure detected');
             }
+
 
             Log::info('Validation passed, preparing balance response');
             $balance = $request->getMember()->wallet->balance;
