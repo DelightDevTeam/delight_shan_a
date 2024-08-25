@@ -151,4 +151,22 @@ class SlotWebhookValidator
     {
         return new self($request);
     }
+
+    public function getAfterBalance()
+    {
+        if (! isset($this->after_balance)) {
+            $this->after_balance = $this->getBeforeBalance() + $this->totalTransactionAmount;
+        }
+
+        return $this->after_balance;
+    }
+
+    public function getBeforeBalance()
+    {
+        if (! isset($this->before_balance)) {
+            $this->before_balance = $this->request->getMember()->wallet->balance;
+        }
+
+        return $this->before_balance;
+    }
 }
