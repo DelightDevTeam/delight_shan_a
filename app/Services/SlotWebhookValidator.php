@@ -84,6 +84,14 @@ class SlotWebhookValidator
         return $this->request->getSign() === $signature;
     }
 
+    protected function getSecretKey()
+    {
+        $secretKey = config('game.api.secret_key');
+        Log::info('Fetched secret key');
+
+        return $secretKey;
+    }
+
     protected function response(StatusCode $responseCode)
     {
         Log::info('Building response', ['responseCode' => $responseCode->name]);
