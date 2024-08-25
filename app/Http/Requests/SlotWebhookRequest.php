@@ -55,19 +55,18 @@ class SlotWebhookRequest extends FormRequest
 
     public function getMember()
     {
-        if (! isset($this->member)) {
+//        if (! isset($this->member)) {
             $playerId = $this->getMemberName();
-            Log::info('Searching for user with PlayerId:', ['PlayerId' => $playerId]);
-            $this->member = User::where('user_name', $playerId)->first();
+//            Log::info('Searching for user with PlayerId:', ['PlayerId' => $playerId]);
+           return User::where('user_name', $playerId)->first();
+//
+//            if (! $this->member) {
+//                Log::warning('No user found with PlayerId:', ['PlayerId' => $playerId]);
+//            } else {
+//                Log::info('User found:', ['UserId' => $this->member->id]);
+//            }
+//        }
 
-            if (! $this->member) {
-                Log::warning('No user found with PlayerId:', ['PlayerId' => $playerId]);
-            } else {
-                Log::info('User found:', ['UserId' => $this->member->id]);
-            }
-        }
-
-        return $this->member;
     }
 
     public function getMemberName()
@@ -131,6 +130,11 @@ class SlotWebhookRequest extends FormRequest
     public function getSign()
     {
         return $this->get('Signature');
+    }
+
+    public function test()
+    {
+        return 'test';
     }
 
     public function getTransactions()

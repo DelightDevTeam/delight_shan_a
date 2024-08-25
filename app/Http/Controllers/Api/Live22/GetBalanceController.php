@@ -25,18 +25,6 @@ class GetBalanceController extends Controller
             Log::info('Starting validation process');
             $validator = SlotWebhookValidator::make($request)->validate();
 
-            // If validation fails, return the error response
-            // if ($validator->fails()) {
-            //     Log::warning('Validation failed', ['response' => $validator->getResponse()]);
-            //     return $validator->getResponse();
-            // }
-
-            if ($validator->fails()) {
-                Log::warning('Validation failed', ['response' => $validator->getResponse()]);
-
-                return $validator->getResponse();
-            }
-
             Log::info('Validation passed, preparing balance response');
             $balance = $request->getMember()->wallet->balance;
             $response = SlotWebhookService::buildResponse(StatusCode::OK, $balance, $balance);
