@@ -28,9 +28,9 @@ class SlotWebhookRequest extends FormRequest
     {
         $transaction_rules = [];
 
-        if (in_array($this->getMethodName(), ['getbalance', 'buyin', 'buyout'])) {
+        if (in_array($this->getMethodName(), ['GetBalance', 'BuyIn', 'BuyOut'])) {
             $transaction_rules['Transactions'] = ['nullable'];
-            if ($this->getMethodName() !== 'getbalance') {
+            if ($this->getMethodName() !== 'GetBalance') {
                 $transaction_rules['Transaction'] = ['required'];
             }
         } else {
@@ -38,10 +38,10 @@ class SlotWebhookRequest extends FormRequest
         }
 
         return [
-            'PlayerId' => ['required'],
             'OperatorId' => ['required'],
             'RequestDateTime' => ['required'],
             'Signature' => ['required'],
+            'PlayerId' => ['required'],
             ...$transaction_rules,
         ];
     }
