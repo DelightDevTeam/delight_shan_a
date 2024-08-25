@@ -26,24 +26,25 @@ class SlotWebhookRequest extends FormRequest
      */
     public function rules(): array
     {
-        $transaction_rules = [];
+       return [];
+        // $transaction_rules = [];
 
-        if (in_array($this->getMethodName(), ['GetBalance', 'BuyIn', 'BuyOut'])) {
-            $transaction_rules['Transactions'] = ['nullable'];
-            if ($this->getMethodName() !== 'GetBalance') {
-                $transaction_rules['Transaction'] = ['required'];
-            }
-        } else {
-            $transaction_rules['Transactions'] = ['required'];
-        }
+        // if (in_array($this->getMethodName(), ['GetBalance', 'BuyIn', 'BuyOut'])) {
+        //     $transaction_rules['Transactions'] = ['nullable'];
+        //     if ($this->getMethodName() !== 'GetBalance') {
+        //         $transaction_rules['Transaction'] = ['required'];
+        //     }
+        // } else {
+        //     $transaction_rules['Transactions'] = ['required'];
+        // }
 
-        return [
-            'OperatorId' => ['required'],
-            'RequestDateTime' => ['required'],
-            'Signature' => ['required'],
-            'PlayerId' => ['required'],
-            ...$transaction_rules,
-        ];
+        // return [
+        //     'OperatorId' => ['required'],
+        //     'RequestDateTime' => ['required'],
+        //     'Signature' => ['required'],
+        //     'PlayerId' => ['required'],
+        //     ...$transaction_rules,
+        // ];
     }
 
     public function check()
