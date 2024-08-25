@@ -55,18 +55,9 @@ class SlotWebhookRequest extends FormRequest
 
     public function getMember()
     {
-//        if (! isset($this->member)) {
-            $playerId = $this->getMemberName();
-//            Log::info('Searching for user with PlayerId:', ['PlayerId' => $playerId]);
-           return User::where('user_name', $playerId)->first();
-//
-//            if (! $this->member) {
-//                Log::warning('No user found with PlayerId:', ['PlayerId' => $playerId]);
-//            } else {
-//                Log::info('User found:', ['UserId' => $this->member->id]);
-//            }
-//        }
+        $playerId = $this->getMemberName();
 
+        return User::where('user_name', $playerId)->first();
     }
 
     public function getMemberName()
@@ -78,45 +69,7 @@ class SlotWebhookRequest extends FormRequest
     {
         return strtolower(str($this->url())->explode('/')->last());
     }
-    // public function getMethodName()
-    // {
-    //     // Get the full URL
-    //     $fullUrl = $this->url();
-
-    //     // Log the full URL for debugging
-    //     Log::info('Full URL:', ['url' => $fullUrl]);
-
-    //     // Extract the last segment of the URL
-    //     $methodName = collect(explode('/', $fullUrl))->last();
-
-    //     // Log the extracted method name for debugging
-    //     Log::info('Extracted method name:', ['method_name' => $methodName]);
-
-    //     return $methodName;
-    // }
-
-    // public function getMethodName()
-    // {
-    //     // Define an array of possible method names
-    //     $methods = ['GameLogin', 'GetBalance', 'Bet', 'GameResult', 'RollBack', 'CashOut'];
-
-    //     // Get the last segment of the URL path
-    //     $lastSegment = request()->segment(count(request()->segments()));
-
-    //     // Log the last segment for debugging
-    //     Log::info('Last URL segment:', ['last_segment' => $lastSegment]);
-
-    //     // Check if the last segment matches any of the predefined methods
-    //     if (in_array($lastSegment, $methods)) {
-    //         Log::info('Matched method:', ['method' => $lastSegment]);
-    //         return $lastSegment;
-    //     }
-
-    //     // Return null or handle cases where there is no match
-    //     Log::warning('No method matched. Defaulting to null.');
-    //     return null;
-    // }
-
+   
     public function getOperatorCode()
     {
         return $this->get('OperatorId');
