@@ -65,10 +65,16 @@ class PlaceBetController extends Controller
 
             return response()->json(['message' => 'Bet placed successfully', 'transaction_id' => $transaction->id], 200);
         } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Failed to place bet', ['error' => $e->getMessage()]);
+    DB::rollBack();
+    
+    // Log the error with additional details
+    Log::error('Failed to place bet', [
+        'error' => $e->getMessage(),
+        'line' => $e->getLine(),
+        'file' => $e->getFile(),
+    ]);
 
-            return response()->json(['message' => 'Failed to place bet'], 500);
-        }
+    return response()->json(['message' => 'Failed to place bet'], 500);
+}
     }
 }
