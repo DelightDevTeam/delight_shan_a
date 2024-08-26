@@ -21,13 +21,13 @@ class PlaceBetController extends Controller
     try {
         Log::info('Starting placeBet method');
 
-        $validator = $request->check();
-        Log::info('Validator check passed');
+        // $validator = $request->check();
+        // Log::info('Validator check passed');
 
-        if ($validator->fails()) {
-            Log::warning('Validation failed');
-            return $validator->getResponse();
-        }
+        // if ($validator->fails()) {
+        //     Log::warning('Validation failed');
+        //     return $validator->getResponse();
+        // }
 
         $before_balance = $request->getMember()->wallet->balance;
         Log::info('Retrieved member balance', ['before_balance' => $before_balance]);
