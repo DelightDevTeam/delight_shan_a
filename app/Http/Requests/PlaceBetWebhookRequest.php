@@ -77,7 +77,7 @@ class PlaceBetWebhookRequest extends FormRequest
     {
         $game_type = $this->GetGameType();
 
-        return GameList::where('methods', $game_type)->first();
+        return GameList::where('method', $game_type)->first();
     }
 
     public function GetGameType()
