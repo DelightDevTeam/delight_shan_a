@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\GameList;
 use App\Models\User;
-use App\Services\SlotWebhookValidator;
+use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
-class SlotWebhookRequest extends FormRequest
+class PlaceBetWebhookRequest extends FormRequest
 {
     private ?User $member;
 
@@ -33,7 +33,7 @@ class SlotWebhookRequest extends FormRequest
 
     public function check()
     {
-        $validator = SlotWebhookValidator::make($this)->validate();
+        $validator = PlaceBetWebhookValidator::make($this)->validate();
 
         return $validator;
     }
@@ -48,6 +48,41 @@ class SlotWebhookRequest extends FormRequest
     public function getMemberName()
     {
         return $this->get('PlayerId');
+    }
+
+    public function getProductID()
+    {
+        return $this->get('ProductID');
+    }
+
+    public function getGameListID()
+    {
+        $game_code = $this->GetGameCode();
+
+        return GameList::where('game_code', $game_code)->first();
+
+    }
+
+    public function GetGameCode()
+    {
+        return $this->get('GameCode');
+    }
+
+    public function GetBetID()
+    {
+        return $this->get('BetId');
+    }
+
+    public function getGameTypeID()
+    {
+        $game_type = $this->GetGameType();
+
+        return GameList::where('game_type', $game_type)->first();
+    }
+
+    public function GetGameType()
+    {
+        return $this->get('GameType');
     }
 
     public function getMethodName()

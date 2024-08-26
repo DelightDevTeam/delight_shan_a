@@ -15,15 +15,12 @@ enum StatusCode: int
     case InsufficientBalance = 900605;
     case InternalServerError = 900500;
     case MaxPayoutReached = 800401;
-    // case BadRequest = 400;
-    // case ForbiddenAccess = 403;
-    // case ServiceMaintenance = 503;
+    case InvalidPlayer = 900402;
+    case BadRequest = 400;
+    case ForbiddenAccess = 403;
+    case ServiceMaintenance = 503;
+    case InvalidOperatorID = 900401;
+    case InvalidGameId = 900404;
+    case InvalidTranID = 900408;
 
-    // case InvalidOperatorID = 900401;
-    // case InvalidPlayer = 900402;
-    // case InvalidSignature = 900403;
-    // case InvalidGameId = 900404;
-    // case InvalidTranID = 900408;
-
-    // case InternalServerError = 900500;
 }

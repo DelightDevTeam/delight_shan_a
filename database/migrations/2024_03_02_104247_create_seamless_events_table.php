@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('seamless_events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->unsignedBigInteger('game_type_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('game_list_id');
+            $table->string('game_type_id');
+            //$table->unsignedBigInteger('product_id');
+            $table->string('game_list_id');
             $table->timestamp('request_time');
             $table->json('raw_data')->nullable();
             $table->timestamps();

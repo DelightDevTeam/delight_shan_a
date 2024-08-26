@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Enums\StatusCode;
@@ -10,10 +11,15 @@ use Illuminate\Support\Facades\Log;
 class SlotWebhookValidator
 {
     protected ?SeamlessTransaction $existingTransaction = null;
+
     protected ?Wager $existingWager = null;
+
     protected float $totalTransactionAmount = 0;
+
     protected float $before_balance = 0;
+
     protected float $after_balance = 0;
+
     protected array $response = [];
 
     /**
@@ -32,11 +38,13 @@ class SlotWebhookValidator
 
         if (! $this->isValidSignature()) {
             Log::warning('Invalid signature detected');
+
             return $this->response(StatusCode::InvalidSignature);
         }
 
         if (! $this->request->getMember()) {
             Log::warning('Invalid player detected');
+
             return $this->response(StatusCode::InvalidPlayerPassword);
         }
 
@@ -56,6 +64,7 @@ class SlotWebhookValidator
         }
 
         Log::info('Validation passed');
+
         return $this;
     }
 
@@ -108,20 +117,19 @@ class SlotWebhookValidator
     // }
 
     protected function response(StatusCode $responseCode)
-{
-    Log::info('Building response', ['responseCode' => $responseCode->name]);
+    {
+        Log::info('Building response', ['responseCode' => $responseCode->name]);
 
-    $this->response = SlotWebhookService::buildResponse(
-        $responseCode,
-        $this->request->getMember() ? $this->getAfterBalance() : 0,
-        $this->request->getMember() ? $this->getBeforeBalance() : 0
-    );
+        $this->response = SlotWebhookService::buildResponse(
+            $responseCode,
+            $this->request->getMember() ? $this->getAfterBalance() : 0,
+            $this->request->getMember() ? $this->getBeforeBalance() : 0
+        );
 
-    Log::info('Response built', ['response' => $this->response]);
+        Log::info('Response built', ['response' => $this->response]);
 
-    return $this;
-}
-
+        return $this;
+    }
 
     public function getResponse()
     {
@@ -139,13 +147,12 @@ class SlotWebhookValidator
     // }
 
     public function fails()
-{
-    $fails = isset($this->response) && !empty($this->response);
-    Log::info('Checking if validation fails', ['fails' => $fails]);
+    {
+        $fails = isset($this->response) && ! empty($this->response);
+        Log::info('Checking if validation fails', ['fails' => $fails]);
 
-    return $fails;
-}
-
+        return $fails;
+    }
 
     public static function make(SlotWebhookRequest $request)
     {

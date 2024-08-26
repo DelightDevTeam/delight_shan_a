@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Enums\StatusCode;
@@ -23,12 +24,12 @@ class GetBalanceController extends Controller
 
             if ($validator->fails()) {
                 Log::warning('Validation failed', ['response' => $validator->getResponse()]);
+
                 //return response()->json($validator->getResponse(), 400);
                 return response()->json($validator->getResponse(), 200);
             } else {
                 Log::info('Validation passed, no failure detected');
             }
-
 
             Log::info('Validation passed, preparing balance response');
             $balance = $request->getMember()->wallet->balance;
@@ -37,6 +38,7 @@ class GetBalanceController extends Controller
             Log::info('Returning response', ['response' => $response]);
 
             DB::commit();
+
             return response()->json($response);
         } catch (\Exception $e) {
             DB::rollBack();

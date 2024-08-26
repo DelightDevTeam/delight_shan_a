@@ -2,11 +2,11 @@
 
 namespace App\Models\Admin;
 
-use App\Models\User;
-use App\Models\Product;
 use App\Models\GameList;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class SeamlessEvent extends Model
 {
@@ -19,7 +19,7 @@ class SeamlessEvent extends Model
     //     'request_time',
     //     'raw_data',
     // ];
-       protected $fillable = [
+    protected $fillable = [
         'user_id',
         'game_type_id',
         'product_id',
