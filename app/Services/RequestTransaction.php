@@ -8,15 +8,15 @@ class RequestTransaction extends Data
 {
     public function __construct(
         public int $Status,
-        public string $ProductID,
+        public ?string $ProductID = null,
         public string $GameCode,
-        public string $GameType,
+        public int $GameType,
         public int $BetId,
-        public ?string $TransactionID,
-        public ?string $WagerID,
+        public ?string $TransactionID = null,
+        public ?string $WagerID = null,
         public ?float $BetAmount,
         public ?float $TransactionAmount,
-        public ?float $PayoutAmount,
-        public ?float $ValidBetAmount,
+        public ?float $PayoutAmount = null,
+        public ?float $ValidBetAmount = null,
     ) {}
 }

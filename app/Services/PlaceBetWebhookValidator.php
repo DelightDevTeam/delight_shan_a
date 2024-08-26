@@ -80,18 +80,19 @@ class PlaceBetWebhookValidator
     foreach ($this->request->getTransactions() as $transaction) {
         // Ensure that all required parameters are available
         $requestTransaction = new RequestTransaction(
-            $transaction['Status'],
-            $transaction['ProductID'],
-            $transaction['GameCode'],
-            $transaction['GameType'],
-            $transaction['BetId'],
-            $transaction['TransactionID'] ?? null,
-            $transaction['WagerID'] ?? null,
-            $transaction['BetAmount'] ?? null,
-            $transaction['TransactionAmount'] ?? null,
-            $transaction['PayoutAmount'] ?? null,
-            $transaction['ValidBetAmount'] ?? null
-        );
+        $transaction['Status'],
+        $transaction['ProductID'] ?? null, // Set to null if not provided
+        $transaction['GameCode'],
+        $transaction['GameType'],
+        $transaction['BetId'],
+        $transaction['TransactionID'] ?? null, // Set to null if not provided
+        $transaction['WagerID'] ?? null, // Set to null if not provided
+        $transaction['BetAmount'] ?? null,
+        $transaction['TransactionAmount'] ?? null,
+        $transaction['PayoutAmount'] ?? null,
+        $transaction['ValidBetAmount'] ?? null,
+    );
+
 
         $this->requestTransactions[] = $requestTransaction;
 
