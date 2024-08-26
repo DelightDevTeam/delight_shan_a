@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\GameList;
 use App\Models\User;
+use App\Models\GameList;
+use Illuminate\Support\Facades\Log;
 use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -110,20 +111,24 @@ class PlaceBetWebhookRequest extends FormRequest
         return 'test';
     }
 
+//     public function getTransactions()
+// {
+//     // Retrieve the transactions from the request. If not present, return a default empty array.
+//     return $this->get('Transactions', [$this->all()]);
+// }
+
     public function getTransactions()
-    {
-        $transactions = $this->get('Transactions', []);
+{
+    // Retrieve the transactions from the request. If not present, return a default empty array.
+    $transactions = $this->get('Transactions', [$this->all()]);
 
-        if ($transactions) {
-            return $transactions;
-        }
+    // Log the transactions for debugging
+    Log::info('Retrieved Transactions', [
+        'transactions' => $transactions
+    ]);
 
-        $transaction = $this->get('Transaction', []);
+    return $transactions;
+}
 
-        if ($transaction) {
-            return [$transaction];
-        }
 
-        return [];
-    }
 }

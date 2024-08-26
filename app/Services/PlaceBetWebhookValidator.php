@@ -151,6 +151,8 @@ class PlaceBetWebhookValidator
         return $this->requestTransactions;
     }
 
+    
+
     protected function getSecretKey()
     {
         return config('game.api.secret_key');
