@@ -16,10 +16,14 @@ class PlaceBetController extends Controller
     {
         DB::beginTransaction();
         try {
+            // Log the start of the placeBet method
+            Log::info('Starting placeBet method', ['request' => $request->all()]);
+
             // Retrieve the user based on the PlayerId
             $user = $request->getMember();
 
             if (!$user) {
+                Log::warning('Invalid player', ['player_id' => $request->get('PlayerId')]);
                 return response()->json(['message' => 'Invalid player'], 400);
             }
 
@@ -31,6 +35,8 @@ class PlaceBetController extends Controller
                 'request_time' => $request->getRequestTime(),
                 'raw_data' => $request->all(),
             ]);
+
+            Log::info('SeamlessEvent created', ['event_id' => $event->id]);
 
             // Store the transaction data in the seamless_transactions table
             $transaction = SeamlessTransaction::create([
@@ -61,20 +67,22 @@ class PlaceBetController extends Controller
                 'status' => 'Pending', // Default status
             ]);
 
+            Log::info('SeamlessTransaction created', ['transaction_id' => $transaction->id]);
+
             DB::commit();
 
             return response()->json(['message' => 'Bet placed successfully', 'transaction_id' => $transaction->id], 200);
         } catch (\Exception $e) {
-    DB::rollBack();
-    
-    // Log the error with additional details
-    Log::error('Failed to place bet', [
-        'error' => $e->getMessage(),
-        'line' => $e->getLine(),
-        'file' => $e->getFile(),
-    ]);
+            DB::rollBack();
 
-    return response()->json(['message' => 'Failed to place bet'], 500);
-}
+            // Log the error with additional details
+            Log::error('Failed to place bet', [
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+
+            return response()->json(['message' => 'Failed to place bet'], 500);
+        }
     }
 }
