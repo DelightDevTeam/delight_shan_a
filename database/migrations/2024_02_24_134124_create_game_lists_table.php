@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('game_id')->unique();
             $table->string('game_code')->unique();
             $table->string('game_name');
-            $table->integer('game_type');
+            $table->string('game_type');
             $table->string('image_url');
             $table->string('method');
             $table->boolean('is_h5_support');
