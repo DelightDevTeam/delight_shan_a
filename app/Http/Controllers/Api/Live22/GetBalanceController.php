@@ -25,7 +25,6 @@ class GetBalanceController extends Controller
             if ($validator->fails()) {
                 Log::warning('Validation failed', ['response' => $validator->getResponse()]);
 
-                //return response()->json($validator->getResponse(), 400);
                 return response()->json($validator->getResponse(), 200);
             } else {
                 Log::info('Validation passed, no failure detected');
