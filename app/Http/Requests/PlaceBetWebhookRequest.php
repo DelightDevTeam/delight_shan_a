@@ -28,21 +28,21 @@ class PlaceBetWebhookRequest extends FormRequest
     public function rules(): array
 {
     return [
-        'BetId' => 'required|integer',
-        'RoundId' => 'required|integer',
-        'GameCode' => 'required|string',
-        'GameType' => 'required|string',
-        'PlayerId' => 'required|string',
-        'BetAmount' => 'required|numeric',
-        'Currency' => 'required|string',
-        'ExchangeRate' => 'required|numeric',
-        'TranDateTime' => 'required|date_format:Y-m-d H:i:s',
-        'AuthToken' => 'nullable|string',
-        'ProviderTimeZone' => 'required|string',
-        'ProviderTranDt' => 'required|date_format:Y-m-d\TH:i:s.uP',
-        'OperatorId' => 'required|string',
-        'RequestDateTime' => 'required|date_format:Y-m-d H:i:s',
-        'Signature' => 'required|string',
+        // 'BetId' => 'required|integer',
+        // 'RoundId' => 'required|integer',
+        // 'GameCode' => 'required|string',
+        // 'GameType' => 'required|string',
+        // 'PlayerId' => 'required|string',
+        // 'BetAmount' => 'required|numeric',
+        // 'Currency' => 'required|string',
+        // 'ExchangeRate' => 'required|numeric',
+        // 'TranDateTime' => 'required|date_format:Y-m-d H:i:s',
+        // 'AuthToken' => 'nullable|string',
+        // 'ProviderTimeZone' => 'required|string',
+        // 'ProviderTranDt' => 'required|date_format:Y-m-d\TH:i:s.uP',
+        // 'OperatorId' => 'required|string',
+        // 'RequestDateTime' => 'required|date_format:Y-m-d H:i:s',
+        // 'Signature' => 'required|string',
     ];
 }
 
