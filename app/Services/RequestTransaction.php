@@ -10,7 +10,7 @@ class RequestTransaction extends Data
         public int $Status,
         public ?string $ProductID = null,
         public string $GameCode,
-        public int $GameType,
+        public string $GameType,
         public int $BetId,
         public ?string $TransactionID = null,
         public ?string $WagerID = null,
