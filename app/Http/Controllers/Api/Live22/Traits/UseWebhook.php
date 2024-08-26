@@ -40,7 +40,7 @@ trait UseWebhook
         return SeamlessEvent::create([
             'user_id' => $user->id,
             'game_type_id' => $gameType->id,
-            'product_id' => $gameList->product_id,
+            //'product_id' => $gameList->product_id,
             'game_list_id' => $gameList->id,
             'request_time' => $request->getRequestTime(),
             'raw_data' => $request->all(),
