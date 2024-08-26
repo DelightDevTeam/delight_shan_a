@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\Live22;
 
-use App\Enums\StatusCode;
-use App\Enums\TransactionName;
-use App\Http\Controllers\Api\V1\Live22\Traits\UseWebhook;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PlaceBetWebhookRequest;
 use App\Models\User;
-use App\Services\PlaceBetWebhookService;
+use App\Enums\StatusCode;
 use Illuminate\Http\Request;
+use App\Enums\TransactionName;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\PlaceBetWebhookService;
+use App\Http\Requests\PlaceBetWebhookRequest;
+use App\Http\Controllers\Api\V1\Live22\Traits\UseWebhook;
 
 class PlaceBetController extends Controller
 {
