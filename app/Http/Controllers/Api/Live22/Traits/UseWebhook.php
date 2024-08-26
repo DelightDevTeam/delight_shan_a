@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Live22\Traits;
+namespace App\Http\Controllers\Api\Live22\Traits;
 
 use App\Enums\TransactionName;
 use App\Enums\TransactionStatus;
