@@ -1,88 +1,84 @@
 <?php 
 namespace App\Http\Controllers\Api\Live22;
 
-use App\Models\Admin\SeamlessTransaction;
-use App\Models\Admin\SeamlessEvent;
 use App\Models\User;
+use App\Enums\StatusCode;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Enums\TransactionName;
 use Illuminate\Support\Facades\DB;
+use App\Models\Admin\SeamlessEvent;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Services\PlaceBetWebhookService;
+use App\Models\Admin\SeamlessTransaction;
 use App\Http\Requests\PlaceBetWebhookRequest;
 
 class PlaceBetController extends Controller
 {
     public function placeBet(PlaceBetWebhookRequest $request)
-    {
-        DB::beginTransaction();
-        try {
-            // Log the start of the placeBet method
-            Log::info('Starting placeBet method', ['request' => $request->all()]);
+{
+    DB::beginTransaction();
+    try {
+        Log::info('Starting placeBet method');
 
-            // Retrieve the user based on the PlayerId
-            $user = $request->getMember();
+        $validator = $request->check();
+        Log::info('Validator check passed');
 
-            if (!$user) {
-                Log::warning('Invalid player', ['player_id' => $request->get('PlayerId')]);
-                return response()->json(['message' => 'Invalid player'], 400);
-            }
-
-            // Create a SeamlessEvent (if required)
-            $event = SeamlessEvent::create([
-                'user_id' => $user->id,
-                'game_type_id' => null, // Set this to null or fetch from another source if needed
-                'game_list_id' => null, // Set this to null or fetch from another source if needed
-                'request_time' => $request->getRequestTime(),
-                'raw_data' => $request->all(),
-            ]);
-
-            Log::info('SeamlessEvent created', ['event_id' => $event->id]);
-
-            // Store the transaction data in the seamless_transactions table
-            $transaction = SeamlessTransaction::create([
-                'seamless_event_id' => $event->id,
-                'user_id' => $user->id,
-                'game_type_id' => null, // Optional field, set to null
-                'wager_id' => null, // Optional field, set to null
-                'seamless_transaction_id' => null, // Optional field, set to null
-                'transaction_amount' => null, // Optional field, set to null
-                'valid_amount' => null, // Optional field, set to null
-                'operator_id' => $request->get('OperatorId'),
-                'request_date_time' => $request->get('RequestDateTime'),
-                'signature' => $request->get('Signature'),
-                'player_id' => $request->get('PlayerId'),
-                'currency' => $request->get('Currency'),
-                'round_id' => $request->get('RoundId'),
-                'bet_id' => $request->get('BetId'),
-                'bet_amount' => $request->get('BetAmount'),
-                'exchange_rate' => $request->get('ExchangeRate'),
-                'game_code' => $request->get('GameCode'),
-                'game_type' => $request->get('GameType'),
-                'tran_date_time' => $request->get('TranDateTime'),
-                'auth_token' => $request->get('AuthToken'),
-                'provider_time_zone' => $request->get('ProviderTimeZone'),
-                'provider_tran_dt' => $request->get('ProviderTranDt'),
-                'old_balance' => null, // Optional field, set to null
-                'new_balance' => null, // Optional field, set to null
-                'status' => 'Pending', // Default status
-            ]);
-
-            Log::info('SeamlessTransaction created', ['transaction_id' => $transaction->id]);
-
-            DB::commit();
-
-            return response()->json(['message' => 'Bet placed successfully', 'transaction_id' => $transaction->id], 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            // Log the error with additional details
-            Log::error('Failed to place bet', [
-                'error' => $e->getMessage(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile(),
-            ]);
-
-            return response()->json(['message' => 'Failed to place bet'], 500);
+        if ($validator->fails()) {
+            Log::warning('Validation failed');
+            return $validator->getResponse();
         }
+
+        $before_balance = $request->getMember()->wallet->balance;
+        Log::info('Retrieved member balance', ['before_balance' => $before_balance]);
+
+        $event = $this->createEvent($request);
+        Log::info('SeamlessEvent created', ['event_id' => $event->id]);
+
+        $seamless_transactions = $this->createWagerTransactions(
+            $validator->getRequestTransactions(),
+            $event,
+            $request // Passing the request here
+        );
+        Log::info('Wager transactions created', ['transaction_count' => count($seamless_transactions)]);
+
+        foreach ($seamless_transactions as $seamless_transaction) {
+            $this->processTransfer(
+                $request->getMember(),
+                User::adminUser(),
+                TransactionName::Stake,
+                $seamless_transaction->transaction_amount,
+                $seamless_transaction->rate,
+                [
+                    'wager_id' => $seamless_transaction->wager_id,
+                    'event_id' => $request->getMessageID(),
+                    'seamless_transaction_id' => $seamless_transaction->id,
+                ]
+            );
+            Log::info('Processed transfer for transaction', ['transaction_id' => $seamless_transaction->id]);
+        }
+
+        $request->getMember()->wallet->refreshBalance();
+        $after_balance = $request->getMember()->balanceFloat;
+        Log::info('Refreshed member balance', ['after_balance' => $after_balance]);
+
+        DB::commit();
+        Log::info('Transaction committed successfully');
+
+        return PlaceBetWebhookService::buildResponse(
+            StatusCode::OK,
+            $after_balance,
+            $before_balance
+        );
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Failed to place bet', [
+            'error' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile(),
+        ]);
+        return response()->json(['message' => 'Failed to place bet'], 500);
     }
+}
+
 }
