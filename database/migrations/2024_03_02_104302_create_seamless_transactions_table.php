@@ -16,12 +16,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('seamless_event_id');
             $table->foreignId('user_id');
-            //$table->foreignId('product_id');
-            $table->string('game_type_id');
+            $table->string('game_type_id')->nullable();
             $table->string('wager_id')->nullable();
             $table->string('seamless_transaction_id')->nullable();
             $table->decimal('transaction_amount', 12)->nullable();
-            //$table->decimal('bet_amount', 12);
             $table->decimal('valid_amount', 12)->nullable();
             $table->string('operator_id', 20);
             $table->dateTime('request_date_time');
