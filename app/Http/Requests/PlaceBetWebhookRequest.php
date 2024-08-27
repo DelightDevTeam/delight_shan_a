@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Admin\GameType;
 use App\Models\User;
 use App\Models\GameList;
 use Illuminate\Support\Facades\Log;
@@ -66,11 +67,6 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('PlayerId');
     }
 
-    public function getProductID()
-    {
-        return $this->get('ProductID');
-    }
-
     public function getGameListID()
     {
         $game_code = $this->GetGameCode();
@@ -91,9 +87,9 @@ class PlaceBetWebhookRequest extends FormRequest
 
     public function getGameTypeID()
     {
-        $game_type = $this->GetGameType();
+        $game_type = GameType::where('name', $this->GetGameType())->first();
 
-        return GameList::where('method', $game_type)->first();
+        return $game_type->id;
     }
 
     public function GetGameType()
@@ -101,11 +97,19 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('GameType');
     }
 
+    public function getBetAmount()
+    {
+        return $this->get('BetAmount');
+    }
     public function getMethodName()
     {
-        return strtolower(str($this->url())->explode('/')->last());
+        return str($this->url())->explode('/')->last();
     }
 
+    public  function getExchangeRate()
+    {
+        return $this->get('ExchangeRate');
+    }
     public function getOperatorCode()
     {
         return $this->get('OperatorId');
@@ -121,48 +125,64 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('Signature');
     }
 
-    public function test()
+    public function getPlayerId()
     {
-        return 'test';
+        return $this->get('PlayerId');
     }
-
-//     public function getTransactions()
-// {
-//     // Retrieve the transactions from the request. If not present, return a default empty array.
-//     return $this->get('Transactions', [$this->all()]);
-// }
-
-//     public function getTransactions()
-// {
-//     // Retrieve the transactions from the request. If not present, return a default empty array.
-//     $transactions = $this->get('Transactions', [$this->all()]);
-
-//     // Log the transactions for debugging
-//     Log::info('Retrieved Transactions', [
-//         'transactions' => $transactions
-//     ]);
-
-//     return $transactions;
-// }
 
     public function getTransactions()
-{
-    $transactions = $this->get('Transactions', [$this->all()]);
+    {
+        $transactions = $this->get('Transactions', [$this->all()]);
 
-    // Assuming Status and ProductID are part of the request, add them to the transactions
-    foreach ($transactions as &$transaction) {
-        $transaction['Status'] = $this->get('Status', 1); // Defaulting to 1 if not provided
-        $transaction['ProductID'] = $this->get('ProductID', 'default_product_id'); // Default value if not provided
+        // Assuming Status and ProductID are part of the request, add them to the transactions
+        foreach ($transactions as &$transaction) {
+            $transaction['Status'] = $this->get('Status', 1); // Defaulting to 1 if not provided
+            $transaction['ProductID'] = $this->get('ProductID', 'default_product_id'); // Default value if not provided
+        }
+
+        // Log the transactions for debugging
+        Log::info('Retrieved Transactions', [
+            'transactions' => $transactions
+        ]);
+
+        return $transactions;
     }
 
-    // Log the transactions for debugging
-    Log::info('Retrieved Transactions', [
-        'transactions' => $transactions
-    ]);
+    public function getProviderTimeZone()
+    {
+        return $this->get('ProviderTimeZone');
+    }
 
-    return $transactions;
-}
+    public function getProviderTranDt()
+    {
+        return $this->get('ProviderTranDt');
+    }
 
+    public function getCurrency()
+    {
+        return $this->get('Currency');
+    }
 
+    public function getRoundId()
+    {
+        return $this->get('RoundId');
+    }
 
+    public function getUserId()
+    {
+        $player = $this->getPlayerId();
+
+        $user = User::where('user_name', $player)->first();
+
+        return $user->id;
+    }
+
+    public function getAuthToken()
+    {
+        return $this->get('AuthToken');
+    }
+    public  function  getTranDateTime()
+    {
+        return $this->get('TranDateTime');
+    }
 }

@@ -103,4 +103,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class, 'user_id');
     }
+
+    public static function adminUser()
+    {
+        return self::where('type', UserType::Admin)->first();
+    }
 }

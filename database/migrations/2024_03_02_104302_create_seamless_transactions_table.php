@@ -14,11 +14,8 @@ return new class extends Migration
     {
         Schema::create('seamless_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seamless_event_id');
             $table->foreignId('user_id');
             $table->string('game_type_id')->nullable();
-            $table->string('wager_id')->nullable();
-            $table->string('seamless_transaction_id')->nullable();
             $table->decimal('transaction_amount', 12)->nullable();
             $table->decimal('valid_amount', 12)->nullable();
             $table->string('operator_id', 20);
@@ -31,7 +28,6 @@ return new class extends Migration
             $table->decimal('bet_amount', 15, 4);
             $table->decimal('exchange_rate', 8, 4)->default('1.0000');
             $table->string('game_code');
-            $table->string('game_type');
             $table->dateTime('tran_date_time');
             $table->string('auth_token', 500);
             $table->string('provider_time_zone', 50);

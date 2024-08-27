@@ -1,8 +1,10 @@
-<?php 
+<?php
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Models\User;
 use App\Enums\StatusCode;
+use App\Traits\UseWebhook;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Enums\TransactionName;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +17,8 @@ use App\Http\Requests\PlaceBetWebhookRequest;
 
 class PlaceBetController extends Controller
 {
+    use UseWebhook;
+
     public function placeBet(PlaceBetWebhookRequest $request)
 {
     DB::beginTransaction();
@@ -29,46 +33,50 @@ class PlaceBetController extends Controller
             return $validator->getResponse();
         }
 
-        $before_balance = $request->getMember()->wallet->balance;
-        Log::info('Retrieved member balance', ['before_balance' => $before_balance]);
+        $oldBalance = $request->getMember()->wallet->balance;
 
-        $event = $this->createEvent($request);
-        Log::info('SeamlessEvent created', ['event_id' => $event->id]);
+        Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
 
-        $seamless_transactions = $this->createWagerTransactions(
-            $validator->getRequestTransactions(),
-            $event,
-            $request // Passing the request here
-        );
-        Log::info('Wager transactions created', ['transaction_count' => count($seamless_transactions)]);
-
-        foreach ($seamless_transactions as $seamless_transaction) {
             $this->processTransfer(
                 $request->getMember(),
                 User::adminUser(),
                 TransactionName::Stake,
-                $seamless_transaction->transaction_amount,
-                $seamless_transaction->rate,
-                [
-                    'wager_id' => $seamless_transaction->wager_id,
-                    'event_id' => $request->getMessageID(),
-                    'seamless_transaction_id' => $seamless_transaction->id,
-                ]
+                $request->getBetAmount(),
+                $request->getExchangeRate(),
             );
-            Log::info('Processed transfer for transaction', ['transaction_id' => $seamless_transaction->id]);
-        }
 
-        $request->getMember()->wallet->refreshBalance();
-        $after_balance = $request->getMember()->balanceFloat;
-        Log::info('Refreshed member balance', ['after_balance' => $after_balance]);
+        $newBalance = $request->getMember()->wallet->balance;
+         SeamlessTransaction::create([
+            'user_id' => $request->getUserId(),
+            'game_type_id' => $request->getGameTypeID(),
+            'transaction_amount' => $request->getBetAmount(),
+            'valid_amount' => $request->getBetAmount(),
+            'operator_id' => $request->getOperatorCode(),
+            'request_date_time' => $request->getRequestTime(),
+            'signature' => $request->getSign(),
+            'player_id' => $request->getPlayerId(),
+            'currency' => $request->getCurrency(),
+            'round_id' => $request->getRoundId(),
+            'bet_id' => $request->getBetId(),
+            'bet_amount' => $request->getBetAmount(),
+            'exchange_rate' => $request->getExchangeRate(),
+            'game_code' => $request->getGameCode(),
+            'tran_date_time' => $request->getTranDateTime(),
+            'auth_token' => $request->getAuthToken(),
+            'provider_time_zone' => $request->getProviderTimeZone(),
+            'provider_tran_dt' => $request->getProviderTranDt(),
+            'old_balance' => $oldBalance,
+            'new_balance' => $newBalance,
+        ]);
+        Log::info('Refreshed member balance', ['new_balance' => $newBalance]);
 
         DB::commit();
         Log::info('Transaction committed successfully');
 
         return PlaceBetWebhookService::buildResponse(
             StatusCode::OK,
-            $after_balance,
-            $before_balance
+            $oldBalance,
+            $newBalance
         );
     } catch (\Exception $e) {
         DB::rollBack();

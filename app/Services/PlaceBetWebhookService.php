@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class PlaceBetWebhookService
 {
-    public static function buildResponse(StatusCode $responseCode, $balance, $before_balance)
+    public static function buildResponse(StatusCode $responseCode, $oldBalance, $newBalance)
     {
         // Current DateTime for ResponseDateTime
         $responseDateTime = now()->format('Y-m-d H:i:s');
@@ -24,8 +24,8 @@ class PlaceBetWebhookService
             'Status' => $responseCode->value,
             'Description' => $description,
             'ResponseDateTime' => $responseDateTime,
-            'Balance' => $balance,
-            'BeforeBalance' => $before_balance,
+            'OldBalance' => $oldBalance,
+            'NewBalance' => $newBalance,
         ]);
 
         // Return the structured response
@@ -33,7 +33,8 @@ class PlaceBetWebhookService
             'Status' => $responseCode->value,
             'Description' => $description,
             'ResponseDateTime' => $responseDateTime,
-            'Balance' => $balance,
+            'OldBalance' => $oldBalance,
+            'NewBalance' => $newBalance,
         ];
     }
 }

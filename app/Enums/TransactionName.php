@@ -12,6 +12,7 @@ enum TransactionName: string
     case Payout = 'payout';
     case Bonus = 'bonus';
     case JackPot = 'jack_pot';
+
     case Cancel = 'cancel';
     case Rollback = 'rollback';
     case BuyIn = 'buy_in';
