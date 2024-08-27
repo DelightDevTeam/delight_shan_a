@@ -70,7 +70,7 @@ class SlotWebhookValidator
 
     protected function isValidSignature()
     {
-        $method = 'GetBalance';
+        $method = $this->request->getMethodName();
         $requestTime = $this->request->getRequestTime();
         $operatorCode = $this->request->getOperatorCode();
         $secretKey = $this->getSecretKey();
