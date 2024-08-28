@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Admin\GameType;
 use App\Models\User;
 use App\Models\GameList;
+use App\Models\Admin\GameType;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -181,6 +182,17 @@ class PlaceBetWebhookRequest extends FormRequest
     {
         return $this->get('AuthToken');
     }
+    //     public function getAuthToken()
+    // {
+    //     // If there's an authenticated user and they have a current access token
+    //     if (Auth::check() && Auth::user()->currentAccessToken()) {
+    //         return Auth::user()->currentAccessToken()->token;
+    //     }
+
+    //     // Fallback to using the AuthToken provided in the request
+    //     return $this->get('AuthToken');
+    // }
+
     public  function  getTranDateTime()
     {
         return $this->get('TranDateTime');
