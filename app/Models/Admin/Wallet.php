@@ -15,6 +15,19 @@ class Wallet extends Model
         'balance',
     ];
 
+
+    public function refreshBalance()
+    {
+        // Recalculate balance if needed, or simply reload the balance from the database
+        $this->balance = $this->fresh()->balance;
+
+        // Optionally, you could recalculate balance based on transactions
+        // $this->balance = $this->transactions()->sum('amount');
+
+        // Return the updated wallet instance
+        return $this;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
