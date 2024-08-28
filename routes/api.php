@@ -7,12 +7,14 @@ use App\Http\Controllers\Api\PaymentTypeController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\Live22\PlaceBetController;
 use App\Http\Controllers\Api\Live22\GameLoginController;
+use App\Http\Controllers\Api\Live22\GameResultController;
 use App\Http\Controllers\Api\Live22\GetBalanceController;
 
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
 Route::post('Bet', [PlaceBetController::class, 'placeBet']);
+Route::post('GameResult', [GameResultController::class, 'gameResult']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);

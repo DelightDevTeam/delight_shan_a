@@ -86,6 +86,16 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('BetId');
     }
 
+    public function ResultID()
+    {
+        return $this->get('ResultId');
+    }
+
+     public function GetResultType()
+    {
+        return $this->get('ResultType');
+    }
+
     public function getGameTypeID()
     {
         $game_type = GameType::where('name', $this->GetGameType())->first();
@@ -101,6 +111,14 @@ class PlaceBetWebhookRequest extends FormRequest
     public function getBetAmount()
     {
         return $this->get('BetAmount');
+    }
+    public function getPayout()
+    {
+        return $this->get('Payout');
+    }
+    public function getWinLose()
+    {
+        return $this->get('WinLose');
     }
     public function getMethodName()
     {
@@ -167,6 +185,11 @@ class PlaceBetWebhookRequest extends FormRequest
     public function getRoundId()
     {
         return $this->get('RoundId');
+    }
+
+    public function getRoundType()
+    {
+        return $this->get('RoundType');
     }
 
     public function getUserId()
