@@ -1,8 +1,11 @@
-<?php 
+<?php
 namespace App\Http\Controllers\Api\Live22;
 
+use App\Http\Requests\GameResultWebhookRequest;
 use App\Models\User;
 use App\Enums\StatusCode;
+use App\Services\GameResultWebhookService;
+use App\Services\GameResultWebhookValidator;
 use App\Traits\UseWebhook;
 use Illuminate\Http\Request;
 use App\Enums\TransactionName;
@@ -17,7 +20,7 @@ class GameResultController extends Controller
 {
     use UseWebhook;
 
-    public function gameResult(PlaceBetWebhookRequest $request)
+    public function gameResult(GameResultWebhookRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -31,7 +34,7 @@ class GameResultController extends Controller
                 ]);
 
                 // Return Invalid Player response
-                return PlaceBetWebhookService::buildResponse(
+                return GameResultWebhookService::buildResponse(
                     StatusCode::InvalidPlayerPassword,
                     0, // Balance is 0 in case of invalid player
                     0
@@ -42,30 +45,9 @@ class GameResultController extends Controller
             Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
 
             $validator = $request->check();
-            Log::info('Validator check passed');
 
             if ($validator->fails()) {
-                Log::warning('Validation failed');
-                return PlaceBetWebhookService::buildResponse(
-                    StatusCode::InvalidSignature,
-                    0,
-                    0
-                );
-            }
-
-            // Check for Insufficient Balance
-            if ($request->getBetAmount() > $oldBalance) {
-                Log::warning('Insufficient balance detected', [
-                    'bet_amount' => $request->getBetAmount(),
-                    'balance' => $oldBalance
-                ]);
-
-                // Return Insufficient Balance response
-                return PlaceBetWebhookService::buildResponse(
-                    StatusCode::InsufficientBalance,
-                    $oldBalance,
-                    $oldBalance
-                );
+                    return $validator->getResponse();
             }
 
             // Check for duplicate ResultId
@@ -74,7 +56,7 @@ class GameResultController extends Controller
                 Log::warning('Duplicate ResultID detected', ['result_id' => $request->ResultID()]);
 
                 // Return the duplicate result response
-                return PlaceBetWebhookService::buildResponse(
+                return GameResultWebhookService::buildResponse(
                     StatusCode::DuplicateTransaction,
                     $oldBalance,
                     $oldBalance
@@ -121,19 +103,19 @@ class GameResultController extends Controller
             DB::commit();
             Log::info('Transaction committed successfully');
 
-            return PlaceBetWebhookService::buildResponse(
+            return GameResultWebhookService::buildResponse(
                 StatusCode::OK,
                 $oldBalance,
                 $newBalance
             );
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Failed to place bet', [
+            Log::error('Failed to game result', [
                 'error' => $e->getMessage(),
                 'line' => $e->getLine(),
                 'file' => $e->getFile(),
             ]);
-            return response()->json(['message' => 'Failed to place bet'], 500);
+            return response()->json(['message' => 'Failed to game result'], 500);
         }
     }
 }

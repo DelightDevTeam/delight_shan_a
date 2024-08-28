@@ -6,9 +6,12 @@ use App\Models\User;
 use App\Models\GameList;
 use App\Models\Admin\GameType;
 use App\Services\GameResultWebhookValidator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PlaceBetWebhookRequest extends FormRequest
+class GameResultWebhookRequest extends FormRequest
 {
     private ?User $member;
 
@@ -28,13 +31,14 @@ class PlaceBetWebhookRequest extends FormRequest
     public function rules(): array
 {
     return [
+
     ];
 }
 
 
     public function check()
     {
-        $validator = GameResultWebhookValidator::make($this)->validate();
+        $validator = GameResultWebhookValidator::class::make($this)->validate();
 
         return $validator;
     }
@@ -69,7 +73,7 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('BetId');
     }
 
-    public function ResultID()
+    public function getResultId()
     {
         return $this->get('ResultId');
     }
@@ -95,12 +99,6 @@ class PlaceBetWebhookRequest extends FormRequest
     {
         return $this->get('BetAmount');
     }
-
-    public function getValidBetAmount()
-    {
-        return $this->get('ValidBetAmount');
-    }
-
     public function getPayout()
     {
         return $this->get('Payout');
@@ -171,15 +169,11 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('Currency');
     }
 
-    public function getResultId()
-    {
-        return $this->get('ResultId');
-    }
-
     public function getRoundId()
     {
         return $this->get('RoundId');
     }
+
     public function getRoundType()
     {
         return $this->get('RoundType');
@@ -198,6 +192,16 @@ class PlaceBetWebhookRequest extends FormRequest
     {
         return $this->get('AuthToken');
     }
+    //     public function getAuthToken()
+    // {
+    //     // If there's an authenticated user and they have a current access token
+    //     if (Auth::check() && Auth::user()->currentAccessToken()) {
+    //         return Auth::user()->currentAccessToken()->token;
+    //     }
+
+    //     // Fallback to using the AuthToken provided in the request
+    //     return $this->get('AuthToken');
+    // }
 
     public  function  getTranDateTime()
     {
