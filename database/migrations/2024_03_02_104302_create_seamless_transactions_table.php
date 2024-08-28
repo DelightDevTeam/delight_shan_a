@@ -29,7 +29,7 @@ return new class extends Migration
             $table->decimal('exchange_rate', 8, 4)->default('1.0000');
             $table->string('game_code');
             $table->dateTime('tran_date_time');
-            $table->string('auth_token', 500);
+            $table->string('auth_token', 500)->nullable();
             $table->string('provider_time_zone', 50);
             $table->dateTime('provider_tran_dt');
             $table->decimal('old_balance', 15, 4)->nullable();
