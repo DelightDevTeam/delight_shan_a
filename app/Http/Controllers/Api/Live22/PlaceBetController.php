@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Models\User;
@@ -30,7 +30,12 @@ class PlaceBetController extends Controller
 
             if ($validator->fails()) {
                 Log::warning('Validation failed');
-                return $validator->getResponse();
+          
+                return PlaceBetWebhookService::buildResponse(
+                    StatusCode::InvalidSignature,
+                    0,
+                    0
+                );
             }
 
             // Validate Player
