@@ -46,7 +46,7 @@ class PlaceBetController extends Controller
 
                 // Return the duplicate bet response
                 return PlaceBetWebhookService::buildResponse(
-                    StatusCode::OK,
+                    StatusCode::DuplicateTransaction,
                     $oldBalance,
                     $oldBalance - $request->getBetAmount()
                 );
