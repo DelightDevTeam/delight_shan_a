@@ -34,6 +34,21 @@ class PlaceBetController extends Controller
         }
 
         $oldBalance = $request->getMember()->wallet->balance;
+        $newBalance = $request->getMember()->wallet->balance;
+
+        // Check for duplicate BetId
+            $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
+            if ($existingTransaction) {
+                Log::warning('Duplicate BetId detected', ['bet_id' => $request->getBetId()]);
+
+                // Return the duplicate bet response
+                return PlaceBetWebhookService::buildResponse(
+                    StatusCode::OK,
+                    $oldBalance,
+                    $oldBalance - $request->getBetAmount(),
+                    $newBalance
+                );
+            }
 
         Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
 
@@ -45,8 +60,7 @@ class PlaceBetController extends Controller
                 $request->getExchangeRate(),
             );
 
-        $newBalance = $request->getMember()->wallet->balance;
-         SeamlessTransaction::create([
+            SeamlessTransaction::create([
             'user_id' => $request->getUserId(),
             'game_type_id' => $request->getGameTypeID(),
             'transaction_amount' => $request->getBetAmount(),

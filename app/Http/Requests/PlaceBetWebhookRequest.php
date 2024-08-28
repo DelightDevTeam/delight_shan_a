@@ -178,20 +178,20 @@ class PlaceBetWebhookRequest extends FormRequest
         return $user->id;
     }
 
-    // public function getAuthToken()
+    public function getAuthToken()
+    {
+        return $this->get('AuthToken');
+    }
+    //     public function getAuthToken()
     // {
+    //     // If there's an authenticated user and they have a current access token
+    //     if (Auth::check() && Auth::user()->currentAccessToken()) {
+    //         return Auth::user()->currentAccessToken()->token;
+    //     }
+
+    //     // Fallback to using the AuthToken provided in the request
     //     return $this->get('AuthToken');
     // }
-    public function getAuthToken()
-{
-    // If there's an authenticated user and they have a current access token
-    if (Auth::check() && Auth::user()->currentAccessToken()) {
-        return Auth::user()->currentAccessToken()->token;
-    }
-
-    // Fallback to using the AuthToken provided in the request
-    return $this->get('AuthToken');
-}
 
     public  function  getTranDateTime()
     {
