@@ -25,19 +25,6 @@ class PlaceBetController extends Controller
         try {
             Log::info('Starting placeBet method');
 
-            $validator = $request->check();
-            Log::info('Validator check passed');
-
-            if ($validator->fails()) {
-                Log::warning('Validation failed');
-          
-                return PlaceBetWebhookService::buildResponse(
-                    StatusCode::InvalidSignature,
-                    0,
-                    0
-                );
-            }
-
             // Validate Player
             $player = $request->getMember();
             if (!$player) {
@@ -56,6 +43,21 @@ class PlaceBetController extends Controller
             $oldBalance = $player->wallet->balance;
             Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
 
+
+            $validator = $request->check();
+            Log::info('Validator check passed');
+
+            if ($validator->fails()) {
+                Log::warning('Validation failed');
+          
+                return PlaceBetWebhookService::buildResponse(
+                    StatusCode::InvalidSignature,
+                    0,
+                    0
+                );
+            }
+
+            
             // Check for Insufficient Balance
             if ($request->getBetAmount() > $oldBalance) {
                 Log::warning('Insufficient balance detected', [
