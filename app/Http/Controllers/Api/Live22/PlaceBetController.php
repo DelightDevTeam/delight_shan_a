@@ -38,6 +38,20 @@ class PlaceBetController extends Controller
 
           $oldBalance = $request->getMember()->wallet->balance;
             Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
+         // Check for Insufficient Balance
+            if ($request->getBetAmount() > $oldBalance) {
+                Log::warning('Insufficient balance detected', [
+                    'bet_amount' => $request->getBetAmount(),
+                    'balance' => $oldBalance
+                ]);
+
+                // Return Insufficient Balance response
+                return PlaceBetWebhookService::buildResponse(
+                    StatusCode::InsufficientBalance,
+                    $oldBalance,
+                    $oldBalance
+                );
+            }
 
             // Check for duplicate BetId
             $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
@@ -52,7 +66,7 @@ class PlaceBetController extends Controller
                 );
             }
 
-        Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
+        //Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
 
             $this->processTransfer(
                 $request->getMember(),
