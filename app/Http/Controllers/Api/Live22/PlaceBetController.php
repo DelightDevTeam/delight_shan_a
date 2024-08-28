@@ -34,7 +34,7 @@ class PlaceBetController extends Controller
 
                 // Return Invalid Player response
                 return PlaceBetWebhookService::buildResponse(
-                    StatusCode::InvalidPlayer,
+                    StatusCode::InvalidPlayerPassword,
                     0, // Balance is 0 in case of invalid player
                     0
                 );
