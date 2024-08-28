@@ -33,6 +33,21 @@ class PlaceBetController extends Controller
             return $validator->getResponse();
         }
 
+         // Validate Player
+            $player = $request->getMember();
+            if (!$player) {
+                Log::warning('Invalid player detected', [
+                    'PlayerId' => $request->getPlayerId()
+                ]);
+
+                // Return Invalid Player response
+                return PlaceBetWebhookService::buildResponse(
+                    StatusCode::InvalidPlayer,
+                    0, // Balance is 0 in case of invalid player
+                    0
+                );
+            }
+
         $oldBalance = $request->getMember()->wallet->balance;
         $newBalance = $request->getMember()->wallet->balance;
 
