@@ -119,7 +119,7 @@ class PlaceBetWebhookValidator
     {
         //MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
 
-        $method = 'Bet';
+        $method = $this->request->getMethodName();
         $bet_id = $this->request->GetBetID();
         $requestTime = $this->request->getRequestTime();
         $operatorCode = $this->request->getOperatorCode();
