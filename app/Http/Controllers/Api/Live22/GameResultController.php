@@ -51,22 +51,7 @@ class GameResultController extends Controller
         }
 
         
-        $existingTransaction = $request->transactionId();
-        return 'here';
-if (!$existingTransaction) {
-    Log::warning('BetId not found in SeamlessTransaction', [
-        'bet_id' => $request->transactionId(),
-        'seamless_transactions_count' => SeamlessTransaction::count(),
-        'seamless_transactions_last_entry' => SeamlessTransaction::orderBy('created_at', 'desc')->first()
-    ]);
-
-    return GameResultWebhookService::buildResponse(
-        StatusCode::BetTransactionNotFound,
-        $oldBalance,
-        $oldBalance
-    );
-}
-
+       
         // Check for duplicate ResultId
         $existingResult = GameResult::where('result_id', $request->ResultID())->first();
         if ($existingResult) {
