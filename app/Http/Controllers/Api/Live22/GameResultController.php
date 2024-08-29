@@ -52,6 +52,7 @@ class GameResultController extends Controller
 
         
         $existingTransaction = $request->transactionId();
+        return 'here';
 if (!$existingTransaction) {
     Log::warning('BetId not found in SeamlessTransaction', [
         'bet_id' => $request->transactionId(),
