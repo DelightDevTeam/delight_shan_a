@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use App\Models\GameList;
 use App\Models\Admin\GameType;
-use Illuminate\Support\Facades\Log;
+use App\Models\GameList;
+use App\Models\User;
+use App\Services\GameResultWebhookValidator;
 use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Services\GameResultWebhookValidator;
+use Illuminate\Support\Facades\Log;
 
 class PlaceBetWebhookRequest extends FormRequest
 {
@@ -28,15 +28,15 @@ class PlaceBetWebhookRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
-    return [
-    ];
-}
-
+    {
+        return [
+        ];
+    }
 
     public function check()
     {
         $validator = PlaceBetWebhookValidator::make($this)->validate();
+
         return $validator;
     }
 
@@ -75,7 +75,7 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('ResultId');
     }
 
-     public function GetResultType()
+    public function GetResultType()
     {
         return $this->get('ResultType');
     }
@@ -106,19 +106,22 @@ class PlaceBetWebhookRequest extends FormRequest
     {
         return $this->get('Payout');
     }
+
     public function getWinLose()
     {
         return $this->get('WinLose');
     }
+
     public function getMethodName()
     {
         return str($this->url())->explode('/')->last();
     }
 
-    public  function getExchangeRate()
+    public function getExchangeRate()
     {
         return $this->get('ExchangeRate');
     }
+
     public function getOperatorCode()
     {
         return $this->get('OperatorId');
@@ -151,7 +154,7 @@ class PlaceBetWebhookRequest extends FormRequest
 
         // Log the transactions for debugging
         Log::info('Retrieved Transactions', [
-            'transactions' => $transactions
+            'transactions' => $transactions,
         ]);
 
         return $transactions;
@@ -181,6 +184,7 @@ class PlaceBetWebhookRequest extends FormRequest
     {
         return $this->get('RoundId');
     }
+
     public function getRoundType()
     {
         return $this->get('RoundType');
@@ -200,7 +204,7 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('AuthToken');
     }
 
-    public  function  getTranDateTime()
+    public function getTranDateTime()
     {
         return $this->get('TranDateTime');
     }

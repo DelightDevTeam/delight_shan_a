@@ -2,15 +2,15 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use App\Models\GameList;
 use App\Models\Admin\GameType;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Admin\SeamlessTransaction;
+use App\Models\GameList;
+use App\Models\User;
+use App\Services\GameResultWebhookValidator;
 use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Services\GameResultWebhookValidator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GameResultWebhookRequest extends FormRequest
 {
@@ -30,12 +30,11 @@ class GameResultWebhookRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
-    return [
+    {
+        return [
 
-    ];
-}
-
+        ];
+    }
 
     public function check()
     {
@@ -69,8 +68,6 @@ class GameResultWebhookRequest extends FormRequest
         return $this->get('GameCode');
     }
 
-    
-
     // public function transactionId()
     // {
     //     $bet_id = $this->GetBetID();
@@ -78,19 +75,18 @@ class GameResultWebhookRequest extends FormRequest
     //     return SeamlessTransaction::where('bet_id', $bet_id)->first();
     // }
     public function transactionId()
-{
-    $bet_id = $this->GetBetID();
-    $transaction = SeamlessTransaction::where('bet_id', $bet_id)->first();
+    {
+        $bet_id = $this->GetBetID();
+        $transaction = SeamlessTransaction::where('bet_id', $bet_id)->first();
 
-    // Detailed log to debug the issue
-    Log::info('Transaction ID lookup:', [
-        'bet_id' => $bet_id,
-        'transaction_found' => $transaction ? $transaction->toArray() : 'No transaction found'
-    ]);
+        // Detailed log to debug the issue
+        Log::info('Transaction ID lookup:', [
+            'bet_id' => $bet_id,
+            'transaction_found' => $transaction ? $transaction->toArray() : 'No transaction found',
+        ]);
 
-    return $transaction;
-}
-
+        return $transaction;
+    }
 
     public function GetBetID()
     {
@@ -102,7 +98,7 @@ class GameResultWebhookRequest extends FormRequest
         return $this->get('ResultId');
     }
 
-     public function GetResultType()
+    public function GetResultType()
     {
         return $this->get('ResultType');
     }
@@ -123,23 +119,27 @@ class GameResultWebhookRequest extends FormRequest
     {
         return $this->get('BetAmount');
     }
+
     public function getPayout()
     {
         return $this->get('Payout');
     }
+
     public function getWinLose()
     {
         return $this->get('WinLose');
     }
+
     public function getMethodName()
     {
         return str($this->url())->explode('/')->last();
     }
 
-    public  function getExchangeRate()
+    public function getExchangeRate()
     {
         return $this->get('ExchangeRate');
     }
+
     public function getOperatorCode()
     {
         return $this->get('OperatorId');
@@ -172,7 +172,7 @@ class GameResultWebhookRequest extends FormRequest
 
         // Log the transactions for debugging
         Log::info('Retrieved Transactions', [
-            'transactions' => $transactions
+            'transactions' => $transactions,
         ]);
 
         return $transactions;
@@ -227,7 +227,7 @@ class GameResultWebhookRequest extends FormRequest
     //     return $this->get('AuthToken');
     // }
 
-    public  function  getTranDateTime()
+    public function getTranDateTime()
     {
         return $this->get('TranDateTime');
     }

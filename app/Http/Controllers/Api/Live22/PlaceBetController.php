@@ -1,19 +1,20 @@
 <?php
+
 namespace App\Http\Controllers\Api\Live22;
 
-use App\Models\User;
 use App\Enums\StatusCode;
+use App\Enums\TransactionName;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PlaceBetWebhookRequest;
+use App\Models\Admin\SeamlessEvent;
+use App\Models\Admin\SeamlessTransaction;
+use App\Models\User;
+use App\Services\PlaceBetWebhookService;
 use App\Traits\UseWebhook;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Enums\TransactionName;
 use Illuminate\Support\Facades\DB;
-use App\Models\Admin\SeamlessEvent;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use App\Services\PlaceBetWebhookService;
-use App\Models\Admin\SeamlessTransaction;
-use App\Http\Requests\PlaceBetWebhookRequest;
 
 class PlaceBetController extends Controller
 {
@@ -27,9 +28,9 @@ class PlaceBetController extends Controller
 
             // Validate Player
             $player = $request->getMember();
-            if (!$player) {
+            if (! $player) {
                 Log::warning('Invalid player detected', [
-                    'PlayerId' => $request->getPlayerId()
+                    'PlayerId' => $request->getPlayerId(),
                 ]);
 
                 // Return Invalid Player response
@@ -42,7 +43,6 @@ class PlaceBetController extends Controller
 
             $oldBalance = $player->wallet->balance;
             Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
-
 
             $validator = $request->check();
             Log::info('Validator check passed');
@@ -57,12 +57,11 @@ class PlaceBetController extends Controller
                 );
             }
 
-            
             // Check for Insufficient Balance
             if ($request->getBetAmount() > $oldBalance) {
                 Log::warning('Insufficient balance detected', [
                     'bet_amount' => $request->getBetAmount(),
-                    'balance' => $oldBalance
+                    'balance' => $oldBalance,
                 ]);
 
                 // Return Insufficient Balance response
@@ -137,6 +136,7 @@ class PlaceBetController extends Controller
                 'line' => $e->getLine(),
                 'file' => $e->getFile(),
             ]);
+
             return response()->json(['message' => 'Failed to place bet'], 500);
         }
     }

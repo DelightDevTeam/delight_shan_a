@@ -33,11 +33,11 @@ class GameResultWebhookValidator
 
     public function validate()
     {
-        if (!$this->isValidSignature()) {
+        if (! $this->isValidSignature()) {
             return $this->response(StatusCode::InvalidSignature);
         }
 
-        if (!$this->request->getMember()) {
+        if (! $this->request->getMember()) {
             return $this->response(StatusCode::InvalidPlayer);
         }
 
@@ -57,7 +57,6 @@ class GameResultWebhookValidator
         //         $transaction['ValidBetAmount'] ?? null,
         //     );
 
-
         //     $this->requestTransactions[] = $requestTransaction;
 
         //     if ($requestTransaction->TransactionID && !$this->isNewTransaction($requestTransaction)) {
@@ -71,13 +70,12 @@ class GameResultWebhookValidator
         //     $this->totalTransactionAmount += $requestTransaction->TransactionAmount;
         //}
 
-        if (!$this->hasEnoughBalance()) {
+        if (! $this->hasEnoughBalance()) {
             return $this->response(StatusCode::InsufficientBalance);
         }
 
         return $this;
     }
-
 
     protected function isValidSignature()
     {
@@ -162,8 +160,6 @@ class GameResultWebhookValidator
     {
         return $this->requestTransactions;
     }
-
-
 
     protected function getSecretKey()
     {

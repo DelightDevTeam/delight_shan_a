@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Api\Live22\Traits;
 
-use Exception;
-use App\Models\User;
-use App\Models\Product;
-use App\Enums\WagerStatus;
-use App\Models\Admin\Wager;
 use App\Enums\TransactionName;
-use App\Models\Admin\GameType;
-use App\Models\GameTypeProduct;
-use App\Services\WalletService;
 use App\Enums\TransactionStatus;
-use App\Models\Admin\SeamlessEvent;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Admin\SeamlessTransaction;
+use App\Enums\WagerStatus;
 use App\Http\Requests\PlaceBetWebhookRequest;
+use App\Models\Admin\GameType;
+use App\Models\Admin\SeamlessEvent;
+use App\Models\Admin\SeamlessTransaction;
+use App\Models\Admin\Wager;
+use App\Models\GameTypeProduct;
+use App\Models\Product;
+use App\Models\User;
 use App\Services\Slot\Dto\RequestTransaction;
-use Illuminate\Database\Eloquent\MassAssignmentException;
+use App\Services\WalletService;
+use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 trait UseWebhook
 {
@@ -28,32 +28,31 @@ trait UseWebhook
      *
      * @throws Exception
      */
-   public function createEvent(PlaceBetWebhookRequest $request): SeamlessEvent
-{
-    $user = $request->getMember();
-    $gameType = $request->getGameTypeID();
-    $gameList = $request->getGameListID();
+    public function createEvent(PlaceBetWebhookRequest $request): SeamlessEvent
+    {
+        $user = $request->getMember();
+        $gameType = $request->getGameTypeID();
+        $gameList = $request->getGameListID();
 
-    // Log the retrieved data
-    Log::info('Creating SeamlessEvent with data', [
-        'user' => $user ? $user->id : 'null',
-        'gameType' => $gameType ? $gameType->id : 'null',
-        'gameList' => $gameList ? $gameList->id : 'null',
-    ]);
+        // Log the retrieved data
+        Log::info('Creating SeamlessEvent with data', [
+            'user' => $user ? $user->id : 'null',
+            'gameType' => $gameType ? $gameType->id : 'null',
+            'gameList' => $gameList ? $gameList->id : 'null',
+        ]);
 
-    if (!$user || !$gameType || !$gameList) {
-        throw new Exception('Invalid data provided for creating Seamless Event.');
+        if (! $user || ! $gameType || ! $gameList) {
+            throw new Exception('Invalid data provided for creating Seamless Event.');
+        }
+
+        return SeamlessEvent::create([
+            'user_id' => $user->id,
+            'game_type_id' => $gameType->id,
+            'game_list_id' => $gameList->id,
+            'request_time' => $request->getRequestTime(),
+            'raw_data' => $request->all(),
+        ]);
     }
-
-    return SeamlessEvent::create([
-        'user_id' => $user->id,
-        'game_type_id' => $gameType->id,
-        'game_list_id' => $gameList->id,
-        'request_time' => $request->getRequestTime(),
-        'raw_data' => $request->all(),
-    ]);
-}
-
 
     /**
      * Create Wager Transactions.

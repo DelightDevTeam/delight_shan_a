@@ -9,7 +9,7 @@ class GameResult extends Model
 {
     use HasFactory;
 
-     protected $fillable = [
+    protected $fillable = [
         'user_id',
         'operator_id',            // OperatorId
         'request_date_time',      // RequestDateTime

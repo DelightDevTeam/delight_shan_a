@@ -15,7 +15,6 @@ class Wallet extends Model
         'balance',
     ];
 
-
     public function refreshBalance()
     {
         // Recalculate balance if needed, or simply reload the balance from the database
