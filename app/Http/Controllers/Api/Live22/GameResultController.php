@@ -116,11 +116,19 @@ class GameResultController extends Controller
         DB::commit();
         Log::info('Transaction committed successfully');
 
+        // return GameResultWebhookService::buildResponse(
+        //     StatusCode::OK,
+        //     $oldBalance,
+        //     $newBalance + $request->getPayout()
+        // );
+    $new_balance = number_format($oldBalance + $request->getPayout(), 4, '.', '');
+         
         return GameResultWebhookService::buildResponse(
-            StatusCode::OK,
-            $oldBalance,
-            $newBalance + $request->getPayout()
-        );
+    StatusCode::OK,
+    $oldBalance,
+    number_format($new_balance, 4, '.', '')
+    );
+
     } catch (\Exception $e) {
         DB::rollBack();
         Log::error('Failed to game result', [
