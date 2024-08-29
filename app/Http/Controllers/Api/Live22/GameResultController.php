@@ -119,7 +119,7 @@ class GameResultController extends Controller
         return GameResultWebhookService::buildResponse(
             StatusCode::OK,
             $oldBalance,
-            $newBalance
+            $newBalance + $request->getPayout()
         );
     } catch (\Exception $e) {
         DB::rollBack();
