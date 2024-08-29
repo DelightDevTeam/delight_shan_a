@@ -51,9 +51,9 @@ class GameResultController extends Controller
         }
 
         // Check if BetId exists in SeamlessTransaction table
-        $existingTransaction = SeamlessTransaction::where('bet_id', $request->GetBetID())->first();
+        $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
          Log::info('Checking existing transaction', [
-            'bet_id' => $request->GetBetID(),
+            'bet_id' => $request->getBetId(),
             'existing_transaction' => $existingTransaction
         ]);
         if (!$existingTransaction) {
@@ -96,7 +96,7 @@ class GameResultController extends Controller
             'player_id' => $request->getPlayerId(),
             'currency' => $request->getCurrency(),
             'result_id' => $request->ResultID(),
-            'bet_id' => $request->GetBetID(),
+            'bet_id' => $request->getBetId(),
             'round_id' => $request->getRoundId(),
             'game_code' => $request->GetGameCode(),
             'game_type' => $request->GetGameType(),
