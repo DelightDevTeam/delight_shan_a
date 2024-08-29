@@ -74,19 +74,34 @@ class GameResultWebhookRequest extends FormRequest
 
     //     return SeamlessTransaction::where('bet_id', $bet_id)->first();
     // }
-    public function transactionId()
-    {
-        $bet_id = $this->GetBetID();
-        $transaction = SeamlessTransaction::where('bet_id', $bet_id)->first();
+    // public function transactionId()
+    // {
+    //     $bet_id = $this->GetBetID();
+    //     $transaction = SeamlessTransaction::where('bet_id', $bet_id)->first();
 
-        // Detailed log to debug the issue
-        Log::info('Transaction ID lookup:', [
-            'bet_id' => $bet_id,
-            'transaction_found' => $transaction ? $transaction->toArray() : 'No transaction found',
-        ]);
+    //     // Detailed log to debug the issue
+    //     Log::info('Transaction ID lookup:', [
+    //         'bet_id' => $bet_id,
+    //         'transaction_found' => $transaction ? $transaction->toArray() : 'No transaction found',
+    //     ]);
 
-        return $transaction->bet_id;
-    }
+    //     return $transaction->bet_id;
+    // }
+
+    public function transaction()
+{
+    $bet_id = $this->GetBetID();
+    $transaction = SeamlessTransaction::where('bet_id', $bet_id)->first();
+
+    // Log detailed transaction lookup information
+    Log::info('Transaction ID lookup:', [
+        'bet_id' => $bet_id,
+        'transaction_found' => $transaction ? $transaction->toArray() : 'No transaction found',
+    ]);
+
+    return $transaction;
+}
+
 
     public function GetBetID()
     {
