@@ -66,9 +66,9 @@ class GameResultController extends Controller
             }
 
             // Check for duplicate ResultId
-            $existingResult = GameResult::where('result_id', $request->ResultID())->first();
+            $existingResult = GameResult::where('result_id', $request->getResultId())->first();
             if ($existingResult) {
-                Log::warning('Duplicate ResultID detected', ['result_id' => $request->ResultID()]);
+                Log::warning('Duplicate ResultID detected', ['result_id' => $request->getResultId()]);
 
                 return GameResultWebhookService::buildResponse(
                     StatusCode::DuplicateTransaction,
@@ -94,8 +94,8 @@ class GameResultController extends Controller
                 'signature' => $request->getSign(),
                 'player_id' => $request->getPlayerId(),
                 'currency' => $request->getCurrency(),
-                'result_id' => $request->ResultID(),
-                'bet_id' => $request->getBetId(),
+                'result_id' => $request->getResultId(),
+                'bet_id' => $request->transactionId(),
                 'round_id' => $request->getRoundId(),
                 'game_code' => $request->GetGameCode(),
                 'game_type' => $request->GetGameType(),
