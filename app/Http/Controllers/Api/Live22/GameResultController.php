@@ -50,26 +50,27 @@ class GameResultController extends Controller
             return $validator->getResponse();
         }
 
-        $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
+        //$existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
+          $existingTransaction = 20000017109;
+          Log::info('existing_transaction'. $existingTransaction);
+        // Log::info('Checking existing transaction', [
+        //     'bet_id' => $request->getBetId(),
+        //     'existing_transaction' => $existingTransaction ? $existingTransaction->toArray() : null
+        // ]);
 
-Log::info('Checking existing transaction', [
-    'bet_id' => $request->getBetId(),
-    'existing_transaction' => $existingTransaction ? $existingTransaction->toArray() : null
-]);
+        if (!$existingTransaction) {
+            Log::warning('BetId not found in SeamlessTransaction', [
+                'bet_id' => $request->getBetId(),
+                'seamless_transactions_count' => SeamlessTransaction::count(),
+                'seamless_transactions_last_entry' => SeamlessTransaction::orderBy('created_at', 'desc')->first()
+            ]);
 
-if (!$existingTransaction) {
-    Log::warning('BetId not found in SeamlessTransaction', [
-        'bet_id' => $request->getBetId(),
-        'seamless_transactions_count' => SeamlessTransaction::count(),
-        'seamless_transactions_last_entry' => SeamlessTransaction::orderBy('created_at', 'desc')->first()
-    ]);
-
-    return GameResultWebhookService::buildResponse(
-        StatusCode::BetTransactionNotFound,
-        $oldBalance,
-        $oldBalance
-    );
-}
+            return GameResultWebhookService::buildResponse(
+                StatusCode::BetTransactionNotFound,
+                $oldBalance,
+                $oldBalance
+            );
+        }
 
         // Check for duplicate ResultId
         $existingResult = GameResult::where('result_id', $request->ResultID())->first();
