@@ -41,35 +41,35 @@ class GameResultWebhookValidator
             return $this->response(StatusCode::InvalidPlayer);
         }
 
-        foreach ($this->request->getTransactions() as $transaction) {
-            // Ensure that all required parameters are available
-            $requestTransaction = new RequestTransaction(
-                $transaction['Status'],
-                $transaction['ProductID'] ?? null, // Set to null if not provided
-                $transaction['GameCode'],
-                $transaction['GameType'],
-                $transaction['BetId'],
-                $transaction['TransactionID'] ?? null, // Set to null if not provided
-                $transaction['WagerID'] ?? null, // Set to null if not provided
-                $transaction['BetAmount'] ?? null,
-                $transaction['TransactionAmount'] ?? null,
-                $transaction['PayoutAmount'] ?? null,
-                $transaction['ValidBetAmount'] ?? null,
-            );
+        // foreach ($this->request->getTransactions() as $transaction) {
+        //     // Ensure that all required parameters are available
+        //     $requestTransaction = new RequestTransaction(
+        //         $transaction['Status'],
+        //         $transaction['ProductID'] ?? null, // Set to null if not provided
+        //         $transaction['GameCode'],
+        //         $transaction['GameType'],
+        //         $transaction['BetId'],
+        //         $transaction['TransactionID'] ?? null, // Set to null if not provided
+        //         $transaction['WagerID'] ?? null, // Set to null if not provided
+        //         $transaction['BetAmount'] ?? null,
+        //         $transaction['TransactionAmount'] ?? null,
+        //         $transaction['PayoutAmount'] ?? null,
+        //         $transaction['ValidBetAmount'] ?? null,
+        //     );
 
 
-            $this->requestTransactions[] = $requestTransaction;
+        //     $this->requestTransactions[] = $requestTransaction;
 
-            if ($requestTransaction->TransactionID && !$this->isNewTransaction($requestTransaction)) {
-                return $this->response(StatusCode::DuplicateTransaction);
-            }
+        //     if ($requestTransaction->TransactionID && !$this->isNewTransaction($requestTransaction)) {
+        //         return $this->response(StatusCode::DuplicateTransaction);
+        //     }
 
-            if (!in_array($this->request->getMethodName(), ['GetBalance', 'Bet', 'BuyIn', 'BuyOut']) && $this->isNewWager($requestTransaction)) {
-                return $this->response(StatusCode::BetTransactionNotFound);
-            }
+        //     if (!in_array($this->request->getMethodName(), ['GetBalance', 'Bet', 'BuyIn', 'BuyOut']) && $this->isNewWager($requestTransaction)) {
+        //         return $this->response(StatusCode::BetTransactionNotFound);
+        //     }
 
-            $this->totalTransactionAmount += $requestTransaction->TransactionAmount;
-        }
+        //     $this->totalTransactionAmount += $requestTransaction->TransactionAmount;
+        //}
 
         if (!$this->hasEnoughBalance()) {
             return $this->response(StatusCode::InsufficientBalance);
