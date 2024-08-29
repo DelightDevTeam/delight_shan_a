@@ -59,8 +59,8 @@ class GameResultController extends Controller
 
             return GameResultWebhookService::buildResponse(
                 StatusCode::BetTransactionNotFound,
-                $oldBalance,
-                $oldBalance
+                0,
+                0
             );
         }
 
