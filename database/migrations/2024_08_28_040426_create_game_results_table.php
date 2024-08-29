@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('player_id', 50); // PlayerId
             $table->string('currency', 5); // Currency
             $table->unsignedBigInteger('result_id')->unique(); // ResultId
-            $table->string('bet_id', 100); // BetId
+            $table->unsignedBigInteger('bet_id'); // BetId
             $table->unsignedBigInteger('round_id'); // RoundId
             $table->string('game_code', 50); // GameCode
             $table->string('game_type', 50); // GameType

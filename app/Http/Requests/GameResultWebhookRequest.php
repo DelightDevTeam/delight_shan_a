@@ -85,7 +85,7 @@ class GameResultWebhookRequest extends FormRequest
             'transaction_found' => $transaction ? $transaction->toArray() : 'No transaction found',
         ]);
 
-        return $transaction;
+        return $transaction->bet_id;
     }
 
     public function GetBetID()
