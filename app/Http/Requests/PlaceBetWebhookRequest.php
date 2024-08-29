@@ -5,8 +5,10 @@ namespace App\Http\Requests;
 use App\Models\User;
 use App\Models\GameList;
 use App\Models\Admin\GameType;
-use App\Services\GameResultWebhookValidator;
+use Illuminate\Support\Facades\Log;
+use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\GameResultWebhookValidator;
 
 class PlaceBetWebhookRequest extends FormRequest
 {
@@ -34,8 +36,7 @@ class PlaceBetWebhookRequest extends FormRequest
 
     public function check()
     {
-        $validator = GameResultWebhookValidator::make($this)->validate();
-
+        $validator = PlaceBetWebhookValidator::make($this)->validate();
         return $validator;
     }
 
