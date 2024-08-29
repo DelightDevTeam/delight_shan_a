@@ -5,11 +5,12 @@ namespace App\Http\Requests;
 use App\Models\User;
 use App\Models\GameList;
 use App\Models\Admin\GameType;
-use App\Services\GameResultWebhookValidator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Admin\SeamlessTransaction;
 use App\Services\PlaceBetWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\GameResultWebhookValidator;
 
 class GameResultWebhookRequest extends FormRequest
 {
@@ -66,6 +67,15 @@ class GameResultWebhookRequest extends FormRequest
     public function GetGameCode()
     {
         return $this->get('GameCode');
+    }
+
+    
+
+    public function transactionId()
+    {
+        $bet_id = $this->GetBetID();
+
+        return SeamlessTransaction::where('bet_id', $bet_id)->first();
     }
 
     public function GetBetID()
