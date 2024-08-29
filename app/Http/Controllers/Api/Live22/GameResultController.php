@@ -50,13 +50,14 @@ class GameResultController extends Controller
             return $validator->getResponse();
         }
 
-        //$existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
-          $existingTransaction = 20000017109;
-          Log::info('existing_transaction'. $existingTransaction);
-        // Log::info('Checking existing transaction', [
-        //     'bet_id' => $request->getBetId(),
-        //     'existing_transaction' => $existingTransaction ? $existingTransaction->toArray() : null
-        // ]);
+        $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
+
+        return $existingTransaction;
+          
+        Log::info('Checking existing transaction', [
+            'bet_id' => $request->getBetId(),
+            'existing_transaction' => $existingTransaction ? $existingTransaction->toArray() : null
+        ]);
 
         if (!$existingTransaction) {
             Log::warning('BetId not found in SeamlessTransaction', [
