@@ -37,6 +37,8 @@ return new class extends Migration
             $table->integer('rollback_type')->nullable();
             $table->string('status')->default(TransactionStatus::Pending);
             $table->timestamps();
+             // Add unique index on bet_id and rollback_type to prevent duplicate entries
+            $table->unique(['bet_id', 'rollback_type']);
         });
     }
 
