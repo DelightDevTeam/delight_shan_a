@@ -34,6 +34,7 @@ return new class extends Migration
             $table->dateTime('provider_tran_dt');
             $table->decimal('old_balance', 15, 4)->nullable();
             $table->decimal('new_balance', 15, 4)->nullable();
+            $table->integer('rollback_type')->nullable();
             $table->string('status')->default(TransactionStatus::Pending);
             $table->timestamps();
         });

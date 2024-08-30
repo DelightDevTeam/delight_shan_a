@@ -39,6 +39,7 @@ class SeamlessTransaction extends Model
         'provider_tran_dt',
         'old_balance',
         'new_balance',
+        'rollback_type',
         'status',
     ];
 

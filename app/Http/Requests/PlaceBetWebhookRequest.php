@@ -52,6 +52,11 @@ class PlaceBetWebhookRequest extends FormRequest
         return $this->get('PlayerId');
     }
 
+    public function getRollbackType()
+    {
+        return $this->get('RollbackType');
+    }
+
     public function getGameListID()
     {
         $game_code = $this->GetGameCode();
