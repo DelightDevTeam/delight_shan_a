@@ -27,18 +27,7 @@ class RollBackController extends Controller
 
         // Validate Player
         $player = $request->getMember();
-        if (! $player) {
-            Log::warning('Invalid player detected', [
-                'PlayerId' => $request->getPlayerId(),
-            ]);
-
-            // Return Invalid Player response
-            return PlaceBetWebhookService::buildResponse(
-                StatusCode::InvalidPlayerPassword,
-                0, // Balance is 0 in case of invalid player
-                0
-            );
-        }
+        
 
         $oldBalance = $player->wallet->balance;
         Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
@@ -60,6 +49,12 @@ class RollBackController extends Controller
         $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())
             ->where('rollback_type', $request->getRollbackType())
             ->first();
+
+            Log::info('Attempting to create a new transaction', [
+                'bet_id' => $request->getBetId(),
+                'rollback_type' => $request->getRollbackType()
+            ]);
+
             
         if ($existingTransaction) {
             Log::warning('Duplicate Rollback BetId detected', ['rollback_type' => $request->getRollbackType()]);
