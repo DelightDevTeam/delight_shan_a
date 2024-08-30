@@ -16,7 +16,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
 Route::post('Bet', [PlaceBetController::class, 'placeBet']);
 Route::post('GameResult', [GameResultController::class, 'gameResult']);
-Route::post('RollBack', [RollBackController::class, 'rollBack']);
+Route::post('Rollback', [RollBackController::class, 'rollBack']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
