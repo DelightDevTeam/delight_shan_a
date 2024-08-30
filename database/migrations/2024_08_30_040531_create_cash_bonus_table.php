@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id'); // User_id
             $table->unsignedBigInteger('tran_id')->unique(); // TranId
-            $table->unsignedBigInteger('tran_id')->unique(); // TranId
             $table->string('bonus_id', 50); // BonusId
             $table->string('bonus_name', 100); // BonusName
             $table->string('result', 255); // Result
