@@ -1,25 +1,17 @@
-<?php
-
+<?php 
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Enums\StatusCode;
-use App\Enums\TransactionName;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CashBonuRequest;
-use App\Models\Admin\SeamlessTransaction;
 use App\Models\CashBonu;
 use App\Models\User;
 use App\Services\CashBonuWebhookService;
-use App\Services\CashBonuWebhookValidator;
-use App\Traits\UseWebhook;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CashBonuController extends Controller
 {
-    use UseWebhook;
-
     public function cashBonu(CashBonuRequest $request)
     {
         DB::beginTransaction();
@@ -28,7 +20,7 @@ class CashBonuController extends Controller
 
             // Validate Player
             $player = $request->getMember();
-            if (! $player) {
+            if (!$player) {
                 Log::warning('Invalid player detected', [
                     'PlayerId' => $request->getPlayerId(),
                 ]);
@@ -56,6 +48,20 @@ class CashBonuController extends Controller
                 );
             }
 
+            // Check for duplicate transaction (based on TranId)
+            $existingCashBonu = CashBonu::where('tran_id', $request->getTranId())->first();
+            if ($existingCashBonu) {
+                Log::warning('Duplicate TranId detected', [
+                    'tran_id' => $request->getTranId(),
+                ]);
+
+                return CashBonuWebhookService::buildResponse(
+                    StatusCode::DuplicateTransaction,
+                    0, // Old balance should be 0 if a duplicate is found
+                    0  // New balance should also be 0
+                );
+            }
+
             // Process the cash bonus transaction
             $newBalance = $oldBalance + $request->getPayout();
             CashBonu::create([
@@ -76,6 +82,7 @@ class CashBonuController extends Controller
                 'signature' => $request->getSignature(),
             ]);
 
+            // Update player's wallet balance
             $player->wallet->balance = $newBalance;
             $player->wallet->save();
 
