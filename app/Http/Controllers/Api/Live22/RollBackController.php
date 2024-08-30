@@ -72,16 +72,15 @@ class RollBackController extends Controller
             }
 
             // Check for duplicate BetId
-            $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
+            $existingTransaction = SeamlessTransaction::where('rollback_type', $request->getRollbackType())->first();
             if ($existingTransaction) {
-                Log::warning('Duplicate Rollback BetId detected', ['bet_id' => $request->getBetId()]);
+                Log::warning('Duplicate Rollback BetId detected', ['rollback_type' => $request->getRollbackType()]);
 
                 // Return the duplicate bet response
                 return RollBackWebhookService::buildResponse(
                     StatusCode::DuplicateTransaction,
-                    $oldBalance,
-                    $oldBalance,
-                    //$oldBalance - $request->getBetAmount()
+                    0,
+                    0,
                 );
             }
 
@@ -126,8 +125,6 @@ class RollBackController extends Controller
 
             return RollBackWebhookService::buildResponse(
                 StatusCode::OK,
-                //$oldBalance,
-                //$newBalance
                 number_format($oldBalance, 4, '.', ''),
                 number_format($newBalance + $request->getBetAmount(), 4, '.', '')
             );
