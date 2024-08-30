@@ -19,6 +19,10 @@ Route::post('Bet', [PlaceBetController::class, 'placeBet']);
 Route::post('GameResult', [GameResultController::class, 'gameResult']);
 Route::post('Rollback', [RollBackController::class, 'rollBack']);
 Route::post('CashBonus', [CashBonuController::class, 'cashBonu']);
+Route::get('GetGameList/{productId}/', [GameLoginController::class, 'getGameList']);
+Route::get('GetGameType', [GameLoginController::class, 'getGameType']);
+Route::get('gameProductType/{productId}', [GameLoginController::class, 'getProductType']);
+Route::get('GetGameList/{productId}/{gameTypeId}', [GameLoginController::class, 'getGameList']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
@@ -32,10 +36,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('deposit-history', [TransferController::class, 'depositHistory']);
     Route::get('withdraw-history', [TransferController::class, 'withdrawHistory']);
 
-    // Route::group(['prefix' => 'live22sm'], function () {
-    //    Route::post('/game/login', [GameLoginController::class, 'Gamelogin'])->name('api.game.login');
-    //    Route::post('/game/get-balance', [GetBalanceController::class, 'getBalance'])->name('game.get-balance');
-    // });
-    Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
+     Route::group(['prefix' => 'live22sm'], function () {
+         Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
+         Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
+     });
 
 });

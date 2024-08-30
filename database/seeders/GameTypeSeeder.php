@@ -14,7 +14,6 @@ class GameTypeSeeder extends Seeder
     public function run(): void
     {
         $data = [
-
             [
                 'name' => 'Slots',
                 'name_mm' => 'စလော့',
@@ -74,10 +73,18 @@ class GameTypeSeeder extends Seeder
                 'img' => 'other.png',
             ],
             [
+                'name' => 'Other',
+                'name_mm' => 'အခြား',
+                'code' => '0',
+                'order' => '8',
+                'status' => 0,
+                'img' => 'others.png',
+            ],
+            [
                 'name' => 'ShanKoMee',
                 'name_mm' => 'ရှမ်းကိုးမီး',
                 'code' => '1001',
-                'order' => '8',
+                'order' => '9',
                 'status' => 1,
                 'img' => 'slots.png',
             ],
@@ -85,7 +92,7 @@ class GameTypeSeeder extends Seeder
                 'name' => 'Buu Gyi',
                 'name_mm' => 'ဘူကြီး',
                 'code' => '1002',
-                'order' => '9',
+                'order' => '10',
                 'status' => 1,
                 'img' => 'slots.png',
             ],
@@ -93,7 +100,7 @@ class GameTypeSeeder extends Seeder
                 'name' => 'Poker13',
                 'name_mm' => 'ပိုကာ',
                 'code' => '1003',
-                'order' => '10',
+                'order' => '11',
                 'status' => 1,
                 'img' => 'slots.png',
             ],
@@ -101,19 +108,10 @@ class GameTypeSeeder extends Seeder
                 'name' => 'BlackJack 21',
                 'name_mm' => '၂၁',
                 'code' => '1004',
-                'order' => '11',
+                'order' => '12',
                 'status' => 1,
                 'img' => 'slots.png',
             ],
-            [
-                'name' => 'Other',
-                'name_mm' => 'အခြား',
-                'code' => '0',
-                'order' => '12',
-                'status' => 0,
-                'img' => 'slots.png',
-            ],
-
         ];
 
         GameType::insert($data);

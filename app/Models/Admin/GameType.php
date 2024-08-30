@@ -11,7 +11,7 @@ class GameType extends Model
 
     protected $fillable = ['name', 'name_mm', 'code', 'order', 'img'];
 
-    protected $appends = ['image', 'img_url'];
+    protected $appends = ['img_url'];
 
     public function getImgUrlAttribute()
     {

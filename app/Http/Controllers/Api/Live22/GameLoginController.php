@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GameLoginRequest;
+use App\Models\Admin\GameType;
+use App\Models\GameList;
+use App\Models\Product;
 use App\Services\GameService;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GameLoginController extends Controller
 {
+    use HttpResponses;
     protected $gameService;
 
     // Inject the GameService into the controller
@@ -17,27 +23,34 @@ class GameLoginController extends Controller
         $this->gameService = $gameService;
     }
 
-    // Method to handle game login
-    public function Gamelogin(Request $request)
+    public function Gamelogin(GameLoginRequest $request)
     {
-        // Validate the incoming request
-        $validated = $request->validate([
-            'game_code' => 'required|string',
-            'launch_demo' => 'sometimes|boolean',
-        ]);
-
-        // Get the authenticated user's ID
-        $playerId = Auth::user()->id;
-
-        // Call the gameLogin method from the GameService
         $response = $this->gameService->gameLogin(
-            $playerId,
-            $validated['game_code'],
-            $request->ip(), // Automatically get the client's IP address
-            $request->input('launch_demo', false) // Default to false if not provided
+            $request->game_code,
+            $request->input('launch_demo', false)
         );
 
-        // Return the response
-        return response()->json($response);
+        return $this->success('Launch Game success', $response);
+    }
+
+    public function getGameList($productId, $gameTypeId)
+    {
+        $gamelist = Gamelist::where('product_id', $productId)->where('game_type_id', $gameTypeId)->get();
+
+        return $this->success($gamelist);
+    }
+
+    public function getGameType()
+    {
+        $gameTypes = GameType::all();
+
+        return $this->success($gameTypes);
+    }
+
+    public function getProductType($productId)
+    {
+        $products = Product::with('gameTypes')->where('id', $productId)->get();
+
+        return $this->success($products);
     }
 }
