@@ -43,8 +43,8 @@ class CashBonuController extends Controller
 
                 return CashBonuWebhookService::buildResponse(
                     StatusCode::InvalidSignature,
-                    $oldBalance,
-                    $oldBalance
+                    0,
+                    0
                 );
             }
 
