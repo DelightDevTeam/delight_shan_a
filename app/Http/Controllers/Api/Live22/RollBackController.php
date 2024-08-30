@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Enums\StatusCode;
@@ -27,13 +26,23 @@ class RollBackController extends Controller
 
             // Validate Player
             $player = $request->getMember();
+            if (!$player) {
+                Log::warning('Invalid player detected', [
+                    'PlayerId' => $request->getPlayerId(),
+                ]);
+
+                return RollBackWebhookService::buildResponse(
+                    StatusCode::InvalidPlayerPassword,
+                    0, // Balance is 0 in case of invalid player
+                    0
+                );
+            }
 
             $oldBalance = $player->wallet->balance;
             Log::info('Retrieved member balance', ['old_balance' => $oldBalance]);
 
+            // Validate the request
             $validator = $request->check();
-            Log::info('Validator check passed');
-
             if ($validator->fails()) {
                 Log::warning('Validation failed');
 
@@ -44,28 +53,42 @@ class RollBackController extends Controller
                 );
             }
 
-            // Check if a transaction with the same BetId and RollbackType already exists
-            $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())
-                ->where('rollback_type', $request->getRollbackType())
-                ->first();
-
-            Log::info('Attempting to create a new transaction', [
-                'bet_id' => $request->getBetId(),
-                'rollback_type' => $request->getRollbackType(),
-            ]);
-
+            // Retrieve existing transaction balance
+            $existingTransaction = SeamlessTransaction::where('bet_id', $request->getBetId())->first();
             if ($existingTransaction) {
-                Log::warning('Duplicate Rollback BetId detected', ['rollback_type' => $request->getRollbackType()]);
+                $existingBetAmount = $existingTransaction->bet_amount;
+            } else {
+                $existingBetAmount = 0;
+                Log::warning('No existing transaction found for BetId', [
+                    'BetId' => $request->getBetId()
+                ]);
 
-                // Return the duplicate transaction response
                 return RollBackWebhookService::buildResponse(
-                    StatusCode::DuplicateTransaction,
-                    0,
-                    0,
+                    StatusCode::BetTransactionNotFound,
+                    $oldBalance,
+                    $oldBalance
                 );
             }
 
-            // Process Transfer
+            // Check for duplicate RollbackType
+            $existingRollback = SeamlessTransaction::where('bet_id', $request->getBetId())
+                ->where('rollback_type', $request->getRollbackType())
+                ->first();
+
+            if ($existingRollback) {
+                Log::warning('Duplicate Rollback BetId detected', [
+                    'rollback_type' => $request->getRollbackType(),
+                    'BetId' => $request->getBetId(),
+                ]);
+
+                return RollBackWebhookService::buildResponse(
+                    StatusCode::DuplicateTransaction,
+                    0,
+                    0
+                );
+            }
+
+            // Process the rollback transfer
             $this->processTransfer(
                 $player,
                 User::adminUser(),
@@ -109,11 +132,11 @@ class RollBackController extends Controller
             return RollBackWebhookService::buildResponse(
                 StatusCode::OK,
                 number_format($oldBalance, 4, '.', ''),
-                number_format($newBalance + $request->getBetAmount(), 4, '.', '')
+                number_format($newBalance + $existingBetAmount, 4, '.', '')
             );
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Failed to place bet', [
+            Log::error('Failed to process rollback', [
                 'error' => $e->getMessage(),
                 'line' => $e->getLine(),
                 'file' => $e->getFile(),
