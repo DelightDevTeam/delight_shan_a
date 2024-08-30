@@ -1,101 +1,74 @@
-<?php
-
+<?php 
 namespace App\Services;
 
-use App\Enums\SlotWebhookResponseCode;
 use App\Enums\StatusCode;
 use App\Http\Requests\CashBonuRequest;
-use App\Http\Requests\PlaceBetWebhookRequest;
-use App\Http\Requests\RollBackWebhookRequest;
-use App\Http\Requests\Slot\SlotWebhookRequest;
 use App\Models\Admin\SeamlessTransaction;
-use App\Models\Admin\Wager;
-use App\Services\CashBonuWebhookService;
-use App\Services\PlaceBetWebhookService;
-use App\Services\RequestTransaction;
 use Illuminate\Support\Facades\Log;
 
 class CashBonuWebhookValidator
 {
-    protected ?SeamlessTransaction $existingTransaction;
-
-    // TODO: imp: chang with actual wager
-    protected ?Wager $existingWager;
-
+    protected ?SeamlessTransaction $existingTransaction = null;
     protected float $totalTransactionAmount = 0;
-
-    protected float $before_balance;
-
-    protected float $after_balance;
-
-    protected array $response;
-
-    /**
-     * @var RequestTransaction[]
-     */
-    protected $requestTransactions;
+    protected float $before_balance = 0;
+    protected float $after_balance = 0;
+    protected array $response = [];
+    protected array $requestTransactions = [];
 
     protected function __construct(protected CashBonuRequest $request) {}
 
     public function validate()
     {
-        if (! $this->isValidSignature()) {
+        if (!$this->isValidSignature()) {
             return $this->response(StatusCode::InvalidSignature);
         }
 
-        if (! $this->request->getMember()) {
+        if (!$this->request->getMember()) {
             return $this->response(StatusCode::InvalidPlayer);
         }
 
-        foreach ($this->request->getTransactions() as $transaction) {
-            // Ensure that all required parameters are available
-            $requestTransaction = new RequestTransaction(
-                $transaction['Status'],
-                $transaction['ProductID'] ?? null, // Set to null if not provided
-                $transaction['GameCode'],
-                $transaction['GameType'],
-                $transaction['BetId'],
-                $transaction['TransactionID'] ?? null, // Set to null if not provided
-                $transaction['WagerID'] ?? null, // Set to null if not provided
-                $transaction['BetAmount'] ?? null,
-                $transaction['TransactionAmount'] ?? null,
-                $transaction['PayoutAmount'] ?? null,
-                $transaction['ValidBetAmount'] ?? null,
-            );
+        $this->processTransaction($this->request->all());
 
-            $this->requestTransactions[] = $requestTransaction;
-
-            if ($requestTransaction->TransactionID && ! $this->isNewTransaction($requestTransaction)) {
-                return $this->response(StatusCode::DuplicateTransaction);
-            }
-
-            if (! in_array($this->request->getMethodName(), ['GetBalance', 'Bet', 'GameReslut', 'Rollback', 'BuyIn', 'BuyOut']) && $this->isNewWager($requestTransaction)) {
-                return $this->response(StatusCode::BetTransactionNotFound);
-            }
-
-            $this->totalTransactionAmount += $requestTransaction->TransactionAmount;
-        }
-
-        if (! $this->hasEnoughBalance()) {
+        if (!$this->hasEnoughBalance()) {
             return $this->response(StatusCode::InsufficientBalance);
         }
 
         return $this;
     }
 
+    protected function processTransaction(array $transaction)
+    {
+        $requestTransaction = new CashBonuRequestTransaction(
+            $transaction['Status'] ?? 1,
+            null, // ProductID is null since it's not present in CashBonus
+            null, // GameCode is null for CashBonus
+            null, // GameType is null for CashBonus
+            $transaction['TranId'], // Using TranId as BetId equivalent
+            null, // TransactionID is null since it's not used here
+            null, // WagerID is null since it's not used here
+            null, // BetAmount is null for CashBonus
+            $transaction['Payout'], // PayoutAmount is used as TransactionAmount
+            $transaction['Payout']  // ValidBetAmount is the same as Payout
+        );
+
+        $this->requestTransactions[] = $requestTransaction;
+
+        if ($requestTransaction->TransactionID && !$this->isNewTransaction($requestTransaction)) {
+            return $this->response(StatusCode::DuplicateTransaction);
+        }
+
+        $this->totalTransactionAmount += $requestTransaction->TransactionAmount;
+    }
+
     protected function isValidSignature()
     {
-        //CashBonu
-        //MD5(FunctionName + TranId + RequestDateTime + OperatorId + SecretKey + PlayerId)
-
         $method = $this->request->getMethodName();
         $tran_id = $this->request->getTranId();
-        $requestTime = $this->request->getRequestTime();
-        $operatorCode = $this->request->getOperatorCode();
+        $requestTime = $this->request->getRequestDateTime();
+        $operatorCode = $this->request->getOperatorId();
         $secretKey = $this->getSecretKey();
-        $playerId = $this->request->getMemberName();
+        $playerId = $this->request->getPlayerId();
 
-        // Log the values used for signature generation
         Log::info('Generating signature', [
             'method' => $method,
             'tran_id' => $tran_id,
@@ -104,37 +77,23 @@ class CashBonuWebhookValidator
             'secretKey' => $secretKey,
             'playerId' => $playerId,
         ]);
-        // Generate the signature
-        $signature = md5($method.$tran_id.$requestTime.$operatorCode.$secretKey.$playerId);
+
+        $signature = md5($method . $tran_id . $requestTime . $operatorCode . $secretKey . $playerId);
 
         Log::info('Generated signature', ['signature' => $signature]);
 
         return $this->request->getSignature() === $signature;
     }
 
-    protected function isNewWager(RequestTransaction $transaction)
+    protected function isNewTransaction(CashBonuRequestTransaction $transaction)
     {
-        return ! $this->getExistingWager($transaction);
+        return !$this->getExistingTransaction($transaction);
     }
 
-    public function getExistingWager(RequestTransaction $transaction)
+    public function getExistingTransaction(CashBonuRequestTransaction $transaction)
     {
-        if (! isset($this->existingWager)) {
-            $this->existingWager = Wager::where('seamless_wager_id', $transaction->WagerID)->first();
-        }
-
-        return $this->existingWager;
-    }
-
-    protected function isNewTransaction(RequestTransaction $transaction)
-    {
-        return ! $this->getExistingTransaction($transaction);
-    }
-
-    public function getExistingTransaction(RequestTransaction $transaction)
-    {
-        if (! isset($this->existingTransaction)) {
-            $this->existingTransaction = SeamlessTransaction::where('seamless_transaction_id', $transaction->TransactionID)->first();
+        if (!isset($this->existingTransaction)) {
+            $this->existingTransaction = SeamlessTransaction::where('bet_id', $transaction->BetId)->first();
         }
 
         return $this->existingTransaction;
@@ -142,7 +101,7 @@ class CashBonuWebhookValidator
 
     public function getAfterBalance()
     {
-        if (! isset($this->after_balance)) {
+        if (!isset($this->after_balance)) {
             $this->after_balance = $this->getBeforeBalance() + $this->totalTransactionAmount;
         }
 
@@ -151,7 +110,7 @@ class CashBonuWebhookValidator
 
     public function getBeforeBalance()
     {
-        if (! isset($this->before_balance)) {
+        if (!isset($this->before_balance)) {
             $this->before_balance = $this->request->getMember()->wallet->balance;
         }
 
@@ -177,8 +136,8 @@ class CashBonuWebhookValidator
     {
         $this->response = CashBonuWebhookService::buildResponse(
             $responseCode,
-            $this->request->getMember() ? $this->getAfterBalance() : 0,
-            $this->request->getMember() ? $this->getBeforeBalance() : 0
+            $this->request->getMember() ? $this->getBeforeBalance() : 0,
+            $this->request->getMember() ? $this->getAfterBalance() : 0
         );
 
         return $this;
@@ -191,7 +150,7 @@ class CashBonuWebhookValidator
 
     public function fails()
     {
-        $fails = isset($this->response) && ! empty($this->response);
+        $fails = isset($this->response) && !empty($this->response);
         Log::info('Checking if validation fails', ['fails' => $fails]);
 
         return $fails;
