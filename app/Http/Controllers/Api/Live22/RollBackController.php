@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Enums\StatusCode;
@@ -26,7 +27,7 @@ class RollBackController extends Controller
 
             // Validate Player
             $player = $request->getMember();
-            if (!$player) {
+            if (! $player) {
                 Log::warning('Invalid player detected', [
                     'PlayerId' => $request->getPlayerId(),
                 ]);
@@ -60,7 +61,7 @@ class RollBackController extends Controller
             } else {
                 $existingBetAmount = 0;
                 Log::warning('No existing transaction found for BetId', [
-                    'BetId' => $request->getBetId()
+                    'BetId' => $request->getBetId(),
                 ]);
 
                 return RollBackWebhookService::buildResponse(
