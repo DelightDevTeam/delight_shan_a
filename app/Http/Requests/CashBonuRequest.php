@@ -116,6 +116,15 @@ class CashBonuRequest extends FormRequest
     {
         return $this->get('RequestDateTime');
     }
+    public function getOperatorCode()
+    {
+        return $this->get('OperatorId');
+    }
+
+    public function getRequestTime()
+    {
+        return $this->get('RequestDateTime');
+    }
 
     public function getSignature()
     {
