@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use App\Services\CashBonuWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -92,6 +93,24 @@ class CashBonuRequest extends FormRequest
         return $this->get('PlayerId');
     }
 
+    public function getTransactions()
+    {
+        $transactions = $this->get('Transactions', [$this->all()]);
+
+        // Assuming Status and ProductID are part of the request, add them to the transactions
+        foreach ($transactions as &$transaction) {
+            $transaction['Status'] = $this->get('Status', 1); // Defaulting to 1 if not provided
+            $transaction['ProductID'] = $this->get('ProductID', 'default_product_id'); // Default value if not provided
+        }
+
+        // Log the transactions for debugging
+        Log::info('Retrieved Transactions', [
+            'transactions' => $transactions,
+        ]);
+
+        return $transactions;
+    }
+    
     public function getTranDateTime()
     {
         return $this->get('TranDateTime');
