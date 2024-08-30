@@ -126,8 +126,10 @@ class RollBackController extends Controller
 
             return RollBackWebhookService::buildResponse(
                 StatusCode::OK,
-                $oldBalance,
-                $newBalance
+                //$oldBalance,
+                //$newBalance
+                number_format($oldBalance, 4, '.', ''),
+                number_format($newBalance + $request->getBetAmount(), 4, '.', '')
             );
         } catch (\Exception $e) {
             DB::rollBack();
