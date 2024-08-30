@@ -7,6 +7,7 @@ use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
 use App\Models\Admin\Transaction;
 use App\Models\Admin\Wallet;
+use App\Models\CashBonu;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -107,5 +108,10 @@ class User extends Authenticatable
     public static function adminUser()
     {
         return self::where('type', UserType::Admin)->first();
+    }
+
+    public function cashBonuses()
+    {
+        return $this->hasMany(CashBonu::class);
     }
 }
