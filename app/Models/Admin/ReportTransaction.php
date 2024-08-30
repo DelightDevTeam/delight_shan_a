@@ -9,5 +9,5 @@ class ReportTransaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['game_type_id', 'user_id', 'rate', 'status', 'transaction_amount', 'bet_amount', 'valid_amount', 'payout', 'event_id'];
+    protected $fillable = ['game_type_id', 'user_id', 'rate', 'status', 'transaction_amount', 'bet_amount', 'valid_amount', 'payout', 'final_return', 'banker'];
 }
