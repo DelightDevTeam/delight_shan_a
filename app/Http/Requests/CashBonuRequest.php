@@ -72,6 +72,11 @@ class CashBonuRequest extends FormRequest
         return $this->get('Currency');
     }
 
+    public function getMethodName()
+    {
+        return str($this->url())->explode('/')->last();
+    }
+
     public function getExchangeRate()
     {
         return $this->get('ExchangeRate');
