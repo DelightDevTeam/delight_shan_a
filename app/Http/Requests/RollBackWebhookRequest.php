@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use App\Models\GameList;
 use App\Models\Admin\GameType;
-use Illuminate\Support\Facades\Log;
+use App\Models\GameList;
+use App\Models\User;
 use App\Services\RollBackWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class RollBackWebhookRequest extends FormRequest
 {

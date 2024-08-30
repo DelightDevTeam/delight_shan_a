@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Enums\StatusCode;
-use App\Models\Admin\Wager;
-use Illuminate\Support\Facades\Log;
-use App\Services\RequestTransaction;
 use App\Enums\SlotWebhookResponseCode;
-use App\Services\PlaceBetWebhookService;
-use App\Models\Admin\SeamlessTransaction;
+use App\Enums\StatusCode;
 use App\Http\Requests\PlaceBetWebhookRequest;
 use App\Http\Requests\RollBackWebhookRequest;
 use App\Http\Requests\Slot\SlotWebhookRequest;
+use App\Models\Admin\SeamlessTransaction;
+use App\Models\Admin\Wager;
+use App\Services\PlaceBetWebhookService;
+use App\Services\RequestTransaction;
+use Illuminate\Support\Facades\Log;
 
 class RollBackWebhookValidator
 {
@@ -35,7 +35,6 @@ class RollBackWebhookValidator
 
     protected function __construct(protected RollBackWebhookRequest $request) {}
 
-    
     public function validate()
     {
         if (! $this->isValidSignature()) {
@@ -85,8 +84,8 @@ class RollBackWebhookValidator
     protected function isValidSignature()
     {
         //Bet - MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
-                // RollBack
-                //MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
+        // RollBack
+        //MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
         $method = $this->request->getMethodName();
         $bet_id = $this->request->GetBetID();
         $requestTime = $this->request->getRequestTime();

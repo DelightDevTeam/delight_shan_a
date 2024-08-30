@@ -116,8 +116,8 @@ class PlaceBetWebhookValidator
     protected function isValidSignature()
     {
         //Bet - MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
-                // RollBack
-                //MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
+        // RollBack
+        //MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
         $method = $this->request->getMethodName();
         $bet_id = $this->request->GetBetID();
         $requestTime = $this->request->getRequestTime();

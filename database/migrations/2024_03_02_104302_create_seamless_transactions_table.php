@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('player_id', 50);
             $table->string('currency', 5);
             $table->unsignedBigInteger('round_id');
-            $table->unsignedBigInteger('bet_id')->unique();
+            $table->unsignedBigInteger('bet_id');
             $table->decimal('bet_amount', 15, 4);
             $table->decimal('exchange_rate', 8, 4)->default('1.0000');
             $table->string('game_code');
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->integer('rollback_type')->nullable();
             $table->string('status')->default(TransactionStatus::Pending);
             $table->timestamps();
-             // Add unique index on bet_id and rollback_type to prevent duplicate entries
+            // Add unique index on bet_id and rollback_type to prevent duplicate entries
             $table->unique(['bet_id', 'rollback_type']);
         });
     }
