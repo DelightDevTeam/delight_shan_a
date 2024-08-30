@@ -11,14 +11,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Services\PlaceBetWebhookService;
+use App\Services\RollBackWebhookService;
 use App\Models\Admin\SeamlessTransaction;
-use App\Http\Requests\PlaceBetWebhookRequest;
+use App\Http\Requests\RollBackWebhookRequest;
 
 class RollBackController extends Controller
 {
     use UseWebhook;
 
-    public function rollBack(PlaceBetWebhookRequest $request)
+    public function rollBack(RollBackWebhookRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -48,7 +49,7 @@ class RollBackController extends Controller
             if ($validator->fails()) {
                 Log::warning('Validation failed');
 
-                return PlaceBetWebhookService::buildResponse(
+                return RollBackWebhookService::buildResponse(
                     StatusCode::InvalidSignature,
                     0,
                     0
@@ -63,7 +64,7 @@ class RollBackController extends Controller
                 ]);
 
                 // Return Insufficient Balance response
-                return PlaceBetWebhookService::buildResponse(
+                return RollBackWebhookService::buildResponse(
                     StatusCode::InsufficientBalance,
                     $oldBalance,
                     $oldBalance
@@ -76,7 +77,7 @@ class RollBackController extends Controller
                 Log::warning('Duplicate Rollback BetId detected', ['bet_id' => $request->getBetId()]);
 
                 // Return the duplicate bet response
-                return PlaceBetWebhookService::buildResponse(
+                return RollBackWebhookService::buildResponse(
                     StatusCode::DuplicateTransaction,
                     $oldBalance,
                     $oldBalance,
@@ -123,7 +124,7 @@ class RollBackController extends Controller
             DB::commit();
             Log::info('Transaction committed successfully');
 
-            return PlaceBetWebhookService::buildResponse(
+            return RollBackWebhookService::buildResponse(
                 StatusCode::OK,
                 $oldBalance,
                 $newBalance
