@@ -53,4 +53,11 @@ class GameLoginController extends Controller
 
         return $this->success($products);
     }
+
+    public  function GetHasDemo()
+    {
+        $gameList = GameList::where('has_demo', 1)->get();
+
+        return $this->success($gameList);
+    }
 }

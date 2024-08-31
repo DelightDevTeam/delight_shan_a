@@ -23,6 +23,7 @@ Route::get('GetGameList/{productId}/', [GameLoginController::class, 'getGameList
 Route::get('GetGameType', [GameLoginController::class, 'getGameType']);
 Route::get('gameProductType/{productId}', [GameLoginController::class, 'getProductType']);
 Route::get('GetGameList/{productId}/{gameTypeId}', [GameLoginController::class, 'getGameList']);
+Route::get('GetHasDemo', [GameLoginController::class, 'getHasDemo']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
