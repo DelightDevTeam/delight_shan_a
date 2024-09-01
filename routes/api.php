@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\DemoGameListService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TransferController;
@@ -28,7 +29,10 @@ Route::get('GetHasDemo', [GameLoginController::class, 'getHasDemo']);
 
 Route::get('LaunchGameDemo', [GameLoginController::class, 'launchGameDemoPlay']);
 Route::get('GameLists', [GetGameListController::class, 'getGames']);
-
+Route::get('DemoGameList', function (DemoGameListService $service) {
+    $lang = request()->get('lang', 'en-us'); // Default to 'en-us' if not specified
+    return $service->getDemoGameList($lang);
+});
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
     Route::post('logout', [AuthController::class, 'logout']);

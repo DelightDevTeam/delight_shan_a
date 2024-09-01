@@ -28,13 +28,6 @@ class GetGameListService
             'RequestDateTime' => $requestDateTime,
             'Signature' => $signature
         ]);
-
-        // if ($response->successful()) {
-        //     return $response->json();
-        // } else {
-        //     Log::error('Failed to fetch game list', ['response' => $response->body()]);
-        //     throw new \Exception("Error fetching games: " . $response->body());
-        // }
         if ($response->successful()) {
         return $response->json();
         } else {
