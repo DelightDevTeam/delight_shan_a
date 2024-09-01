@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class GameService
 {
-    public function gameLogin(string $gameCode, bool $launchDemo = false)
+    public function gameLogin(int $product_id, int $game_type_id, string $gameCode, bool $launchDemo = false)
     {
         $operatorId = config('game.api.operator_code');
         $secretKey = config('game.api.secret_key');
