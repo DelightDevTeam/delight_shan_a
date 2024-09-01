@@ -20,14 +20,14 @@ class GameTypeSeeder extends Seeder
                 'code' => '1',
                 'order' => '1',
                 'status' => 1,
-                'img' => 'slots.png',
+                'img' => 'live22.png',
             ],
             [
                 'name' => 'Arcade',
                 'name_mm' => 'Arcade',
                 'code' => '2',
                 'order' => '2',
-                'status' => 1,
+                'status' => 0,
                 'img' => 'live_casino.png',
             ],
             [
@@ -35,7 +35,7 @@ class GameTypeSeeder extends Seeder
                 'name_mm' => 'Table',
                 'code' => '3',
                 'order' => '3',
-                'status' => 1,
+                'status' => 0,
                 'img' => 'sportbook.png',
             ],
             [
@@ -43,7 +43,7 @@ class GameTypeSeeder extends Seeder
                 'name_mm' => 'Event',
                 'code' => '4',
                 'order' => '4',
-                'status' => 1,
+                'status' => 0,
                 'img' => 'fishing.png',
             ],
             [
@@ -86,7 +86,7 @@ class GameTypeSeeder extends Seeder
                 'code' => '1001',
                 'order' => '9',
                 'status' => 1,
-                'img' => 'slots.png',
+                'img' => 'shan_1.jfif',
             ],
             [
                 'name' => 'Buu Gyi',
@@ -94,7 +94,7 @@ class GameTypeSeeder extends Seeder
                 'code' => '1002',
                 'order' => '10',
                 'status' => 1,
-                'img' => 'slots.png',
+                'img' => 'bugyi.jfif',
             ],
             [
                 'name' => 'Poker13',
@@ -102,7 +102,7 @@ class GameTypeSeeder extends Seeder
                 'code' => '1003',
                 'order' => '11',
                 'status' => 1,
-                'img' => 'slots.png',
+                'img' => 'poker_1.jfif',
             ],
             [
                 'name' => 'BlackJack 21',
@@ -110,7 +110,7 @@ class GameTypeSeeder extends Seeder
                 'code' => '1004',
                 'order' => '12',
                 'status' => 1,
-                'img' => 'slots.png',
+                'img' => '21.jfif',
             ],
         ];
 
