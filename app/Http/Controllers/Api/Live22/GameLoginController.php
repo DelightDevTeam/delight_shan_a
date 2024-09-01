@@ -99,7 +99,7 @@ class GameLoginController extends Controller
             'PlayerBalance' => $player->wallet->balance,
             'Lang' => $validatedData['lang'] ?? 'en-us',
             'RedirectUrl' => $validatedData['redirectUrl'] ?? 'https://operator-lobby-url.com',
-            'AuthToken' => $validatedData['authToken'],
+            //'AuthToken' => $validatedData['authToken'],
             'LaunchDemo' => $validatedData['launchDemo'] ?? false
         ];
 
