@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class GameService
 {
-    public function gameLogin(int $product_id, int $game_type_id, string $gameCode, bool $launchDemo = false)
+    public function gameLogin(string $gameCode, bool $launchDemo = false)
     {
         $operatorId = config('game.api.operator_code');
         $secretKey = config('game.api.secret_key');
@@ -21,8 +21,7 @@ class GameService
         $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
 
         $data = [
-            'ProductId' => $product_id,
-            'GameTypeId' => $game_type_id,
+            
             'OperatorId' => $operatorId,
             'RequestDateTime' => $requestDateTime,
             'Signature' => $signature,

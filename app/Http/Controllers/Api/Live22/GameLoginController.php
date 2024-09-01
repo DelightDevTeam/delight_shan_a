@@ -131,17 +131,15 @@ class GameLoginController extends Controller
 
 
 
-    // public function Gamelogin(GameLoginRequest $request)
-    // {
-    //     $response = $this->gameService->gameLogin(
-    //         $request->product_id,
-    //         $request->game_type_id,
-    //         $request->game_code,
-    //         $request->input('launch_demo', false)
-    //     );
+    public function Gamelogin(GameLoginRequest $request)
+    {
+        $response = $this->gameService->gameLogin(
+            $request->game_code,
+            $request->input('launch_demo', false)
+        );
 
-    //     return $this->success('Launch Game success', $response);
-    // }
+        return $this->success('Launch Game success', $response);
+    }
 
     public function getGameList($productId, $gameTypeId)
     {
