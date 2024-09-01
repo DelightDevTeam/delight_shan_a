@@ -66,8 +66,8 @@ class GameLoginController extends Controller
 
         // Validate the request data
         $validatedData = $request->validate([
-            'productId' => 'required|integer',
-            'gameType' => 'required|integer',
+           // 'productId' => 'required|integer',
+           // 'gameType' => 'required|integer',
             'gameCode' => 'required|string',
             //'authToken' => 'required|string', // Assuming authToken is required
             //'lang' => 'sometimes|string',
