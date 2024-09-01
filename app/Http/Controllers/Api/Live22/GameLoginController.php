@@ -12,12 +12,17 @@ use App\Models\Admin\GameType;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\GameLoginRequest;
 
 class GameLoginController extends Controller
 {
     use HttpResponses;
     protected $gameService;
+    //private const WEB_PLAT_FORM = 0;
+
+    private const ENG_LANGUAGE_CODE = 'en-us';
 
     // Inject the GameService into the controller
     public function __construct(GameService $gameService)
@@ -25,34 +30,88 @@ class GameLoginController extends Controller
         $this->gameService = $gameService;
     }
 
-    public function Gamelogin(GameLoginRequest $request)
-{
-    // Log incoming request data
-    Log::info('Received game login request', $request->all());
+    // public function Gamelogin(GameLoginRequest $request)
+    // {
+    //     // Log incoming request data
+    //     Log::info('Received game login request', $request->all());
 
-    // Validate the required parameters
-    $validated = $request->validate([
-        'product_id' => 'required|integer',
-        'game_type_id' => 'required|integer',
-        'game_code' => 'required|string'
-    ]);
+    //     // Validate the required parameters
+    //     $validated = $request->validate([
+    //         'product_id' => 'required|integer',
+    //         'game_type_id' => 'required|integer',
+    //         'game_code' => 'required|string'
+    //     ]);
 
-    try {
-        $response = $this->gameService->gameLogin(
-            (int) $request->product_id,
-            (int) $request->game_type_id,
-            $request->game_code,
-            (bool) $request->input('launch_demo', false)
-        );
+    //     try {
+    //         $response = $this->gameService->gameLogin(
+    //             (int) $request->product_id,
+    //             (int) $request->game_type_id,
+    //             $request->game_code,
+    //             (bool) $request->input('launch_demo', false)
+    //         );
 
-        return $this->success('Launch Game success', $response);
-    } catch (\Throwable $e) {
-        Log::error('Error processing game login', [
-            'error' => $e->getMessage()
+    //         return $this->success('Launch Game success', $response);
+    //     } catch (\Throwable $e) {
+    //         Log::error('Error processing game login', [
+    //             'error' => $e->getMessage()
+    //         ]);
+    //         return $this->error('Game login failed', StatusCode::InternalServerError->value);
+    //     }
+    // }
+
+     public function launchGame(Request $request)
+    {
+        //Log::info($request->all());
+        // Validate the request data
+        $validatedData = $request->validate([
+            'productId' => 'required|integer',
+            'gameType' => 'required|integer',
+            'gameCode' => 'required', // Changed 'gameId' to 'gameCode' for consistency
         ]);
-        return $this->error('Game login failed', StatusCode::InternalServerError->value);
+
+        // Retrieve user and configuration settings
+        $operatorId = config('game.api.operator_code');
+        $secretKey = config('game.api.secret_key');
+        $apiUrl = config('game.api.url').'GameLogin';
+        $currency = config('game.api.currency');
+        $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
+        $player = Auth::user();
+
+        $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
+
+        // Prepare the payload using validated data
+        $data = [
+            'ProductId' => $validatedData['productId'],
+            'GameTypeId' => $validatedData['gameType'],
+            'OperatorId' => $operatorId,
+            'RequestDateTime' => $requestDateTime,
+            'Signature' => $signature,
+            'PlayerId' => $player->user_name,
+            'Ip' => request()->ip(),
+            'GameCode' => $validatedData['gameCode'],
+            'Currency' => $currency,
+            'DisplayName' => $player->name,
+            'PlayerBalance' => $player->wallet->balance,
+            'LaunchDemo' => $request->input('launchDemo', false), // Ensure 'launchDemo' is optional with a default value
+        ];
+        try {
+            // Send the request
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])->post($apiUrl, $data);
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+
+            return response()->json(['error' => 'API request failed', 'details' => $response->body()], $response->status());
+        } catch (\Throwable $e) {
+
+            return response()->json(['error' => 'An unexpected error occurred', 'exception' => $e->getMessage()], 500);
+        }
     }
-}
+
 
 
     // public function Gamelogin(GameLoginRequest $request)
