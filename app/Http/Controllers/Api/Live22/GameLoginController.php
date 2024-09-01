@@ -61,15 +61,21 @@ class GameLoginController extends Controller
 
      public function launchGame(Request $request)
     {
-        //Log::info($request->all());
+        // Log the incoming request data for debugging.
+        Log::info('Received launch game request', $request->all());
+
         // Validate the request data
         $validatedData = $request->validate([
             'productId' => 'required|integer',
             'gameType' => 'required|integer',
-            'gameCode' => 'required', // Changed 'gameId' to 'gameCode' for consistency
+            'gameCode' => 'required|string',
+            //'authToken' => 'required|string', // Assuming authToken is required
+            //'lang' => 'sometimes|string',
+            //'redirectUrl' => 'sometimes|url',
+            //'launchDemo' => 'sometimes|boolean',
         ]);
 
-        // Retrieve user and configuration settings
+        // Configuration settings
         $operatorId = config('game.api.operator_code');
         $secretKey = config('game.api.secret_key');
         $apiUrl = config('game.api.url').'GameLogin';
@@ -77,12 +83,11 @@ class GameLoginController extends Controller
         $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
         $player = Auth::user();
 
+        // Generate a signature for the API request
         $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
 
-        // Prepare the payload using validated data
+        // Prepare the payload for the external API call
         $data = [
-            'ProductId' => $validatedData['productId'],
-            'GameTypeId' => $validatedData['gameType'],
             'OperatorId' => $operatorId,
             'RequestDateTime' => $requestDateTime,
             'Signature' => $signature,
@@ -92,10 +97,21 @@ class GameLoginController extends Controller
             'Currency' => $currency,
             'DisplayName' => $player->name,
             'PlayerBalance' => $player->wallet->balance,
-            'LaunchDemo' => $request->input('launchDemo', false), // Ensure 'launchDemo' is optional with a default value
+            'Lang' => $validatedData['lang'] ?? 'en-us',
+            'RedirectUrl' => $validatedData['redirectUrl'] ?? 'https://operator-lobby-url.com',
+            'AuthToken' => $validatedData['authToken'],
+            'LaunchDemo' => $validatedData['launchDemo'] ?? false
         ];
+
+        // Log internal data usage
+        Log::info('Internal game launch parameters', [
+            'ProductId' => $validatedData['productId'],
+            'GameTypeId' => $validatedData['gameType'],
+            'data' => $data // Optionally log the outgoing data
+        ]);
+
         try {
-            // Send the request
+            // API request to external provider
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
@@ -107,10 +123,11 @@ class GameLoginController extends Controller
 
             return response()->json(['error' => 'API request failed', 'details' => $response->body()], $response->status());
         } catch (\Throwable $e) {
-
             return response()->json(['error' => 'An unexpected error occurred', 'exception' => $e->getMessage()], 500);
         }
     }
+
+
 
 
 
