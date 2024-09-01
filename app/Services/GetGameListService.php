@@ -29,12 +29,23 @@ class GetGameListService
             'Signature' => $signature
         ]);
 
+        // if ($response->successful()) {
+        //     return $response->json();
+        // } else {
+        //     Log::error('Failed to fetch game list', ['response' => $response->body()]);
+        //     throw new \Exception("Error fetching games: " . $response->body());
+        // }
         if ($response->successful()) {
-            return $response->json();
+        return $response->json();
         } else {
-            Log::error('Failed to fetch game list', ['response' => $response->body()]);
-            throw new \Exception("Error fetching games: " . $response->body());
+            Log::error('Failed to fetch game list', [
+                'status' => $response->status(),
+                'headers' => $response->headers(),
+                'body' => $response->body()
+            ]);
+            throw new \Exception("Error fetching games: Status: {$response->status()}, Body: {$response->body()}");
         }
+
     }
 
     protected function generateSignature($requestDateTime)
