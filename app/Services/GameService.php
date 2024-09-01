@@ -21,6 +21,8 @@ class GameService
         $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
 
         $data = [
+            'ProductId' => $product_id,
+            'GameTypeId' => $game_type_id,
             'OperatorId' => $operatorId,
             'RequestDateTime' => $requestDateTime,
             'Signature' => $signature,
