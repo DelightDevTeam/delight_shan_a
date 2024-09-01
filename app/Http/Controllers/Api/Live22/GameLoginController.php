@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Api\Live22;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\GameLoginRequest;
-use App\Models\Admin\GameType;
-use App\Models\GameList;
 use App\Models\Product;
+use App\Models\GameList;
+use App\Enums\StatusCode;
+use Illuminate\Http\Request;
 use App\Services\GameService;
 use App\Traits\HttpResponses;
-use Illuminate\Http\Request;
+use App\Models\Admin\GameType;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\GameLoginRequest;
 
 class GameLoginController extends Controller
 {
@@ -24,16 +26,46 @@ class GameLoginController extends Controller
     }
 
     public function Gamelogin(GameLoginRequest $request)
-    {
+{
+    // Log incoming request data
+    Log::info('Received game login request', $request->all());
+
+    // Validate the required parameters
+    $validated = $request->validate([
+        'product_id' => 'required|integer',
+        'game_type_id' => 'required|integer',
+        'game_code' => 'required|string'
+    ]);
+
+    try {
         $response = $this->gameService->gameLogin(
-            $request->product_id,
-            $request->game_type_id,
+            (int) $request->product_id,
+            (int) $request->game_type_id,
             $request->game_code,
-            $request->input('launch_demo', false)
+            (bool) $request->input('launch_demo', false)
         );
 
         return $this->success('Launch Game success', $response);
+    } catch (\Throwable $e) {
+        Log::error('Error processing game login', [
+            'error' => $e->getMessage()
+        ]);
+        return $this->error('Game login failed', StatusCode::InternalServerError->value);
     }
+}
+
+
+    // public function Gamelogin(GameLoginRequest $request)
+    // {
+    //     $response = $this->gameService->gameLogin(
+    //         $request->product_id,
+    //         $request->game_type_id,
+    //         $request->game_code,
+    //         $request->input('launch_demo', false)
+    //     );
+
+    //     return $this->success('Launch Game success', $response);
+    // }
 
     public function getGameList($productId, $gameTypeId)
     {
