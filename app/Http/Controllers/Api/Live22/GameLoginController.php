@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
 use App\Http\Requests\GameLoginRequest;
+use App\Services\LaunchGameDemoService;
 
 class GameLoginController extends Controller
 {
@@ -140,6 +141,13 @@ class GameLoginController extends Controller
 
         return $this->success('Launch Game success', $response);
     }
+
+    public function launchGameDemoPlay(Request $request)
+{
+    $params = $request->only(['opId', 'currency', 'gameCode', 'redirectUrl', 'lang']);
+    return app(LaunchGameDemoService::class)->launchGameDemo($params);
+}
+
 
     public function getGameList($productId, $gameTypeId)
     {

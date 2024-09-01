@@ -25,6 +25,8 @@ Route::get('gameProductType/{productId}', [GameLoginController::class, 'getProdu
 Route::get('GetGameList/{productId}/{gameTypeId}', [GameLoginController::class, 'getGameList']);
 Route::get('GetHasDemo', [GameLoginController::class, 'getHasDemo']);
 
+Route::get('LaunchGameDemo', [GameLoginController::class, 'launchGameDemoPlay']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
     Route::post('logout', [AuthController::class, 'logout']);
