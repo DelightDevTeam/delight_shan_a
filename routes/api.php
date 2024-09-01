@@ -1,16 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TransferController;
+use App\Http\Controllers\Api\PaymentTypeController;
+use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\Live22\CashBonuController;
+use App\Http\Controllers\Api\Live22\PlaceBetController;
+use App\Http\Controllers\Api\Live22\RollBackController;
 use App\Http\Controllers\Api\Live22\GameLoginController;
 use App\Http\Controllers\Api\Live22\GameResultController;
 use App\Http\Controllers\Api\Live22\GetBalanceController;
-use App\Http\Controllers\Api\Live22\PlaceBetController;
-use App\Http\Controllers\Api\Live22\RollBackController;
-use App\Http\Controllers\Api\PaymentTypeController;
-use App\Http\Controllers\Api\TransactionController;
-use App\Http\Controllers\Api\TransferController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Live22\GetGameListController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -26,6 +27,7 @@ Route::get('GetGameList/{productId}/{gameTypeId}', [GameLoginController::class, 
 Route::get('GetHasDemo', [GameLoginController::class, 'getHasDemo']);
 
 Route::get('LaunchGameDemo', [GameLoginController::class, 'launchGameDemoPlay']);
+Route::get('GameLists', [GetGameListController::class, 'getGames']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
