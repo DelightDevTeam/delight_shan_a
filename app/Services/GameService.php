@@ -34,7 +34,7 @@ class GameService
             'LaunchDemo' => $launchDemo,
         ];
 
-         Log::info('gameLogin parameters', compact('product_id', 'game_type_id', 'gameCode', 'launchDemo'));
+        // Log::info('gameLogin parameters', compact('product_id', 'game_type_id', 'gameCode', 'launchDemo'));
 
         try {
 
