@@ -17,7 +17,7 @@ class GetGameListService
     {
         $this->operatorId = config('game.api.operator_id');
         $this->secretKey = config('game.api.secret_key');
-        $this->apiUrl = config('game.api.url').'/GetGameList';
+        $this->apiUrl = config('game.api.url').'GetGameList';
     }
 
     public function fetchGames()
