@@ -126,8 +126,10 @@ class PlaceBetController extends Controller
 
             return PlaceBetWebhookService::buildResponse(
                 StatusCode::OK,
-                $oldBalance,
-                $newBalance
+                //$oldBalance,
+                //$newBalance
+                number_format($oldBalance, 4, '.', ''),
+                number_format($newBalance, 4, '.', '')
             );
         } catch (\Exception $e) {
             DB::rollBack();
