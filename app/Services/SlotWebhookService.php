@@ -7,27 +7,14 @@ use Illuminate\Support\Facades\Log;
 
 class SlotWebhookService
 {
-    // public static function buildResponse(StatusCode $responseCode, $balance, $before_balance)
-    // {
-    //     Log::info('Building final response', [
-    //         'ErrorCode' => $responseCode->value,
-    //         'ErrorMessage' => $responseCode->name,
-    //         'Balance' => $balance,
-    //         'BeforeBalance' => $before_balance,
-    //     ]);
-
-    //     return [
-    //         'Status' => $responseCode->value,
-    //         'Description' => $responseCode->name,
-    //         'Balance' => $balance,
-    //         //'BeforeBalance' => $before_balance,
-    //     ];
-    // }
-
     public static function buildResponse(StatusCode $responseCode, $balance, $before_balance)
     {
         // Current DateTime for ResponseDateTime
         $responseDateTime = now()->format('Y-m-d H:i:s');
+
+        // Format the balance to four decimal places
+        $formattedBalance = number_format((float)$balance, 4, '.', '');
+        $formattedBeforeBalance = number_format((float)$before_balance, 4, '.', '');
 
         // Map the response code to its exact description
         $description = match ($responseCode) {
@@ -41,8 +28,8 @@ class SlotWebhookService
             'Status' => $responseCode->value,
             'Description' => $description,
             'ResponseDateTime' => $responseDateTime,
-            'Balance' => $balance,
-            'BeforeBalance' => $before_balance,
+            'Balance' => $formattedBalance,
+            'BeforeBalance' => $formattedBeforeBalance,
         ]);
 
         // Return the structured response
@@ -50,18 +37,38 @@ class SlotWebhookService
             'Status' => $responseCode->value,
             'Description' => $description,
             'ResponseDateTime' => $responseDateTime,
-            'Balance' => $balance,
+            'Balance' => $formattedBalance,
         ];
     }
-
     // public static function buildResponse(StatusCode $responseCode, $balance, $before_balance)
     // {
-    //     return response()->json([
+    //     // Current DateTime for ResponseDateTime
+    //     $responseDateTime = now()->format('Y-m-d H:i:s');
+
+    //     // Map the response code to its exact description
+    //     $description = match ($responseCode) {
+    //         StatusCode::InvalidPlayerPassword => 'Invalid player / password',
+    //         StatusCode::InvalidSignature => 'Invalid Signature',
+    //         default => $responseCode->name,
+    //     };
+
+    //     // Log the response being built
+    //     Log::info('Building final response', [
     //         'Status' => $responseCode->value,
-    //         'Description' => $responseCode->name,
-    //         'ResponseDateTime' => now()->setTimezone('UTC')->format('Y-m-d H:i:s'),
+    //         'Description' => $description,
+    //         'ResponseDateTime' => $responseDateTime,
     //         'Balance' => $balance,
     //         'BeforeBalance' => $before_balance,
-    //     ], $responseCode->value);
+    //     ]);
+
+    //     // Return the structured response
+    //     return [
+    //         'Status' => $responseCode->value,
+    //         'Description' => $description,
+    //         'ResponseDateTime' => $responseDateTime,
+    //         'Balance' => $balance,
+    //     ];
     // }
+
+    
 }
