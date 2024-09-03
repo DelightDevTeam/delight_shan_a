@@ -34,6 +34,9 @@ Route::get('DemoGameList', function (DemoGameListService $service) {
 
     return $service->getDemoGameList($lang);
 });
+
+    Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -47,7 +50,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('withdraw-history', [TransferController::class, 'withdrawHistory']);
 
     Route::group(['prefix' => 'live22sm'], function () {
-        Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
+        //Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
         Route::post('GetBalance', [GetBalanceController::class, 'getBalance']);
     });
 
