@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Api\Live22;
 
-use App\Models\Product;
-use App\Models\GameList;
 use App\Enums\StatusCode;
-use Illuminate\Http\Request;
-use App\Services\GameService;
-use App\Traits\HttpResponses;
-use App\Models\Admin\GameType;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Config;
 use App\Http\Requests\GameLoginRequest;
+use App\Models\Admin\GameType;
+use App\Models\GameList;
+use App\Models\Product;
+use App\Services\GameService;
 use App\Services\LaunchGameDemoService;
+use App\Traits\HttpResponses;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GameLoginController extends Controller
 {
     use HttpResponses;
+
     protected $gameService;
     //private const WEB_PLAT_FORM = 0;
 
@@ -60,15 +61,15 @@ class GameLoginController extends Controller
     //     }
     // }
 
-     public function launchGame(Request $request)
+    public function launchGame(Request $request)
     {
         // Log the incoming request data for debugging.
         Log::info('Received launch game request', $request->all());
 
         // Validate the request data
         $validatedData = $request->validate([
-           // 'productId' => 'required|integer',
-           // 'gameType' => 'required|integer',
+            // 'productId' => 'required|integer',
+            // 'gameType' => 'required|integer',
             'gameCode' => 'required|string',
             //'authToken' => 'required|string', // Assuming authToken is required
             //'lang' => 'sometimes|string',
@@ -101,14 +102,14 @@ class GameLoginController extends Controller
             'Lang' => $validatedData['lang'] ?? 'en-us',
             'RedirectUrl' => $validatedData['redirectUrl'] ?? 'https://operator-lobby-url.com',
             //'AuthToken' => $validatedData['authToken'],
-            'LaunchDemo' => $validatedData['launchDemo'] ?? false
+            'LaunchDemo' => $validatedData['launchDemo'] ?? false,
         ];
 
         // Log internal data usage
         Log::info('Internal game launch parameters', [
             'ProductId' => $validatedData['productId'],
             'GameTypeId' => $validatedData['gameType'],
-            'data' => $data // Optionally log the outgoing data
+            'data' => $data, // Optionally log the outgoing data
         ]);
 
         try {
@@ -128,10 +129,6 @@ class GameLoginController extends Controller
         }
     }
 
-
-
-
-
     public function Gamelogin(GameLoginRequest $request)
     {
         $response = $this->gameService->gameLogin(
@@ -143,11 +140,11 @@ class GameLoginController extends Controller
     }
 
     public function launchGameDemoPlay(Request $request)
-{
-    $params = $request->only(['opId', 'currency', 'gameCode', 'redirectUrl', 'lang']);
-    return app(LaunchGameDemoService::class)->launchGameDemo($params);
-}
+    {
+        $params = $request->only(['opId', 'currency', 'gameCode', 'redirectUrl', 'lang']);
 
+        return app(LaunchGameDemoService::class)->launchGameDemo($params);
+    }
 
     public function getGameList($productId, $gameTypeId)
     {
@@ -170,7 +167,7 @@ class GameLoginController extends Controller
         return $this->success($products);
     }
 
-    public  function GetHasDemo()
+    public function GetHasDemo()
     {
         $gameList = GameList::where('has_demo', 1)->get();
 

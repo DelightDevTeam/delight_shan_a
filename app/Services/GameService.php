@@ -21,7 +21,7 @@ class GameService
         $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
 
         $data = [
-            
+
             'OperatorId' => $operatorId,
             'RequestDateTime' => $requestDateTime,
             'Signature' => $signature,
@@ -45,6 +45,7 @@ class GameService
 
             if ($response->successful()) {
                 $apiResponse = $response->json();
+
                 return [
                     'url' => $apiResponse['Url'],
                     'ticket' => $apiResponse['Ticket'],

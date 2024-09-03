@@ -18,7 +18,7 @@ class TransactionController extends Controller
         try {
             $input = $request->banker;
             $banker = $this->getUserByUsername($input['player_id']);
-            if (!$banker) {
+            if (! $banker) {
                 return $this->error('', 'Not Found Banker', 401);
             }
 

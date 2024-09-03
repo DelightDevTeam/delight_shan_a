@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Live22;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\GetGameListService;
+use Illuminate\Http\Request;
 
 class GetGameListController extends Controller
 {
@@ -19,6 +19,7 @@ class GetGameListController extends Controller
     {
         try {
             $games = $this->gameListService->fetchGames();
+
             return response()->json($games);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

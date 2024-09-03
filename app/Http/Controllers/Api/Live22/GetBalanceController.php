@@ -33,13 +33,13 @@ class GetBalanceController extends Controller
             Log::info('Validation passed, preparing balance response');
             $balance = $request->getMember()->wallet->balance;
             $response = SlotWebhookService::buildResponse(
-                StatusCode::OK, 
+                StatusCode::OK,
                 number_format($balance, 4, '.', ''),
                 number_format($balance, 4, '.', '')
             );
 
-                //$balance,
-                //$balance);
+            //$balance,
+            //$balance);
 
             //number_format($oldBalance, 4, '.', ''),
             //number_format($newBalance, 4, '.', '')

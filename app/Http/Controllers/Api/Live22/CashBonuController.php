@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Api\Live22;
 
 use App\Enums\StatusCode;
@@ -20,7 +21,7 @@ class CashBonuController extends Controller
 
             // Validate Player
             $player = $request->getMember();
-            if (!$player) {
+            if (! $player) {
                 Log::warning('Invalid player detected', [
                     'PlayerId' => $request->getPlayerId(),
                 ]);

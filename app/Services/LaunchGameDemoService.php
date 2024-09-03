@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class LaunchGameDemoService
 {
@@ -29,7 +28,7 @@ class LaunchGameDemoService
             'currency' => $currency,
             'gameCode' => $params['gameCode'],
             'redirectUrl' => $params['redirectUrl'] ?? config('game.default_redirect_url'),
-            'lang' => $params['lang'] ?? 'en-us'
+            'lang' => $params['lang'] ?? 'en-us',
         ]);
 
         return "{$baseUrl}demo/LaunchGame?{$query}";
@@ -42,7 +41,6 @@ class LaunchGameDemoService
 //     $params = $request->only(['gameCode', 'redirectUrl', 'lang']);
 //     return app(LaunchGameDemoService::class)->launchGameDemo($params);
 // }
-
 
 // class LaunchGameDemoService
 // {

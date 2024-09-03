@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use App\Services\CashBonuWebhookValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class CashBonuRequest extends FormRequest
 {
@@ -110,7 +110,7 @@ class CashBonuRequest extends FormRequest
 
         return $transactions;
     }
-    
+
     public function getTranDateTime()
     {
         return $this->get('TranDateTime');
@@ -135,6 +135,7 @@ class CashBonuRequest extends FormRequest
     {
         return $this->get('RequestDateTime');
     }
+
     public function getOperatorCode()
     {
         return $this->get('OperatorId');
