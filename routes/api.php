@@ -35,7 +35,7 @@ Route::get('DemoGameList', function (DemoGameListService $service) {
     return $service->getDemoGameList($lang);
 });
 
-    Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
+Route::post('GameLogin', [GameLoginController::class, 'Gamelogin']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('home', [AuthController::class, 'home']);

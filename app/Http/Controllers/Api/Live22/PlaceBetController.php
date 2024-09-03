@@ -128,8 +128,8 @@ class PlaceBetController extends Controller
                 StatusCode::OK,
                 //$oldBalance,
                 //$newBalance
-                number_format((float)$oldBalance, 4, '.', ''),
-                number_format((float)$newBalance, 4, '.', '')
+                number_format((float) $oldBalance, 4, '.', ''),
+                number_format((float) $newBalance, 4, '.', '')
             );
         } catch (\Exception $e) {
             DB::rollBack();

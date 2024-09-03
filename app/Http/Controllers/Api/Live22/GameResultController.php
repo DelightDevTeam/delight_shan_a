@@ -126,8 +126,8 @@ class GameResultController extends Controller
 
             return GameResultWebhookService::buildResponse(
                 StatusCode::OK,
-                number_format((float)$oldBalance, 4, '.', ''),
-                number_format((float)$new_balance, 4, '.', '')
+                number_format((float) $oldBalance, 4, '.', ''),
+                number_format((float) $new_balance, 4, '.', '')
             );
 
         } catch (\Exception $e) {
