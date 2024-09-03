@@ -94,8 +94,8 @@ class CashBonuController extends Controller
 
             return CashBonuWebhookService::buildResponse(
                 StatusCode::OK,
-                number_format($oldBalance, 4, '.', ''),
-                number_format($newBalance, 4, '.', ''),
+                number_format((float)$oldBalance, 4, '.', ''),
+                number_format((float)$newBalance, 4, '.', ''),
 
                 //$oldBalance,
                 //$newBalance

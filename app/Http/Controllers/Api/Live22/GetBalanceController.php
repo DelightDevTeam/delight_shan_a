@@ -32,17 +32,15 @@ class GetBalanceController extends Controller
 
             Log::info('Validation passed, preparing balance response');
             $balance = $request->getMember()->wallet->balance;
+
+            // Make sure the balance is returned as a float with 4 decimal places
+            $formattedBalance = number_format((float)$balance, 4, '.', '');
+
             $response = SlotWebhookService::buildResponse(
                 StatusCode::OK,
-                number_format($balance, 4, '.', ''),
-                number_format($balance, 4, '.', '')
+                $formattedBalance, // Balance returned as a float
+                $formattedBalance
             );
-
-            //$balance,
-            //$balance);
-
-            //number_format($oldBalance, 4, '.', ''),
-            //number_format($newBalance, 4, '.', '')
 
             Log::info('Returning response', ['response' => $response]);
 
