@@ -44,9 +44,8 @@ class GameService
 
         Log::info('Player retrieved successfully', [
             'playerId' => $player->user_name,
-            'balance' => $player->wallet->balance,
+            'balance' => number_format((float)$player->wallet->balance, 4, '.', ''),
         ]);
-
         $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
 
         Log::info('Generated signature', [
@@ -62,7 +61,8 @@ class GameService
             'GameCode' => $gameCode,
             'Currency' => $currency,
             'DisplayName' => $player->name,
-            'PlayerBalance' => $player->wallet->balance,
+            //'PlayerBalance' => $player->wallet->balance,
+            'PlayerBalance' => number_format((float)$player->wallet->balance, 4, '.', ''), // Ensure 4 decimal places
             'LaunchDemo' => $launchDemo,
         ];
 
