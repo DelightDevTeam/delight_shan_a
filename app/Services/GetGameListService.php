@@ -15,7 +15,7 @@ class GetGameListService
 
     public function __construct()
     {
-        $this->operatorId = config('game.api.operator_id');
+        $this->operatorId = config('game.api.operator_code');
         $this->secretKey = config('game.api.secret_key');
         $this->apiUrl = config('game.api.url').'GetGameList';
     }
