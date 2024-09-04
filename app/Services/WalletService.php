@@ -15,12 +15,12 @@ class WalletService
 {
     public function deposit(User $user, float $amount, TransactionName $transactionName)
     {
-
         Log::info('Wallet ID in Service: '.$user->wallet->id);
 
         DB::transaction(function () use ($user, $amount, $transactionName) {
             $wallet = $user->wallet;
-            $wallet->balance += $amount;
+            // Round balance to 4 decimal places
+            $wallet->balance = round($wallet->balance + $amount, 4);
             $wallet->save();
 
             $this->logTransaction($user, $amount, $transactionName, 'deposit');
@@ -37,8 +37,9 @@ class WalletService
                 throw new \Exception('Insufficient funds');
             }
 
-            $fromWallet->balance -= $amount;
-            $toWallet->balance += $amount;
+            // Ensure 4 decimal precision for balances during transfer
+            $fromWallet->balance = round($fromWallet->balance - $amount, 4);
+            $toWallet->balance = round($toWallet->balance + $amount, 4);
 
             $fromWallet->save();
             $toWallet->save();
@@ -64,7 +65,7 @@ class WalletService
             Log::info('Creating transaction with data: ', [
                 'user_id' => $user->id,
                 'wallet_id' => $wallet->id,
-                'amount' => $amount,
+                'amount' => round($amount, 4), // Ensure 4 decimal precision in the log
                 'transaction_name' => $transactionName->value,
                 'type' => $type,
                 'payable_type' => get_class($user),
@@ -75,7 +76,7 @@ class WalletService
             Transaction::create([
                 'user_id' => $user->id,
                 'wallet_id' => $wallet->id,
-                'amount' => $amount,
+                'amount' => round($amount, 4), // Store amount with 4 decimal precision
                 'transaction_name' => $transactionName->value,
                 'type' => $type,
                 'meta' => json_encode($meta),
@@ -91,58 +92,158 @@ class WalletService
         }
     }
 
-    // still use
-
-    //     private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, User $targetUser = null)
-    // {
-    //     if (!$user->wallet) {
-    //         throw new \Exception('User does not have a wallet');
-    //     }
-
-    //     $meta = $type === 'withdraw'
-    //         ? self::buildTransferMeta($user, $targetUser, $transactionName)
-    //         : self::buildDepositMeta($user, $targetUser, $transactionName);
-    //         $wallet = $user->wallet;
-
-    //     if ($wallet) {
-    //     Log::info('Service Log: Wallet ID: ' . $wallet->id);
-    // } else {
-    //     Log::error('Service log: Wallet not found for user ID: ' . $user->id);
-    // }
-
-    //     Transaction::create([
-    //         'user_id' => $user->id,
-    //         'wallet_id' => $wallet->id,
-    //         'amount' => $amount,
-    //         'transaction_name' => $transactionName->value,
-    //         'type' => $type,
-    //         'meta' => json_encode($meta),
-    //         'uuid' => Str::uuid(),
-    //         'payable_type' => get_class($user),
-    //         'payable_id' => $user->id,
-    //         //'target_user_id' => $user->id
-    //         'target_user_id' => $targetUser ? $targetUser->id : $user->id
-    //     ]);
-    // }
-
-    public static function buildTransferMeta(User $user, User $targetUser, TransactionName $transactionName, array $meta = [])
+    // You will also need to ensure that the helper methods (e.g., buildTransferMeta, buildDepositMeta) handle precision, if necessary
+    private static function buildTransferMeta(User $user, ?User $targetUser, TransactionName $transactionName)
     {
-        return array_merge([
-            'name' => $transactionName->value,
-            'opening_balance' => $user->wallet->balance,
-            'target_user_id' => $targetUser->id,
-        ], $meta);
+        return [
+            'from' => $user->id,
+            'to' => $targetUser->id ?? null,
+            'transaction_name' => $transactionName->value,
+        ];
     }
 
-    public static function buildDepositMeta(User $user, ?User $targetUser, TransactionName $transactionName, array $meta = [])
+    private static function buildDepositMeta(User $user, ?User $targetUser, TransactionName $transactionName)
     {
-        return array_merge([
-            'name' => $transactionName->value,
-            'opening_balance' => $user->wallet->balance,
-            'target_user_id' => $targetUser ? $targetUser->id : null,
-        ], $meta);
+        return [
+            'from' => $targetUser->id ?? null,
+            'to' => $user->id,
+            'transaction_name' => $transactionName->value,
+        ];
     }
 }
+
+// class WalletService
+// {
+//     public function deposit(User $user, float $amount, TransactionName $transactionName)
+//     {
+
+//         Log::info('Wallet ID in Service: '.$user->wallet->id);
+
+//         DB::transaction(function () use ($user, $amount, $transactionName) {
+//             $wallet = $user->wallet;
+//             $wallet->balance += $amount;
+//             $wallet->save();
+
+//             $this->logTransaction($user, $amount, $transactionName, 'deposit');
+//         });
+//     }
+
+//     public function transfer(User $from, User $to, float $amount, TransactionName $transactionName)
+//     {
+//         DB::transaction(function () use ($from, $to, $amount, $transactionName) {
+//             $fromWallet = $from->wallet;
+//             $toWallet = $to->wallet;
+
+//             if ($fromWallet->balance < $amount) {
+//                 throw new \Exception('Insufficient funds');
+//             }
+
+//             $fromWallet->balance -= $amount;
+//             $toWallet->balance += $amount;
+
+//             $fromWallet->save();
+//             $toWallet->save();
+
+//             $this->logTransaction($from, $amount, $transactionName, 'withdraw', $to);
+//             $this->logTransaction($to, $amount, $transactionName, 'deposit', $from);
+//         });
+//     }
+
+//     private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, ?User $targetUser = null)
+//     {
+//         try {
+//             if (! $user->wallet) {
+//                 throw new \Exception('User does not have a wallet');
+//             }
+
+//             $meta = $type === 'withdraw'
+//                 ? self::buildTransferMeta($user, $targetUser, $transactionName)
+//                 : self::buildDepositMeta($user, $targetUser, $transactionName);
+
+//             $wallet = $user->wallet;
+
+//             Log::info('Creating transaction with data: ', [
+//                 'user_id' => $user->id,
+//                 'wallet_id' => $wallet->id,
+//                 'amount' => $amount,
+//                 'transaction_name' => $transactionName->value,
+//                 'type' => $type,
+//                 'payable_type' => get_class($user),
+//                 'payable_id' => $user->id,
+//                 'target_user_id' => $targetUser ? $targetUser->id : null,
+//             ]);
+
+//             Transaction::create([
+//                 'user_id' => $user->id,
+//                 'wallet_id' => $wallet->id,
+//                 'amount' => $amount,
+//                 'transaction_name' => $transactionName->value,
+//                 'type' => $type,
+//                 'meta' => json_encode($meta),
+//                 'uuid' => Str::uuid(),
+//                 'payable_type' => get_class($user),
+//                 'payable_id' => $user->id,
+//                 'target_user_id' => $targetUser ? $targetUser->id : null,
+//             ]);
+
+//             Log::info('Transaction created successfully.');
+//         } catch (\Exception $e) {
+//             Log::error('Transaction creation failed: '.$e->getMessage());
+//         }
+//     }
+
+//     // still use
+
+//     //     private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, User $targetUser = null)
+//     // {
+//     //     if (!$user->wallet) {
+//     //         throw new \Exception('User does not have a wallet');
+//     //     }
+
+//     //     $meta = $type === 'withdraw'
+//     //         ? self::buildTransferMeta($user, $targetUser, $transactionName)
+//     //         : self::buildDepositMeta($user, $targetUser, $transactionName);
+//     //         $wallet = $user->wallet;
+
+//     //     if ($wallet) {
+//     //     Log::info('Service Log: Wallet ID: ' . $wallet->id);
+//     // } else {
+//     //     Log::error('Service log: Wallet not found for user ID: ' . $user->id);
+//     // }
+
+//     //     Transaction::create([
+//     //         'user_id' => $user->id,
+//     //         'wallet_id' => $wallet->id,
+//     //         'amount' => $amount,
+//     //         'transaction_name' => $transactionName->value,
+//     //         'type' => $type,
+//     //         'meta' => json_encode($meta),
+//     //         'uuid' => Str::uuid(),
+//     //         'payable_type' => get_class($user),
+//     //         'payable_id' => $user->id,
+//     //         //'target_user_id' => $user->id
+//     //         'target_user_id' => $targetUser ? $targetUser->id : $user->id
+//     //     ]);
+//     // }
+
+//     public static function buildTransferMeta(User $user, User $targetUser, TransactionName $transactionName, array $meta = [])
+//     {
+//         return array_merge([
+//             'name' => $transactionName->value,
+//             'opening_balance' => $user->wallet->balance,
+//             'target_user_id' => $targetUser->id,
+//         ], $meta);
+//     }
+
+//     public static function buildDepositMeta(User $user, ?User $targetUser, TransactionName $transactionName, array $meta = [])
+//     {
+//         return array_merge([
+//             'name' => $transactionName->value,
+//             'opening_balance' => $user->wallet->balance,
+//             'target_user_id' => $targetUser ? $targetUser->id : null,
+//         ], $meta);
+//     }
+// }
 
 // class WalletService
 // {
