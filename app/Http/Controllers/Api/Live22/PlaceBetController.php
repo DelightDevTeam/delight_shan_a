@@ -124,8 +124,7 @@ class PlaceBetController extends Controller
                 'provider_tran_dt' => $request->getProviderTranDt(),
                 'old_balance' => round($oldBalance, 4),
                 'new_balance' => round($newBalance, 4),
-               // 'old_balance' => $oldBalance,
-                //'new_balance' => $newBalance,
+               
             ]);
 
             Log::info('Refreshed member balance', ['new_balance' => $newBalance]);
