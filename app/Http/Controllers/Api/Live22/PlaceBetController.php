@@ -97,11 +97,35 @@ class PlaceBetController extends Controller
 
             $newBalance = $player->wallet->refreshBalance()->balance;
 
+            // SeamlessTransaction::create([
+            //     'user_id' => $request->getUserId(),
+            //     'transaction_amount' => $request->getBetAmount(),
+            //     'old_balance' => round($oldBalance, 4),
+            //     'new_balance' => round($newBalance, 4),
+            // ]);
             SeamlessTransaction::create([
                 'user_id' => $request->getUserId(),
+                'game_type_id' => $request->getGameTypeID(),
                 'transaction_amount' => $request->getBetAmount(),
+                'valid_amount' => $request->getBetAmount(),
+                'operator_id' => $request->getOperatorCode(),
+                'request_date_time' => $request->getRequestTime(),
+                'signature' => $request->getSign(),
+                'player_id' => $request->getPlayerId(),
+                'currency' => $request->getCurrency(),
+                'round_id' => $request->getRoundId(),
+                'bet_id' => $request->getBetId(),
+                'bet_amount' => $request->getBetAmount(),
+                'exchange_rate' => $request->getExchangeRate(),
+                'game_code' => $request->getGameCode(),
+                'tran_date_time' => $request->getTranDateTime(),
+                'auth_token' => $request->getAuthToken(),
+                'provider_time_zone' => $request->getProviderTimeZone(),
+                'provider_tran_dt' => $request->getProviderTranDt(),
                 'old_balance' => round($oldBalance, 4),
                 'new_balance' => round($newBalance, 4),
+               // 'old_balance' => $oldBalance,
+                //'new_balance' => $newBalance,
             ]);
 
             Log::info('Refreshed member balance', ['new_balance' => $newBalance]);
