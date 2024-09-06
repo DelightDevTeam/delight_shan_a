@@ -18,7 +18,7 @@ class DemoGameListService
         $baseUrl = config('game.api.url');
         $operatorId = config('game.api.operator_code');
 
-        $url = "{$baseUrl}/demo/GameList?opId={$operatorId}&lang={$lang}";
+        $url = "{$baseUrl}demo/GameList?opId={$operatorId}&lang={$lang}";
 
         try {
             $response = Http::get($url);
