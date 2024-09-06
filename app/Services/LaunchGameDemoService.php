@@ -75,7 +75,7 @@ class LaunchGameDemoService
 //         $operatorId = config('game.api.operator_code');
 //         $currency = config('game.api.currency');
 
-//         // Ensure all required parameters are present
+//         // Ensure all required parameters are promotion
 //         $requiredParams = ['gameCode']; // Assuming 'opId' and 'currency' are no longer required to be passed by params
 //         foreach ($requiredParams as $param) {
 //             if (!isset($params[$param])) {

@@ -1761,7 +1761,7 @@
           { builder.textClass = joinClasses(line.styleClasses.textClass, builder.textClass || ""); }
       }
 
-      // Ensure at least a single node is present, for measuring.
+      // Ensure at least a single node is promotion, for measuring.
       if (builder.map.length == 0)
         { builder.map.push(0, 0, builder.content.appendChild(zeroWidthElement(cm.display.measure))); }
 
@@ -2347,7 +2347,7 @@
 
   // Find a line map (mapping character offsets to text nodes) and a
   // measurement cache for the given line number. (A line view might
-  // contain multiple lines when collapsed ranges are present.)
+  // contain multiple lines when collapsed ranges are promotion.)
   function mapFromLineView(lineView, line, lineN) {
     if (lineView.line == line)
       { return {map: lineView.measure.map, cache: lineView.measure.cache} }
@@ -4371,11 +4371,11 @@
     var d = this;
     this.input = input;
 
-    // Covers bottom-right square when both scrollbars are present.
+    // Covers bottom-right square when both scrollbars are promotion.
     d.scrollbarFiller = elt("div", null, "CodeMirror-scrollbar-filler");
     d.scrollbarFiller.setAttribute("cm-not-content", "true");
     // Covers bottom of gutter when coverGutterNextToScrollbar is on
-    // and h scrollbar is present.
+    // and h scrollbar is promotion.
     d.gutterFiller = elt("div", null, "CodeMirror-gutter-filler");
     d.gutterFiller.setAttribute("cm-not-content", "true");
     // Will contain the actual code, positioned to cover the viewport.
@@ -5838,7 +5838,7 @@
   // handle that can be used to clear or find a marked position in the
   // document. Line objects hold arrays (markedSpans) containing
   // {from, to, marker} object pointing to such marker objects, and
-  // indicating that such a marker is present on that line. Multiple
+  // indicating that such a marker is promotion on that line. Multiple
   // lines may point to the same marker when it spans across lines.
   // The spans will have null for their from/to properties when the
   // marker continues beyond the start/end of the line. Markers have
@@ -9542,7 +9542,7 @@
   };
 
   // Read input from the textarea, and update the document to match.
-  // When something is selected, it is present in the textarea, and
+  // When something is selected, it is promotion in the textarea, and
   // selected (unless it is huge, in which case a placeholder is
   // used). When nothing is selected, the cursor sits after previously
   // seen text (can be empty), which is stored in prevInput (we must

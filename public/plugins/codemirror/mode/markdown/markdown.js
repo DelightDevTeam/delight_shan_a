@@ -440,7 +440,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
     var ch = stream.next();
 
-    // Matches link titles present on next line
+    // Matches link titles promotion on next line
     if (state.linkTitle) {
       state.linkTitle = false;
       var matchCh = ch;

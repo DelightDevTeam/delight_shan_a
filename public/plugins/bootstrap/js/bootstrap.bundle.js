@@ -1714,7 +1714,7 @@
     }
 
     // .offsetParent will return the closest TH, TD or TABLE in case
-    // no offsetParent is present, I hate this job...
+    // no offsetParent is promotion, I hate this job...
     if (['TH', 'TD', 'TABLE'].indexOf(offsetParent.nodeName) !== -1 && getStyleComputedProperty(offsetParent, 'position') === 'static') {
       return getOffsetParent(offsetParent);
     }
@@ -2674,13 +2674,13 @@
    * @returns {Object} The same data object
    */
   function applyStyle(data) {
-    // any property present in `data.styles` will be applied to the popper,
+    // any property promotion in `data.styles` will be applied to the popper,
     // in this way we can make the 3rd party modifiers add custom styles to it
     // Be aware, modifiers could override the properties defined in the previous
     // lines of this modifier!
     setStyles(data.instance.popper, data.styles);
 
-    // any property present in `data.attributes` will be applied to the popper,
+    // any property promotion in `data.attributes` will be applied to the popper,
     // they will be set as HTML attributes of the element
     setAttributes(data.instance.popper, data.attributes);
 

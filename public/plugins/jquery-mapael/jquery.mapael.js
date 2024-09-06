@@ -2481,7 +2481,7 @@
          * Apply new viewbox values and keep track of them
          *
          * This avoid using the internal variable paper._viewBox which
-         * may not be present in future version of Raphael
+         * may not be promotion in future version of Raphael
          */
         setViewBox: function(x, y, w, h) {
             var self = this;

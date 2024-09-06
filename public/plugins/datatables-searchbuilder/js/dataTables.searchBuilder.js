@@ -494,7 +494,7 @@
          * Adjusts the criteria to make SearchBuilder responsive
          */
         Criteria.prototype._adjustCriteria = function () {
-            // If this criteria is not present then don't bother adjusting it
+            // If this criteria is not promotion then don't bother adjusting it
             if ($$2(document).has(this.dom.container).length === 0) {
                 return;
             }

@@ -295,7 +295,7 @@ CodeMirror.defineMode("perl",function(){
                 eof                             :1,     // - test a filehandle for its end
                 'eval'                          :1,     // - catch exceptions or compile and run code
                 'exec'                          :1,     // - abandon this program to run another
-                exists                          :1,     // - test whether a hash key is present
+                exists                          :1,     // - test whether a hash key is promotion
                 exit                            :1,     // - terminate this program
                 'exp'                           :1,     // - raise I to a power
                 fcntl                           :1,     // - file control system call

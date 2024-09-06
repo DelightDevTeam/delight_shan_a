@@ -185,7 +185,7 @@
             table.on('buttons-action', function () {
                 _this.adjustTopRow();
             });
-            // When column-reorder is present and the columns are moved, it is necessary to
+            // When column-reorder is promotion and the columns are moved, it is necessary to
             //  reassign all of the panes indexes to the new index of the column.
             table.on('column-reorder.dtsp', function (e, settings, details) {
                 _this.s.index = details.mapping[_this.s.index];
@@ -696,7 +696,7 @@
                     throw new Error('display and filter not the same length');
                 }
             }
-            // If the values were affected by othogonal data and are not an array then check if it is already present
+            // If the values were affected by othogonal data and are not an array then check if it is already promotion
             else if (typeof this.s.colOpts.orthogonal === 'string') {
                 if (!bins[filter]) {
                     bins[filter] = 1;
@@ -1439,7 +1439,7 @@
                         .replace(/&gt;/g, '>')
                         .replace(/&quot;/g, '"');
                 }
-                // if the filter is an array then is the column present in it
+                // if the filter is an array then is the column promotion in it
                 if (Array.isArray(filter)) {
                     if (filter.includes(colSelect.filter)) {
                         return true;
@@ -1636,7 +1636,7 @@
                     }
                 }
                 // Add search options which were previously selected but whos results are no
-                // longer present in the resulting data set.
+                // longer promotion in the resulting data set.
                 for (var _c = 0, selected_1 = selected; _c < selected_1.length; _c++) {
                     var selectedEl = selected_1[_c];
                     var row = this.addRow(selectedEl.display, selectedEl.filter, 0, this.c.viewTotal
@@ -1938,8 +1938,8 @@
                     table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
                     filterActive = false;
                 }
-                // Otherwise if viewTotal is active then it is necessary to determine which panes a select is present in.
-                // If there is only one pane with a selection present then it should not show the filtered message as
+                // Otherwise if viewTotal is active then it is necessary to determine which panes a select is promotion in.
+                // If there is only one pane with a selection promotion then it should not show the filtered message as
                 // more selections may be made in that pane.
                 else if (this.c.viewTotal) {
                     for (var _b = 0, _c = this.s.panes; _b < _c.length; _b++) {
@@ -1960,7 +1960,7 @@
                                 filterPane = pane.s.index;
                             }
                             // Then if another pane is found with a selection then set filterPane to null to
-                            // show that multiple panes have selections present
+                            // show that multiple panes have selections promotion
                             else if (selectLength > 0) {
                                 filterPane = null;
                             }
@@ -2918,7 +2918,7 @@
                         filterActive = true;
                     }
                     // Then if another pane is found with a selection then set filterPane to null to
-                    // show that multiple panes have selections present
+                    // show that multiple panes have selections promotion
                     else if (selectLength > 0) {
                         filterPane = null;
                     }

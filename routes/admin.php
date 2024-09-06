@@ -4,12 +4,14 @@ use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerTextController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DepositRequestController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PaymentTypeController;
 use App\Http\Controllers\Admin\PlayerController;
 use App\Http\Controllers\Admin\SeniorController;
 use App\Http\Controllers\Admin\WithdrawRequestController;
+use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +28,8 @@ Route::group([
     Route::resource('bannerText', BannerTextController::class);
     Route::resource('senior', SeniorController::class);
     Route::resource('bank', BankController::class);
-
+    Route::resource('promotion', PromotionController::class);
+    Route::resource('contact', ContactController::class);
     Route::post('senior/{senior}/ban', [SeniorController::class, 'ban'])->name('senior.ban');
     Route::get('senior/{senior}/deposit', [SeniorController::class, 'deposit'])->name('senior.deposit');
     Route::post('senior/{senior}/deposit', [SeniorController::class, 'makeDeposit'])->name('senior.makeDeposit');

@@ -5,7 +5,7 @@
 
 ( function( factory ) {
 	"use strict";
-	
+
 	if ( typeof define === "function" && define.amd ) {
 
 		// AMD. Register as an anonymous module.
@@ -1033,7 +1033,7 @@ $.fn.position = function( options ) {
 
 		if ( options.using ) {
 
-			// Adds feedback as second argument to using callback, if present
+			// Adds feedback as second argument to using callback, if promotion
 			using = function( props ) {
 				var left = targetOffset.left - position.left,
 					right = left + targetWidth - elemWidth,

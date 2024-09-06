@@ -29,7 +29,7 @@ CodeMirror.defineMode("puppet", function () {
   // Takes commonly known puppet types/words and classifies them to a style
   define('keyword', 'class define site node include import inherits');
   define('keyword', 'case if else in and elsif default or');
-  define('atom', 'false true running present absent file directory undef');
+  define('atom', 'false true running promotion absent file directory undef');
   define('builtin', 'action augeas burst chain computer cron destination dport exec ' +
     'file filebucket group host icmp iniface interface jump k5login limit log_level ' +
     'log_prefix macauthorization mailalias maillist mcx mount nagios_command ' +
@@ -68,7 +68,7 @@ CodeMirror.defineMode("puppet", function () {
   function tokenize(stream, state) {
     // Matches one whole word
     var word = stream.match(/[\w]+/, false);
-    // Matches attributes (i.e. ensure => present ; 'ensure' would be matched)
+    // Matches attributes (i.e. ensure => promotion ; 'ensure' would be matched)
     var attribute = stream.match(/(\s+)?\w+\s+=>.*/, false);
     // Matches non-builtin resource declarations
     // (i.e. "apache::vhost {" or "mycustomclasss {" would be matched)

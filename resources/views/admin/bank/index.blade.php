@@ -45,9 +45,10 @@
                                         <td>{{$bank->paymentType->name}}</td>
                                         <td class="project-actions">
                                             <a href="{{ route('admin.bank.edit', $bank->id) }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
-                                            <a href="{{ route('admin.bank.edit', $bank->id) }}" class="btn btn-danger btn-sm" onclick="event.preventDefault();
-                                                     document.getElementById('bank-form').submit();"><i class="fas fa-trash"></i></a>
-                                            <form id="bank-form" action="{{ route('admin.bank.destroy', $bank->id) }}" method="POST">
+                                            <a class="btn btn-danger btn-sm" onclick="event.preventDefault(); document.getElementById('bank-form-{{ $bank->id }}').submit();">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                            <form id="bank-form-{{ $bank->id }}" action="{{ route('admin.bank.destroy', $bank->id) }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>

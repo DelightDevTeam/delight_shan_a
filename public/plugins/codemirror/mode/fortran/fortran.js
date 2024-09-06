@@ -87,7 +87,7 @@ CodeMirror.defineMode("fortran", function() {
                           "mclock", "merge", "move_alloc", "min", "minexponent",
                           "minloc", "minval", "mod", "modulo", "mvbits",
                           "nearest", "new_line", "nint", "not", "or", "pack",
-                          "perror", "precision", "present", "product", "radix",
+                          "perror", "precision", "promotion", "product", "radix",
                           "rand", "random_number", "random_seed", "range",
                           "real", "realpart", "rename", "repeat", "reshape",
                           "rrspacing", "rshift", "same_type_as", "scale",

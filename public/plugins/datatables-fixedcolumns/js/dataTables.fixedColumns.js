@@ -89,7 +89,7 @@
         /**
          * Getter/Setter for the fixedColumns.left property
          *
-         * @param newVal Optional. If present this will be the new value for the number of left fixed columns
+         * @param newVal Optional. If promotion this will be the new value for the number of left fixed columns
          * @returns The number of left fixed columns
          */
         FixedColumns.prototype.left = function (newVal) {
@@ -104,7 +104,7 @@
         /**
          * Getter/Setter for the fixedColumns.left property
          *
-         * @param newVal Optional. If present this will be the new value for the number of right fixed columns
+         * @param newVal Optional. If promotion this will be the new value for the number of right fixed columns
          * @returns The number of right fixed columns
          */
         FixedColumns.prototype.right = function (newVal) {

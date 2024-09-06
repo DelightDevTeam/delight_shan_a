@@ -101,7 +101,7 @@
                         @can('senior_index')
                         <li class="nav-item">
                             <a href="{{route('admin.senior.index')}}" class="nav-link">
-                                <i class="nav-icon far fa-image"></i>
+                                <i class="fas fa-users"></i>
                                 <p>
                                     Senior List
                                 </p>
@@ -111,7 +111,7 @@
                         @can('master_index')
                         <li class="nav-item">
                             <a href="{{route('admin.master.index')}}" class="nav-link">
-                                <i class="nav-icon far fa-image"></i>
+                                <i class="fas fa-users"></i>
                                 <p>
                                     Master List
                                 </p>
@@ -121,7 +121,7 @@
                         @can('agent_index')
                         <li class="nav-item">
                             <a href="{{route('admin.agent.index')}}" class="nav-link">
-                                <i class="nav-icon far fa-image"></i>
+                                <i class="fas fa-users"></i>
                                 <p>
                                     Agent List
                                 </p>
@@ -131,7 +131,7 @@
                         @can('player_index')
                             <li class="nav-item">
                                 <a href="{{route('admin.player.index')}}" class="nav-link">
-                                    <i class="nav-icon far fa-image"></i>
+                                    <i class="fas fa-users"></i>
                                     <p>
                                         Player List
                                     </p>
@@ -164,6 +164,25 @@
                                     <i class="fas fa-money-check"></i>
                                     <p>
                                         Bank Account
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('promotion')
+                            <li class="nav-item">
+                                <a href="{{route('admin.promotion.index')}}" class="nav-link">
+                                    <i class="fas fa-bullhorn"></i>
+                                    <p>
+                                        Promotion
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('contact')
+                            <li class="nav-item">
+                                <a href="{{route('admin.contact.index')}}" class="nav-link">
+                                    <i class="fas fa-address-book"></i>                                    <p>
+                                        Contact
                                     </p>
                                 </a>
                             </li>
