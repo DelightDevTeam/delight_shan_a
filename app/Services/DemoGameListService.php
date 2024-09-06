@@ -23,6 +23,17 @@ class DemoGameListService
         try {
             $response = Http::get($url);
 
+             Log::info('Making API request', ['url' => $url]);
+
+            $response = Http::get($url);
+
+            // Log full response (status, headers, and body)
+            Log::info('API response details', [
+                'status' => $response->status(),
+                'headers' => $response->headers(),
+                'body' => $response->body()
+            ]);
+
             if ($response->successful()) {
                 $data = $response->json();
                 Log::info('Successfully fetched demo game list', ['data' => $data]);
