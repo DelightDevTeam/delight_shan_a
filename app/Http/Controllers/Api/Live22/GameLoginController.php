@@ -61,73 +61,73 @@ class GameLoginController extends Controller
     //     }
     // }
 
-    public function launchGame(Request $request)
-    {
-        // Log the incoming request data for debugging.
-        Log::info('Received launch game request', $request->all());
+    // public function launchGame(Request $request)
+    // {
+    //     // Log the incoming request data for debugging.
+    //     Log::info('Received launch game request', $request->all());
 
-        // Validate the request data
-        $validatedData = $request->validate([
-            // 'productId' => 'required|integer',
-            // 'gameType' => 'required|integer',
-            'gameCode' => 'required|string',
-            //'authToken' => 'required|string', // Assuming authToken is required
-            //'lang' => 'sometimes|string',
-            //'redirectUrl' => 'sometimes|url',
-            //'launchDemo' => 'sometimes|boolean',
-        ]);
+    //     // Validate the request data
+    //     $validatedData = $request->validate([
+    //         // 'productId' => 'required|integer',
+    //         // 'gameType' => 'required|integer',
+    //         'gameCode' => 'required|string',
+    //         //'authToken' => 'required|string', // Assuming authToken is required
+    //         //'lang' => 'sometimes|string',
+    //         //'redirectUrl' => 'sometimes|url',
+    //         'launchDemo' => 'sometimes|boolean',
+    //     ]);
 
-        // Configuration settings
-        $operatorId = config('game.api.operator_code');
-        $secretKey = config('game.api.secret_key');
-        $apiUrl = config('game.api.url').'GameLogin';
-        $currency = config('game.api.currency');
-        $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
-        $player = Auth::user();
+    //     // Configuration settings
+    //     $operatorId = config('game.api.operator_code');
+    //     $secretKey = config('game.api.secret_key');
+    //     $apiUrl = config('game.api.url').'GameLogin';
+    //     $currency = config('game.api.currency');
+    //     $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
+    //     $player = Auth::user();
 
-        // Generate a signature for the API request
-        $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
+    //     // Generate a signature for the API request
+    //     $signature = md5('GameLogin'.$requestDateTime.$operatorId.$secretKey.$player->user_name);
 
-        // Prepare the payload for the external API call
-        $data = [
-            'OperatorId' => $operatorId,
-            'RequestDateTime' => $requestDateTime,
-            'Signature' => $signature,
-            'PlayerId' => $player->user_name,
-            'Ip' => request()->ip(),
-            'GameCode' => $validatedData['gameCode'],
-            'Currency' => $currency,
-            'DisplayName' => $player->name,
-            'PlayerBalance' => $player->wallet->balance,
-            'Lang' => $validatedData['lang'] ?? 'en-us',
-            'RedirectUrl' => $validatedData['redirectUrl'] ?? 'https://operator-lobby-url.com',
-            //'AuthToken' => $validatedData['authToken'],
-            'LaunchDemo' => $validatedData['launchDemo'] ?? false,
-        ];
+    //     // Prepare the payload for the external API call
+    //     $data = [
+    //         'OperatorId' => $operatorId,
+    //         'RequestDateTime' => $requestDateTime,
+    //         'Signature' => $signature,
+    //         'PlayerId' => $player->user_name,
+    //         'Ip' => request()->ip(),
+    //         'GameCode' => $validatedData['gameCode'],
+    //         'Currency' => $currency,
+    //         'DisplayName' => $player->name,
+    //         'PlayerBalance' => $player->wallet->balance,
+    //         'Lang' => $validatedData['lang'] ?? 'en-us',
+    //         'RedirectUrl' => $validatedData['redirectUrl'] ?? 'https://operator-lobby-url.com',
+    //         //'AuthToken' => $validatedData['authToken'],
+    //         'LaunchDemo' => $validatedData['launchDemo'] ?? false,
+    //     ];
 
-        // Log internal data usage
-        Log::info('Internal game launch parameters', [
-            'ProductId' => $validatedData['productId'],
-            'GameTypeId' => $validatedData['gameType'],
-            'data' => $data, // Optionally log the outgoing data
-        ]);
+    //     // Log internal data usage
+    //     Log::info('Internal game launch parameters', [
+    //         'ProductId' => $validatedData['productId'],
+    //         'GameTypeId' => $validatedData['gameType'],
+    //         'data' => $data, // Optionally log the outgoing data
+    //     ]);
 
-        try {
-            // API request to external provider
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])->post($apiUrl, $data);
+    //     try {
+    //         // API request to external provider
+    //         $response = Http::withHeaders([
+    //             'Content-Type' => 'application/json',
+    //             'Accept' => 'application/json',
+    //         ])->post($apiUrl, $data);
 
-            if ($response->successful()) {
-                return $response->json();
-            }
+    //         if ($response->successful()) {
+    //             return $response->json();
+    //         }
 
-            return response()->json(['error' => 'API request failed', 'details' => $response->body()], $response->status());
-        } catch (\Throwable $e) {
-            return response()->json(['error' => 'An unexpected error occurred', 'exception' => $e->getMessage()], 500);
-        }
-    }
+    //         return response()->json(['error' => 'API request failed', 'details' => $response->body()], $response->status());
+    //     } catch (\Throwable $e) {
+    //         return response()->json(['error' => 'An unexpected error occurred', 'exception' => $e->getMessage()], 500);
+    //     }
+    // }
 
     public function Gamelogin(GameLoginRequest $request)
     {
