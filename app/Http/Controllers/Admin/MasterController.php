@@ -31,6 +31,7 @@ class MasterController extends Controller
 
         $users = $query->hasRole(self::MASTER_ROLE)
             ->orderBy('id', 'desc')
+            ->where('agent_id', Auth::id())
             ->get();
 
         return view('admin.master.index', compact('users'));
