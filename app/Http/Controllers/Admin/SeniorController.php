@@ -78,7 +78,7 @@ class SeniorController extends Controller
         if (isset($inputs['amount'])) {
             app(WalletService::class)->transfer($admin, $senior, $inputs['amount'], TransactionName::CreditTransfer);
         }
-        dd('here');
+      
         return redirect()->route('admin.senior.index')
             ->with('success', 'Senior created successfully');
     }
