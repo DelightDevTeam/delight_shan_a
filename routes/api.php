@@ -27,6 +27,7 @@ Route::get('GetGameType', [GameLoginController::class, 'getGameType']);
 Route::get('gameProductType/{productId}', [GameLoginController::class, 'getProductType']);
 Route::get('GetGameList/{productId}/{gameTypeId}', [GameLoginController::class, 'getGameList']);
 Route::get('GetHasDemo', [GameLoginController::class, 'getHasDemo']);
+Route::post('transactions', [TransactionController::class, 'index'])->middleware('transaction');
 
 Route::get('LaunchGameDemo', [GameLoginController::class, 'launchGameDemoPlay']);
 Route::get('GameLists', [GetGameListController::class, 'getGames']);
@@ -48,7 +49,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('agent-bank', [PaymentTypeController::class, 'getAgentBank']);
     Route::post('withdraw', [TransferController::class, 'withdraw']);
     Route::post('deposit', [TransferController::class, 'deposit']);
-    Route::post('transactions', [TransactionController::class, 'index'])->middleware('transaction');
     Route::get('deposit-history', [TransferController::class, 'depositHistory']);
     Route::get('withdraw-history', [TransferController::class, 'withdrawHistory']);
     Route::get('promotion', [PromotionController::class, 'index']);
