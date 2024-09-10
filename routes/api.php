@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('agent-bank', [PaymentTypeController::class, 'getAgentBank']);
     Route::post('withdraw', [TransferController::class, 'withdraw']);
     Route::post('deposit', [TransferController::class, 'deposit']);
-    Route::post('transactions', [TransactionController::class, 'index']);
+    Route::post('transactions', [TransactionController::class, 'index'])->middleware('transaction');
     Route::get('deposit-history', [TransferController::class, 'depositHistory']);
     Route::get('withdraw-history', [TransferController::class, 'withdrawHistory']);
     Route::get('promotion', [PromotionController::class, 'index']);
