@@ -51,7 +51,13 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
+                @if($role['0'] == 'Admin')
               <a href="{{route('admin.master.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    @elseif($role['0'] == 'Master')
+                    <a href="{{route('admin.agent.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                @else
+                    <a href="{{route('admin.player.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                @endif
             </div>
           </div>
           <!-- ./col -->
