@@ -48,6 +48,17 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        {{auth()->user()->name}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                       | Balance: {{number_format(auth()->user()->wallet->balance, 2)}}
+                    </a>
+                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -59,11 +70,7 @@
                     </form>
 
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
+
             </ul>
         </nav>
         <!-- /.navbar -->

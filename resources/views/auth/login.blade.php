@@ -11,10 +11,24 @@
     <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
     <style>
-        .login-page{
+        /* Default styles (desktop view) */
+        .login-page {
             background-image: url(img/bg.jpg);
             background-repeat: no-repeat;
             background-size: cover;
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Mobile view adjustments */
+        @media (max-width: 768px) {
+            .login-page {
+                background-size: cover;
+                background-image: url(img/mobile.jpg);
+                padding: 20px; /* Add padding for smaller screens */
+            }
+
         }
     </style>
 </head>
