@@ -23,9 +23,9 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{ number_format($user->wallet->balance, 2)}}</h3>
 
-                <p>New Orders</p>
+                <p>Balance</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -38,14 +38,20 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p>Bounce Rate</p>
+                <h3>{{number_format($totalBalance->balance, 2)}}</h3>
+                  @if($role['0'] == 'Admin')
+                 <p>Master Total Balance</p>
+                  @elseif($role['0'] == 'Master')
+                  <p>Agent Total Balance</p>
+                  @else
+                  <p>Player
+                      Total Balance</p>
+                  @endif
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{route('admin.master.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

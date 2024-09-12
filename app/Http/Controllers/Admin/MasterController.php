@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MasterController extends Controller
 {
-    private const MASTER_ROLE = 3;
+    private const MASTER_ROLE = 2;
 
     public function index(): View
     {
@@ -31,7 +31,6 @@ class MasterController extends Controller
 
         $users = $query->hasRole(self::MASTER_ROLE)
             ->orderBy('id', 'desc')
-            ->where('agent_id', Auth::id())
             ->get();
 
         return view('admin.master.index', compact('users'));
@@ -162,6 +161,26 @@ class MasterController extends Controller
         return redirect()->back()->with(
             'success',
             'User '.($user->status == 1 ? 'activated' : 'banned').' successfully'
+        );
+    }
+
+    public function changePassword(User $master): View
+    {
+        return view('admin.master.change_password', compact('master'));
+    }
+
+    public function makePassword(Request $request, User $master): RedirectResponse
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $master->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.master.index')->with(
+            'success',
+            'User Password has been changed successfully'
         );
     }
 

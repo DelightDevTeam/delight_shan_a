@@ -34,6 +34,7 @@
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Balance</th>
+                                    <th>Agent Count</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -45,6 +46,7 @@
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->phone}}</td>
                                     <td>{{ number_format(optional($user->wallet)->balance, 2) }}</td>
+                                    <td>{{$user->child($user->id)}}</td>
                                     <td>
                                         @if ($user->status == 2)
                                         <a onclick="event.preventDefault(); document.getElementById('banUser-{{ $user->id }}').submit();" class="me-2" href="#">
@@ -62,7 +64,8 @@
                                         <form class="d-none" id="banUser-{{ $user->id }}" action="{{ route('admin.master.ban', $user->id) }}" method="post">
                                             @csrf
                                         </form>
-                                        <a href="{{route('admin.master.edit', $user->id)}}" class="btn btn-info btn-sm">
+                                            <a href="{{route('admin.master.changePassword', $user->id)}}" class="btn btn-info btn-sm"><i class="fas fa-lock-open"></i></a>
+                                            <a href="{{route('admin.master.edit', $user->id)}}" class="btn btn-info btn-sm">
                                             <i class="fas fa-edit" style="font-size: 20px;"></i>Edit
                                         </a>
 

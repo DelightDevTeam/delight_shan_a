@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AgentController extends Controller
 {
-    private const AGENT_ROLE = 4;
+    private const AGENT_ROLE = 3;
 
     public function index(): View
     {
@@ -164,6 +164,27 @@ class AgentController extends Controller
             'User '.($user->status == 1 ? 'activated' : 'banned').' successfully'
         );
     }
+
+    public function changePassword(User $agent): View
+    {
+        return view('admin.agent.change_password', compact('agent'));
+    }
+
+    public function makePassword(Request $request, User $agent): RedirectResponse
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $agent->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.agent.index')->with(
+            'success',
+            'User Password has been changed successfully'
+        );
+    }
+
 
     private function generateRandomString(): string
     {

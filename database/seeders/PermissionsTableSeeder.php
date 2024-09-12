@@ -60,31 +60,6 @@ class PermissionsTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'title' => 'senior_index',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'senior_create',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'senior_edit',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'senior_update',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'senior_delete',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'title' => 'master_index',
                 'created_at' => now(),
                 'updated_at' => now(),

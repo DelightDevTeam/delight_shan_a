@@ -81,6 +81,7 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'agent_id');
     }
 
+
     public function scopeRoleLimited($query)
     {
         if (! Auth::user()->hasRole('Admin')) {
@@ -88,6 +89,11 @@ class User extends Authenticatable
         }
 
         return $query;
+    }
+
+    public function scopeChild($query, $agent_id)
+    {
+        return $query->where('agent_id', $agent_id)->count();
     }
 
     public function scopeHasRole($query, $roleId)

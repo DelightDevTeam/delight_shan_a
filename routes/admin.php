@@ -24,35 +24,35 @@ Route::group([
     Route::get('logs/{id}', [HomeController::class, 'logs'])
         ->name('logs');
 
-    Route::resource('banners', BannerController::class);
     Route::resource('bannerText', BannerTextController::class);
     Route::resource('senior', SeniorController::class);
     Route::resource('bank', BankController::class);
     Route::resource('promotion', PromotionController::class);
     Route::resource('contact', ContactController::class);
-    Route::post('senior/{senior}/ban', [SeniorController::class, 'ban'])->name('senior.ban');
-    Route::get('senior/{senior}/deposit', [SeniorController::class, 'deposit'])->name('senior.deposit');
-    Route::post('senior/{senior}/deposit', [SeniorController::class, 'makeDeposit'])->name('senior.makeDeposit');
-    Route::get('senior/{senior}/withdraw', [SeniorController::class, 'withdraw'])->name('senior.withdraw');
-    Route::post('senior/{senior}/withdraw', [SeniorController::class, 'makeWithdraw'])->name('senior.makeWithdraw');
     Route::resource('master', MasterController::class);
     Route::post('master/{master}/ban', [MasterController::class, 'ban'])->name('master.ban');
     Route::get('master/{master}/deposit', [MasterController::class, 'deposit'])->name('master.deposit');
     Route::post('master/{master}/deposit', [MasterController::class, 'makeDeposit'])->name('master.makeDeposit');
     Route::get('master/{master}/withdraw', [MasterController::class, 'withdraw'])->name('master.withdraw');
     Route::post('master/{master}/withdraw', [MasterController::class, 'makeWithdraw'])->name('master.makeWithdraw');
+    Route::get('master/{master}/changePassword', [MasterController::class, 'changePassword'])->name('master.changePassword');
+    Route::post('master/{master}/changePassword', [MasterController::class, 'makePassword'])->name('master.makePassword');
     Route::resource('agent', AgentController::class);
     Route::post('agent/{agent}/ban', [AgentController::class, 'ban'])->name('agent.ban');
     Route::get('agent/{agent}/deposit', [AgentController::class, 'deposit'])->name('agent.deposit');
     Route::post('agent/{agent}/deposit', [AgentController::class, 'makeDeposit'])->name('agent.makeDeposit');
     Route::get('agent/{agent}/withdraw', [AgentController::class, 'withdraw'])->name('agent.withdraw');
     Route::post('agent/{agent}/withdraw', [AgentController::class, 'makeWithdraw'])->name('agent.makeWithdraw');
+    Route::get('agent/{agent}/changePassword', [AgentController::class, 'changePassword'])->name('agent.changePassword');
+    Route::post('agent/{agent}/changePassword', [AgentController::class, 'makePassword'])->name('agent.makePassword');
     Route::resource('player', PlayerController::class);
     Route::post('player/{player}/ban', [PlayerController::class, 'ban'])->name('player.ban');
     Route::get('player/{player}/deposit', [PlayerController::class, 'deposit'])->name('player.deposit');
     Route::post('player/{player}/deposit', [PlayerController::class, 'makeDeposit'])->name('player.makeDeposit');
     Route::get('player/{player}/withdraw', [PlayerController::class, 'withdraw'])->name('player.withdraw');
     Route::post('player/{player}/withdraw', [PlayerController::class, 'makeWithdraw'])->name('player.makeWithdraw');
+    Route::get('player/{player}/changePassword', [PlayerController::class, 'changePassword'])->name('player.changePassword');
+    Route::post('player/{player}/changePassword', [PlayerController::class, 'makePassword'])->name('player.makePassword');
     Route::get('paymentType', [PaymentTypeController::class, 'index'])->name('paymentType.index');
 
     Route::group(['prefix' => 'deposit', 'as' => 'deposit.'], function () {

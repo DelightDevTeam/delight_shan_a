@@ -37,6 +37,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $isAdmin = $user->hasRole('Admin');
+        $role = $user->roles->pluck('title');
 
         $getUserCounts = function ($roleTitle) use ($isAdmin, $user) {
             return User::whereHas('roles', function ($query) use ($roleTitle) {
@@ -45,6 +46,9 @@ class HomeController extends Controller
                 $query->where('agent_id', $user->id);
             })->count();
         };
+
+        $totalBalance = DB::table('users')->join('wallets', 'wallets.user_id', '=', 'users.id')
+            ->where('agent_id', Auth::id())->select(DB::raw('SUM(wallets.balance) as balance'))->first();
 
         $deposit = $user->transactions()->with('targetUser')
             ->select(DB::raw('SUM(transactions.amount) as amount'))
@@ -64,7 +68,9 @@ class HomeController extends Controller
             'player_count',
             'user',
             'deposit',
-            'withdraw'
+            'withdraw',
+            'totalBalance',
+            'role'
         ));
     }
 

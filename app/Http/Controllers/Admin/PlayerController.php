@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PlayerController extends Controller
 {
-    private const PLAYER_ROLE = 5;
+    private const PLAYER_ROLE = 4;
 
     public function index(): View
     {
@@ -45,41 +45,6 @@ class PlayerController extends Controller
 
         return view('admin.player.create', compact('user_name'));
     }
-
-    // public function store(PlayerRequest $request): RedirectResponse
-    // {
-    //     if (! Gate::allows('player_create')) {
-    //         abort(403);
-    //     }
-
-    //     $agent = Auth::user();
-
-    //     $inputs = $request->validated();
-
-    //     if (isset($inputs['amount']) && $inputs['amount'] > $agent->wallet->balance) {
-    //         throw ValidationException::withMessages([
-    //             'amount' => 'Insufficient balance for transfer.',
-    //         ]);
-    //     }
-    //     $userPrepare = array_merge(
-    //         $inputs,
-    //         [
-    //             'password' => Hash::make($inputs['password']),
-    //             'agent_id' => Auth::id(),
-    //             'type' => UserType::Agent,
-    //         ]
-    //     );
-
-    //     $player = User::create($userPrepare);
-    //     $player->roles()->sync(self::PLAYER_ROLE);
-
-    //     if (isset($inputs['amount'])) {
-    //         app(WalletService::class)->transfer($agent, $player, $inputs['amount'], TransactionName::CreditTransfer);
-    //     }
-
-    //     return redirect()->route('admin.player.index')
-    //         ->with('success', 'Player created successfully');
-    // }
 
     public function store(PlayerRequest $request): RedirectResponse
     {
@@ -123,49 +88,6 @@ class PlayerController extends Controller
         return redirect()->route('admin.player.index')
             ->with('success', 'Player created successfully');
     }
-
-    // private function createPlayerInExternalSystem(string $playerId)
-    // {
-    //     // Retrieve values from the config/game.php file
-    //     $operatorId = config('game.api.operator_code'); // Get Operator ID from config/game.php
-    //     $secretKey = config('game.api.secret_key');     // Get Secret Key from config/game.php
-    //     $apiUrl = config('game.api.url').'CreatePlayer'; // Get API URL from config/game.php and append the endpoint
-    //     $requestDateTime = now()->setTimezone('UTC')->format('Y-m-d H:i:s');
-
-    //     // Generate the signature using MD5 hashing
-    //     $signature = md5('CreatePlayer'.$requestDateTime.$operatorId.$secretKey.$playerId);
-
-    //     // Prepare the data to be sent in the request
-    //     $data = [
-    //         'OperatorId' => $operatorId,
-    //         'RequestDateTime' => $requestDateTime,
-    //         'Signature' => $signature,
-    //         'PlayerId' => $playerId,
-    //     ];
-
-    //     try {
-    //         // Send the request
-    //         $response = Http::withHeaders([
-    //             'Content-Type' => 'application/json',
-    //             'Accept' => 'application/json',
-    //         ])->post($apiUrl, $data);
-
-    //         if ($response->successful()) {
-    //             return $response->json(); // Return the JSON response from the API
-    //         }
-
-    //         return response()->json([
-    //             'error' => 'API request failed',
-    //             'details' => $response->body(),
-    //         ], $response->status());
-    //     } catch (\Throwable $e) {
-    //         // Handle unexpected exceptions
-    //         return response()->json([
-    //             'error' => 'An unexpected error occurred',
-    //             'exception' => $e->getMessage(),
-    //         ], 500);
-    //     }
-    // }
 
     private function createPlayerInExternalSystem(string $playerId)
     {
@@ -313,6 +235,26 @@ class PlayerController extends Controller
         return redirect()->back()->with(
             'success',
             'User '.($user->status == 1 ? 'activated' : 'banned').' successfully'
+        );
+    }
+
+    public function changePassword(User $player): View
+    {
+        return view('admin.player.change_password', compact('player'));
+    }
+
+    public function makePassword(Request $request, User $player): RedirectResponse
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $player->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.player.index')->with(
+            'success',
+            'User Password has been changed successfully'
         );
     }
 
