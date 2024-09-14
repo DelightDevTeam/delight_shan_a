@@ -27,7 +27,8 @@ class ReportController extends Controller
             DB::raw('SUM(game_results.valid_bet_amount) as total_valid_bet_amount'),
             DB::raw('SUM(game_results.payout) as total_payout'),
             DB::raw('SUM(game_results.win_lose) as total_win_lose'),
-            DB::raw('MAX(game_results.result_type) as result_type')
+            DB::raw('MAX(game_results.result_type) as result_type'),
+            DB::raw('MAX(game_results.tran_date_time) as tran_date_time'),
         )
             ->join('users', 'game_results.user_id', '=', 'users.id')
             ->groupBy('game_results.user_id', 'users.name')
