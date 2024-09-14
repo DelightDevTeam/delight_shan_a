@@ -69,7 +69,7 @@ public function AgentReport()
     ->get();
 
     // Pass the results to the view
-    return view('admin.live_22.agent_report.index', compact('results'));
+    return view('admin.live_22.report.agent_report.index', compact('results'));
 }
 
 
