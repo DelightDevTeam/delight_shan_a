@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BannerTextController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DepositRequestController;
+use App\Http\Controllers\Admin\Live22\ReportController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PaymentTypeController;
 use App\Http\Controllers\Admin\PlayerController;
@@ -25,7 +26,7 @@ Route::group([
         ->name('logs');
 
     Route::resource('bannerText', BannerTextController::class);
-    Route::resource('senior', SeniorController::class);
+    //Route::resource('senior', SeniorController::class);
     Route::resource('bank', BankController::class);
     Route::resource('promotion', PromotionController::class);
     Route::resource('contact', ContactController::class);
@@ -64,5 +65,10 @@ Route::group([
         Route::get('/', [WithdrawRequestController::class, 'index'])->name('index');
         Route::post('/{withdraw}/approve', [WithdrawRequestController::class, 'approve'])->name('approve');
         Route::post('/{withdraw}/reject', [WithdrawRequestController::class, 'reject'])->name('reject');
+    });
+
+     Route::group(['prefix' => 'live22', 'as' => 'live22.'], function () {
+        Route::get('/win-lose-report', [ReportController::class, 'index'])->name('wlreport');
+
     });
 });
