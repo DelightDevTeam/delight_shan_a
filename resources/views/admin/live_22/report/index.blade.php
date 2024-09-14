@@ -21,9 +21,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="card-header">
-                    <a href="{{ route('admin.live22.wlreport')}}" class="btn btn-primary">Back</a>
-                </div>
+                
                 <div class="card">
                     <div class="card-body">
                         <table id="mytable" class="table table-bordered table-hover">
