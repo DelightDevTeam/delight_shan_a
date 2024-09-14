@@ -41,13 +41,20 @@
                        <tbody>
                            @forelse($results as $result)
                            <tr>
-                               <td>{{ $result->user_name }}</td>
+                               {{-- <td>{{ $result->user_name }}</td>
                                <td>{{ $result->game_name }}</td>
                                <td>{{ $result->bet_amount }}</td>
                                <td>{{ $result->valid_bet_amount }}</td>
                                <td>{{ $result->payout }}</td>
                                <td>{{ $result->win_lose }}</td>
-                               <td>{{ $result->result_type }}</td>
+                               <td>{{ $result->result_type }}</td> --}}
+                                <td>{{ $result->user_name }}</td>
+                                <td>{{ $result->game_name }}</td>
+                                <td>{{ number_format($result->total_bet_amount, 4) }}</td>
+                                <td>{{ number_format($result->total_valid_bet_amount, 4) }}</td>
+                                <td>{{ number_format($result->total_payout, 4) }}</td>
+                                <td>{{ number_format($result->total_win_lose, 4) }}</td>
+                                <td>{{ $result->result_type }}</td>
                            </tr>
                            @empty
                            <tr>

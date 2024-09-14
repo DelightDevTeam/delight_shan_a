@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Enums\StatusCode;
 use Illuminate\Support\Facades\Log;
 
-    class RollBackWebhookService
+class RollBackWebhookService
 {
     public static function buildResponse(StatusCode $responseCode, $oldBalance, $newBalance)
     {

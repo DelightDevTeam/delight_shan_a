@@ -185,7 +185,6 @@ class AgentController extends Controller
         );
     }
 
-
     private function generateRandomString(): string
     {
         $randomNumber = mt_rand(10000000, 99999999);

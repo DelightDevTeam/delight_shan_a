@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class GetBalanceController extends Controller
 {
-    
-    
-     public function getBalance(SlotWebhookRequest $request)
+    public function getBalance(SlotWebhookRequest $request)
     {
         Log::info('GetBalance request initiated', ['request_data' => $request->all()]);
 

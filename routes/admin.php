@@ -10,9 +10,9 @@ use App\Http\Controllers\Admin\Live22\ReportController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PaymentTypeController;
 use App\Http\Controllers\Admin\PlayerController;
+use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\SeniorController;
 use App\Http\Controllers\Admin\WithdrawRequestController;
-use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,7 +67,7 @@ Route::group([
         Route::post('/{withdraw}/reject', [WithdrawRequestController::class, 'reject'])->name('reject');
     });
 
-     Route::group(['prefix' => 'live22', 'as' => 'live22.'], function () {
+    Route::group(['prefix' => 'live22', 'as' => 'live22.'], function () {
         Route::get('/win-lose-report', [ReportController::class, 'index'])->name('wlreport');
 
     });

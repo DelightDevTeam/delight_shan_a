@@ -15,7 +15,7 @@ enum UserType: int
             self::Admin => 1,
             self::Master => 2,
             self::Agent => 3,
-            self::Player =>4
+            self::Player => 4
         };
     }
 

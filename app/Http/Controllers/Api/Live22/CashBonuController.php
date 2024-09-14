@@ -11,8 +11,7 @@ use App\Services\CashBonuWebhookService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-
-    class CashBonuController extends Controller
+class CashBonuController extends Controller
 {
     public function cashBonu(CashBonuRequest $request)
     {

@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Enums\StatusCode;
 use Illuminate\Support\Facades\Log;
 
-
 class SlotWebhookService
 {
     public static function buildResponse(StatusCode $responseCode, $balance, $before_balance)
@@ -180,5 +179,4 @@ class SlotWebhookService
 //     //     ];
 //     // }
 
-    
 // }

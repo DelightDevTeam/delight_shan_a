@@ -81,7 +81,6 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'agent_id');
     }
 
-
     public function scopeRoleLimited($query)
     {
         if (! Auth::user()->hasRole('Admin')) {
