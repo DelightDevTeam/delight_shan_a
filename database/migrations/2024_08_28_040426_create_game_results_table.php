@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('game_results', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // User_id
+            $table->unsignedBigInteger('agent_id')->nullable();
             $table->string('operator_id', 20); // OperatorId
             $table->dateTime('request_date_time'); // RequestDateTime
             $table->string('signature', 50); // Signature
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->dateTime('provider_tran_dt'); // ProviderTranDt
             $table->integer('round_type'); // RoundType
             $table->timestamps();
+             $table->foreign('agent_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

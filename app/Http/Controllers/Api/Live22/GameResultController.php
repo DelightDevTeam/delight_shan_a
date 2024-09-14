@@ -89,6 +89,7 @@ class GameResultController extends Controller
             $newBalance = $player->wallet->refreshBalance()->balance;
             GameResult::create([
                 'user_id' => $request->getUserId(),
+                'agent_id' => $request->getAgentId(),
                 'operator_id' => $request->getOperatorCode(),
                 'request_date_time' => $request->getRequestTime(),
                 'signature' => $request->getSign(),

@@ -50,6 +50,16 @@ class GameResultWebhookRequest extends FormRequest
         return User::where('user_name', $playerId)->first();
     }
 
+    public function getAgentId()
+    {
+        $player = $this->getPlayerId();
+
+        $user = User::where('user_name', $player)->first();
+
+        return $user->agent_id;
+    }
+
+
     public function getMemberName()
     {
         return $this->get('PlayerId');
