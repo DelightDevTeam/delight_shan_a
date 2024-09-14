@@ -68,7 +68,6 @@ public function AgentReport()
     ->orderBy('id', 'desc')
     ->get();
 
-    // Pass the results to the view
     return view('admin.live_22.report.agent_report.index', compact('results'));
 }
 
