@@ -89,12 +89,12 @@ class GameResultController extends Controller
             );
 
             $newBalance = $player->wallet->refreshBalance()->balance;
-            $player_agent = Auth::user();
-            $agentId = $player_agent->agent_id;
+            // $player_agent = Auth::user();
+            // $agentId = $player_agent->agent_id;
 
             GameResult::create([
                 'user_id' => $request->getUserId(),
-                'agent_id' => $agentId,
+                //'agent_id' => $agentId,
                 'operator_id' => $request->getOperatorCode(),
                 'request_date_time' => $request->getRequestTime(),
                 'signature' => $request->getSign(),
