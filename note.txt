@@ -1,5 +1,5 @@
 // to remove laravel log
-php -r "file_put_contents('/var/www/html/delight_shan_a/storage/logs/laravel.log', '');"
+php -r "file_put_contents('/var/www/delight_shan_a/storage/logs/laravel.log', '');"
 // created dev branch for kzt
 
 tail -f /var/www/html/delight_shan_a/storage/logs/laravel.log
@@ -14,9 +14,9 @@ php artisan make:migration add_agent_link_to_users_table --table=users
 sudo chown -R www-data:www-data /var/www/html/delight_shan_a/bootstrap/cache
 sudo chmod -R 775 /var/www/html/delight_shan_a/bootstrap/cache
 
-## GameLogin 
+## GameLogin
 MD5 (FunctionName + RequestDateTime + OperatorId + SecretKey + PlayerId)
-## GetBalance 
+## GetBalance
 MD5 (FunctionName + RequestDateTime + OperatorId + SecretKey + PlayerId)
 ## Bet
 MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
@@ -24,9 +24,9 @@ MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
 MD5 (FunctionName + ResultId + RequestDateTime + OperatorId + SecretKey + PlayerId)
 ## RollBack
 MD5 (FunctionName + BetId + RequestDateTime + OperatorId + SecretKey + PlayerId)
-## CashBonu 
+## CashBonu
  (FunctionName + TranId + RequestDateTime + OperatorId + SecretKey + PlayerId)
- -- get balance ok -- 
+ -- get balance ok --
  <?php
 
 namespace App\Http\Controllers\Api\Live22;
@@ -297,7 +297,7 @@ class GetBalanceController extends Controller
     }
 }
 
------------------------------------------------------------------------------------------- 
+------------------------------------------------------------------------------------------
 <?php
 namespace App\Http\Controllers\Api\Live22;
 
@@ -560,7 +560,7 @@ class GameResultController extends Controller
     }
 }
 
---------------------- 
+---------------------
 <?php
 
 namespace App\Http\Controllers\Api\Live22;

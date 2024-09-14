@@ -17,6 +17,8 @@ use App\Traits\UseWebhook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 
 class GameResultController extends Controller
 {
@@ -87,9 +89,12 @@ class GameResultController extends Controller
             );
 
             $newBalance = $player->wallet->refreshBalance()->balance;
+            $player_agent = Auth::user();
+            $agentId = $player_agent->agent_id;
+
             GameResult::create([
                 'user_id' => $request->getUserId(),
-                'agent_id' => $request->getAgentId(),
+                'agent_id' => $agentId,
                 'operator_id' => $request->getOperatorCode(),
                 'request_date_time' => $request->getRequestTime(),
                 'signature' => $request->getSign(),
