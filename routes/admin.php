@@ -72,6 +72,7 @@ Route::group([
 
         Route::get('/w-l-reports/{id}/detail', [ReportController::class, 'show'])->name('winloseReport.detail');
 
+        Route::get('/agent-win-lose-report', [ReportController::class, 'AgentReport'])->name('Awlreport');
 
     });
 });
