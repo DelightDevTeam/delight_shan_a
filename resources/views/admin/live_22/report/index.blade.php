@@ -36,6 +36,7 @@
                                <th>Payout</th>
                                <th>Win/Lose</th>
                                <th>Result Type</th>
+                               <th>Action</th>
                            </tr>
                        </thead>
                        <tbody>
@@ -55,6 +56,9 @@
                                 <td>{{ number_format($result->total_payout, 4) }}</td>
                                 <td>{{ number_format($result->total_win_lose, 4) }}</td>
                                 <td>{{ $result->result_type }}</td>
+                                 <td>
+                                    <a href="{{ route('admin.live22.winloseReport.detail', ['id' => $result->user_id]) }}">View Details</a>
+                                </td>
                            </tr>
                            @empty
                            <tr>

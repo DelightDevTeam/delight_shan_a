@@ -70,5 +70,8 @@ Route::group([
     Route::group(['prefix' => 'live22', 'as' => 'live22.'], function () {
         Route::get('/win-lose-report', [ReportController::class, 'index'])->name('wlreport');
 
+        Route::get('/w-l-reports/{id}/detail', [ReportController::class, 'show'])->name('winloseReport.detail');
+
+
     });
 });

@@ -37,4 +37,14 @@ class ReportController extends Controller
         // Pass the results to the view
         return view('admin.live_22.report.index', compact('results'));
     }
+
+    public function show($id)
+{
+    // Get all game results for the specific user
+    $gameResults = GameResult::where('user_id', $id)->get();
+
+    // Pass the game results to the detail view
+    return view('admin.live_22.report.show', compact('gameResults'));
+}
+
 }
