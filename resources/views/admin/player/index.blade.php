@@ -31,9 +31,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>PlayerId</th>
+                                    <th>Balance</th>
                                     <th>Name</th>
                                     <th>Phone</th>
-                                    <th>Balance</th>
                                     <th>CreatedAt</th>
                                     <th>Action</th>
                                 </tr>
@@ -43,9 +43,9 @@
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$user->user_name}}</td>
+                                    <td>{{ number_format(optional($user->wallet)->balance, 2) }}</td>
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->phone}}</td>
-                                    <td>{{ number_format(optional($user->wallet)->balance, 2) }}</td>
                                     <td>{{$user->created_at}}</td>
                                     <td>
                                         @if ($user->status == 2)

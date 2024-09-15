@@ -57,6 +57,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+
                         @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -64,7 +65,7 @@
                         @enderror
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                                <span class="fas fa-eye" onclick="PwdView()" id="eye" style="cursor: pointer;"></span>
                             </div>
                         </div>
                     </div>
@@ -92,6 +93,23 @@
     <script src="{{asset('plugins/js/jquery.min.js')}}"></script>
     <script src="{{asset('plugins/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('js/adminlte.min.js')}}"></script>
+    <script>
+        function PwdView() {
+            var x = document.getElementById("password");
+            var y = document.getElementById("eye");
+
+            if (x.type === "password") {
+                x.type = "text";
+                y.classList.remove('fa-eye');
+                y.classList.add('fa-eye-slash');
+            } else {
+                x.type = "password";
+                y.classList.remove('fa-eye-slash');
+                y.classList.add('fa-eye');
+            }
+        }
+    </script>
+
 </body>
 
 </html>
