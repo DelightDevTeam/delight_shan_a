@@ -122,7 +122,7 @@
             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#credentialsModal"
    data-username="${userName}"
    data-password="${password}"
-   data-url="https://panda666.info">View</button>
+   data-url="https://pandashan.online/login">View</button>
         </div>`, {
             allowHtml: true
         });
