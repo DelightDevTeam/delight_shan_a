@@ -11,7 +11,7 @@ class TransactionController extends Controller
     {
         $transferLogs = Auth::user()->transactions()->with('targetUser')
             ->latest()->paginate();
-        dd($transferLogs);
+      
         return view('admin.transaction.index', compact('transferLogs'));
     }
 }
