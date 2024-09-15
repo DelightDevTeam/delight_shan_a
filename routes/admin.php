@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\SeniorController;
 use App\Http\Controllers\Admin\WithdrawRequestController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -26,6 +27,7 @@ Route::group([
     Route::get('/agent-list', [HomeController::class, 'agentList'])->name('agentList');
     Route::get('/player-list', [HomeController::class, 'playerList'])->name('playerList');
     Route::post('balance-up', [HomeController::class, 'balanceUp'])->name('balanceUp');
+    Route::get('transaction-list', [TransactionController::class, 'index'])->name('transaction');
     Route::get('logs/{id}', [HomeController::class, 'logs'])
         ->name('logs');
 
@@ -73,9 +75,7 @@ Route::group([
 
     Route::group(['prefix' => 'live22', 'as' => 'live22.'], function () {
         Route::get('/win-lose-report', [ReportController::class, 'index'])->name('wlreport');
-
         Route::get('/w-l-reports/{id}/detail', [ReportController::class, 'show'])->name('winloseReport.detail');
-
         Route::get('/agent-win-lose-report', [ReportController::class, 'AgentReport'])->name('Awlreport');
 
     });

@@ -185,6 +185,14 @@
                                 </a>
                             </li>
                         @endcan
+                            <li class="nav-item">
+                                <a href="{{ route('admin.transaction') }}" class="nav-link">
+                                    <i class="fas fa-address-book"></i>
+                                    <p>
+                                        Transaction Log
+                                    </p>
+                                </a>
+                            </li>
                         @can('admin_access')
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
