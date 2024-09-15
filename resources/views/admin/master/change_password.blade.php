@@ -41,6 +41,9 @@
                                 <div class="form-group">
                                     <label>Confirm Password<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="password_confirmation">
+                                    @error('password')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

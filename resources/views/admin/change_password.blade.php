@@ -23,13 +23,13 @@
                 <div class="card-header">
                     <h3 class="card-title">
                     <span >
-                   <a href="{{ route('admin.player.index') }}" class="btn btn-success">
+                   <a href="{{ route('admin.master.index') }}" class="btn btn-success">
                        <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
                    </a>
-            </span>
+                </span>
                     </h3>
                 </div>
-                <form method="POST" action="{{ route('admin.player.makePassword',$player->id) }}">
+                <form method="POST" action="{{ route('admin.updatePassword',$user->id) }}">
                     @csrf
                     <div class="card-body">
                         <div class="row">

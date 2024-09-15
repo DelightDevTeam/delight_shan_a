@@ -35,7 +35,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-{{--           <h1 style="color: white">Panda666</h1>--}}
+            <img src="{{asset('img/test.png')}}" alt="" width="200px">
         </div>
         <div class="card">
             <div class="card-body login-card-body">

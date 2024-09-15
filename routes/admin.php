@@ -20,6 +20,10 @@ Route::group([
     'middleware' => ['auth', 'checkBanned'],
 ], function () {
 
+    Route::get('/changePassword/{user}', [HomeController::class, 'changePassword'])->name('changePassword');
+    Route::post('/updatePassword/{user}', [HomeController::class, 'updatePassword'])->name('updatePassword');
+    Route::get('/agent-list', [HomeController::class, 'agentList'])->name('agentList');
+    Route::get('/player-list', [HomeController::class, 'playerList'])->name('playerList');
     Route::post('balance-up', [HomeController::class, 'balanceUp'])->name('balanceUp');
     Route::get('logs/{id}', [HomeController::class, 'logs'])
         ->name('logs');

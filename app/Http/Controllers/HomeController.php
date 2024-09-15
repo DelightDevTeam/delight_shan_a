@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TransactionName;
+use App\Enums\UserType;
 use App\Models\Admin\UserLog;
 use App\Models\SeamlessTransaction;
 use App\Models\User;
@@ -50,16 +51,6 @@ class HomeController extends Controller
         $totalBalance = DB::table('users')->join('wallets', 'wallets.user_id', '=', 'users.id')
             ->where('agent_id', Auth::id())->select(DB::raw('SUM(wallets.balance) as balance'))->first();
 
-        $deposit = $user->transactions()->with('targetUser')
-            ->select(DB::raw('SUM(transactions.amount) as amount'))
-            ->where('transactions.type', 'deposit')
-            ->first();
-
-        $withdraw = $user->transactions()->with('targetUser')
-            ->select(DB::raw('SUM(transactions.amount) as amount'))
-            ->where('transactions.type', 'withdraw')
-            ->first();
-
         $agent_count = $getUserCounts('Agent');
         $player_count = $getUserCounts('Player');
 
@@ -67,8 +58,6 @@ class HomeController extends Controller
             'agent_count',
             'player_count',
             'user',
-            'deposit',
-            'withdraw',
             'totalBalance',
             'role'
         ));
@@ -95,5 +84,36 @@ class HomeController extends Controller
         $logs = UserLog::with('user')->where('user_id', $id)->get();
 
         return view('admin.login_logs.index', compact('logs'));
+    }
+
+    public function changePassword(Request $request, User $user)
+    {
+        return view('admin.change_password', compact('user'));
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('home')->with('success', 'Password has been changed Successfully.');
+    }
+
+    public function agentList()
+    {
+        $users = User::query()->roleLimited()->where('type', UserType::Agent)->get();
+
+        return view('admin.agent_list', compact('users'));
+    }
+
+    public function playerList()
+    {
+        $users = User::where('type', UserType::Player)->get();
+
+        return view('admin.player_list', compact('users'));
     }
 }
