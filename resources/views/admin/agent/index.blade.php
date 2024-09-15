@@ -31,7 +31,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>AgentId</th>
-                                    <td>{{ number_format(optional($user->wallet)->balance, 2) }}</td>
+                                    <td>Balance</td>
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Player Count</th>
