@@ -99,6 +99,7 @@
                         <div class="modal-body">
                             <p><strong>Username:</strong> <span id="modal-username"></span></p>
                             <p><strong>Password:</strong> <span id="modal-password"></span></p>
+                            <p><strong>Amount:</strong> <span id="modal-amount"></span></p>
                             <p><strong>URL:</strong> <span id="modal-url"></span></p>
                             <button class="btn btn-success" onclick="copyToClipboard()">Copy</button>
                         </div>
@@ -114,7 +115,7 @@
         var successMessage = @json(session('successMessage'));
         var userName = @json(session('user_name'));
         var password = @json(session('password'));
-
+        var amount = @json(session('amount'));
         @if (session()->has('successMessage'))
         toastr.success(successMessage +
             `
@@ -131,19 +132,22 @@
             var button = $(event.relatedTarget);
             var username = button.data('username');
             var password = button.data('password');
+            var amount = button.data('amount');
             var url = button.data('url');
 
             $('#modal-username').text(username);
             $('#modal-password').text(password);
+            $('#modal-amount').text(amount);
             $('#modal-url').text(url);
         });
 
         function copyToClipboard() {
             var username = document.getElementById('modal-username').innerText;
             var password = document.getElementById('modal-password').innerText;
+            var amount = document.getElementById('modal-amount').innerText;
             var url = document.getElementById('modal-url').innerText;
 
-            var textToCopy = "Username: " + username + "\nPassword: " + password + "\nURL: " + url;
+            var textToCopy = "Username: " + username + "\nPassword: " + password + + "\nAmount: " + amount + "\nPassword: " + password + "\nURL: " + url;
 
             navigator.clipboard.writeText(textToCopy).then(function() {
                 toastr.success("Credentials copied to clipboard!");

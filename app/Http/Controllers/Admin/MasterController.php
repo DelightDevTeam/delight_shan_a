@@ -76,7 +76,8 @@ class MasterController extends Controller
         return redirect()->route('admin.master.index')
             ->with('successMessage', 'Master created successfully')
             ->with('user_name', $master->user_name)
-            ->with('password', $request->password);
+            ->with('password', $request->password)
+            ->with('amount', $request->amount);
     }
 
     public function edit(string $id): View
