@@ -22,4 +22,3 @@ class Contact extends Model
         return $this->belongsTo(MediaType::class, 'media_type_id');
     }
 }
-

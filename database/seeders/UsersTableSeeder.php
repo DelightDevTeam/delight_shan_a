@@ -38,6 +38,7 @@ class UsersTableSeeder extends Seeder
             'status' => 1,
             'type' => $type->value,
         ]);
+
         return $user;
     }
 }

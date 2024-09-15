@@ -5,8 +5,7 @@ namespace App\Services;
 use App\Enums\StatusCode;
 use Illuminate\Support\Facades\Log;
 
-
- class CashBonuWebhookService
+class CashBonuWebhookService
 {
     public static function buildResponse(StatusCode $responseCode, $oldBalance, $newBalance)
     {

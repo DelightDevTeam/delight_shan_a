@@ -16,4 +16,5 @@ class MediaType extends Model
     public function getImgUrlAttribute()
     {
         return asset('assets/img/media/'.$this->image);
-    }}
+    }
+}

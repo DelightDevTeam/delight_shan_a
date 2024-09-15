@@ -39,7 +39,7 @@ class ContactController extends Controller
      */
     public function store(ContactRequest $request)
     {
-        if($this->isExist($request->media_type_id)){
+        if ($this->isExist($request->media_type_id)) {
             return redirect(route('admin.contact.index'))->with('error', 'Already Account Exist');
         }
         Contact::create([
@@ -75,7 +75,7 @@ class ContactController extends Controller
     public function update(Request $request, Contact $contact)
     {
         $contact->update([
-            'account' => $request->account
+            'account' => $request->account,
         ]);
 
         return redirect(route('admin.contact.index'))->with('success', 'Contact Updated.');

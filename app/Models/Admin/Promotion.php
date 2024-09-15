@@ -13,7 +13,7 @@ class Promotion extends Model
         'image',
         'title',
         'description',
-        'agent_id'
+        'agent_id',
     ];
 
     protected $appends = ['img_url'];

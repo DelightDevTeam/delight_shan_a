@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-    class RollBackController extends Controller
+class RollBackController extends Controller
 {
     use UseWebhook;
 
@@ -147,7 +147,6 @@ use Illuminate\Support\Facades\Log;
         }
     }
 }
-
 
 // class RollBackController extends Controller
 // {
