@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('type', ['deposit', 'withdraw']);
             $table->json('meta')->nullable();
             $table->uuid('uuid')->unique()->nullable();
+            $table->longText('note')->nullable();
             $table->timestamps();
 
             $table->index(['payable_type', 'payable_id'], 'payable_type_payable_id_ind')->nullable();

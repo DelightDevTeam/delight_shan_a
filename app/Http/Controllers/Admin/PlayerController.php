@@ -58,9 +58,7 @@ class PlayerController extends Controller
 
         // Check if the agent has sufficient balance
         if (isset($inputs['amount']) && $inputs['amount'] > $agent->wallet->balance) {
-            throw ValidationException::withMessages([
-                'amount' => 'Insufficient balance for transfer.',
-            ]);
+           return redirect()->back()->with('error', 'Insufficient balance for transfer.');
         }
 
         // Prepare the data to create a user locally
@@ -86,7 +84,9 @@ class PlayerController extends Controller
         $this->createPlayerInExternalSystem($player->user_name);
 
         return redirect()->route('admin.player.index')
-            ->with('success', 'Player created successfully');
+            ->with('successMessage', 'Player created successfully')
+            ->with('user_name', $player->user_name)
+            ->with('password', $request->password);
     }
 
     private function createPlayerInExternalSystem(string $playerId)
@@ -193,13 +193,17 @@ class PlayerController extends Controller
         if (! Gate::allows('make_transfer')) {
             abort(403);
         }
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+        ]);
+
         $agent = Auth::user();
 
         if ($agent->wallet->balance < $request->amount) {
             return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
         }
 
-        app(WalletService::class)->transfer($agent, $player, $request->amount, TransactionName::CreditTransfer);
+        app(WalletService::class)->transfer($agent, $player, $request->amount, TransactionName::CreditTransfer, $request->note);
 
         return redirect()->route('admin.player.index')->with('success', 'Agent transfer completed successfully');
     }
@@ -214,6 +218,9 @@ class PlayerController extends Controller
         if (! Gate::allows('make_transfer')) {
             abort(403);
         }
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+        ]);
 
         $agent = Auth::user();
 
@@ -221,7 +228,7 @@ class PlayerController extends Controller
             return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
         }
 
-        app(WalletService::class)->transfer($player, $agent, $request->amount, TransactionName::DebitTransfer);
+        app(WalletService::class)->transfer($player, $agent, $request->amount, TransactionName::DebitTransfer, $request->note);
 
         return redirect()->route('admin.player.index')->with('success', 'Agent transfer completed successfully');
 
@@ -262,6 +269,6 @@ class PlayerController extends Controller
     {
         $randomNumber = mt_rand(10000000, 99999999);
 
-        return 'SKM'.$randomNumber;
+        return 'P'.$randomNumber;
     }
 }

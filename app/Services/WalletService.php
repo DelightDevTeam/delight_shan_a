@@ -27,9 +27,9 @@ class WalletService
         });
     }
 
-    public function transfer(User $from, User $to, float $amount, TransactionName $transactionName)
+    public function transfer(User $from, User $to, float $amount, TransactionName $transactionName, $note = null)
     {
-        DB::transaction(function () use ($from, $to, $amount, $transactionName) {
+        DB::transaction(function () use ($from, $to, $amount, $transactionName, $note) {
             $fromWallet = $from->wallet;
             $toWallet = $to->wallet;
 
@@ -44,12 +44,12 @@ class WalletService
             $fromWallet->save();
             $toWallet->save();
 
-            $this->logTransaction($from, $amount, $transactionName, 'withdraw', $to);
-            $this->logTransaction($to, $amount, $transactionName, 'deposit', $from);
+            $this->logTransaction($from, $amount, $transactionName, 'withdraw', $to, $note);
+            $this->logTransaction($to, $amount, $transactionName, 'deposit', $from, $note);
         });
     }
 
-    private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, ?User $targetUser = null)
+    private function logTransaction(User $user, float $amount, TransactionName $transactionName, string $type, ?User $targetUser = null, $note = null)
     {
         try {
             if (! $user->wallet) {
@@ -84,6 +84,7 @@ class WalletService
                 'payable_type' => get_class($user),
                 'payable_id' => $user->id,
                 'target_user_id' => $targetUser ? $targetUser->id : null,
+                'note' => $note,
             ]);
 
             Log::info('Transaction created successfully.');

@@ -23,7 +23,7 @@
                 <div class="card-header">
                     <h3 class="card-title">
                     <span >
-                   <a href="{{ route('admin.agent.index') }}" class="btn btn-success">
+                   <a href="{{ route('home') }}" class="btn btn-success">
                        <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
                    </a>
             </span>

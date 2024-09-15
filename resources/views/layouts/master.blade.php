@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ShanKoMee | Dashboard</title>
+    <title>Panda666 | Dashboard</title>
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,7 +33,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{ asset('assets/img/dl_logo.png') }}" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="{{ asset('img/logo_bg.png') }}" alt="AdminLTELogo" width="200px"
                 width="60">
         </div>
 
@@ -93,15 +93,6 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle elevation-2"
-                            alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">{{ Auth::user()->name }}</a>
-                    </div>
-                </div>
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -308,14 +299,15 @@
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    @yield('script')
     <script>
         var errorMessage = @json(session('error'));
         var successMessage = @json(session('success'));
 
         @if (session()->has('success'))
-            toastr.success(successMessage)
+        toastr.success(successMessage)
         @elseif (session()->has('error'))
-            toastr.error(errorMessage)
+        toastr.error(errorMessage)
         @endif
     </script>
     <script>
@@ -331,7 +323,5 @@
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
     </script>
-
 </body>
-
 </html>
