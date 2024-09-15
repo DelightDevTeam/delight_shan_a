@@ -30,10 +30,9 @@ class PlayerController extends Controller
             abort(403);
         }
 
-        $query = User::query()->roleLimited()->with('wallet');
-
-        $users = $query->hasRole(self::PLAYER_ROLE)
+        $users = User::hasRole(self::PLAYER_ROLE)
             ->orderBy('id', 'desc')
+            ->where('agent_id', Auth::id())
             ->get();
 
         return view('admin.player.index', compact('users'));

@@ -37,22 +37,26 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $isAdmin = $user->hasRole('Admin');
         $role = $user->roles->pluck('title');
 
-        $getUserCounts = function ($roleTitle) use ($isAdmin, $user) {
-            return User::whereHas('roles', function ($query) use ($roleTitle) {
-                $query->where('title', '=', $roleTitle);
-            })->when(! $isAdmin, function ($query) use ($user) {
-                $query->where('agent_id', $user->id);
-            })->count();
-        };
+        $agent_count = User::where('type', UserType::Agent)->when($role[0] != 'Admin', function ($query) use ($user) {
+            $query->where('agent_id', $user->id);
+        })->count();
+
+        $player_count = User::where('type', UserType::Player)
+            ->when($role[0] === 'Master', function ($query) use ($user) {
+                $agentIds = User::where('type', UserType::Agent)
+                    ->where('agent_id', $user->id)
+                    ->pluck('id');
+
+                return $query->whereIn('agent_id', $agentIds);
+            })->when($role[0] === 'Agent', function ($query) use ($user) {
+                return $query->where('agent_id', $user->id);
+            })
+            ->count();
 
         $totalBalance = DB::table('users')->join('wallets', 'wallets.user_id', '=', 'users.id')
             ->where('agent_id', Auth::id())->select(DB::raw('SUM(wallets.balance) as balance'))->first();
-
-        $agent_count = $getUserCounts('Agent');
-        $player_count = $getUserCounts('Player');
 
         return view('admin.dashboard', compact(
             'agent_count',
@@ -105,14 +109,30 @@ class HomeController extends Controller
 
     public function agentList()
     {
-        $users = User::query()->roleLimited()->where('type', UserType::Agent)->get();
+        $user = Auth::user();
+        $role = $user->roles->pluck('title');
+        $users = User::where('type', UserType::Agent)->when($role[0] != 'Admin', function ($query) use ($user) {
+            $query->where('agent_id', $user->id);
+        })->get();
 
         return view('admin.agent_list', compact('users'));
     }
 
     public function playerList()
     {
-        $users = User::where('type', UserType::Player)->get();
+        $user = Auth::user();
+        $role = $user->roles->pluck('title');
+        $users = User::where('type', UserType::Player)
+            ->when($role[0] === 'Master', function ($query) use ($user) {
+                $agentIds = User::where('type', UserType::Agent)
+                    ->where('agent_id', $user->id)
+                    ->pluck('id');
+
+                return $query->whereIn('agent_id', $agentIds);
+            })->when($role[0] === 'Agent', function ($query) use ($user) {
+                return $query->where('agent_id', $user->id);
+            })
+            ->get();
 
         return view('admin.player_list', compact('users'));
     }

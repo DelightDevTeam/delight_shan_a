@@ -24,7 +24,6 @@
             <div class="small-box bg-info">
               <div class="inner">
                 <h3>{{ number_format($user->wallet->balance, 2)}}</h3>
-
                 <p>Balance</p>
               </div>
               <div class="icon">
@@ -61,6 +60,8 @@
             </div>
           </div>
           <!-- ./col -->
+            @if($role[0] == 'Agent')
+                @else
           <div class="col-lg-4 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
@@ -75,6 +76,7 @@
               <a href="{{route('admin.agentList')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+            @endif
           <!-- ./col -->
           <div class="col-lg-4 col-6">
             <!-- small box -->

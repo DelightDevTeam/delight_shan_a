@@ -27,10 +27,9 @@ class AgentController extends Controller
             abort(403);
         }
 
-        $query = User::query()->roleLimited()->with('wallet');
-
-        $users = $query->hasRole(self::AGENT_ROLE)
+        $users = User::with('wallet')->hasRole(self::AGENT_ROLE)
             ->orderBy('id', 'desc')
+            ->where('agent_id', Auth::id())
             ->get();
 
         return view('admin.agent.index', compact('users'));

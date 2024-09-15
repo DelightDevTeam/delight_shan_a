@@ -27,9 +27,7 @@ class MasterController extends Controller
             abort(403);
         }
 
-        $query = User::query()->roleLimited()->with('wallet');
-
-        $users = $query->hasRole(self::MASTER_ROLE)
+        $users = User::hasRole(self::MASTER_ROLE)
             ->orderBy('id', 'desc')
             ->get();
 
