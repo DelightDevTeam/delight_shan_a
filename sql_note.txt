@@ -1,0 +1,24 @@
+SELECT user, host FROM mysql.user;
+
+CREATE USER 'delight'@'13.212.207.187' IDENTIFIED BY 'delight2024team';
+GRANT ALL PRIVILEGES ON *.* TO 'delight'@'13.212.207.187' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'delight'@'13.212.207.187';
+
+
+CREATE USER 'delight'@'13.212.207.187' IDENTIFIED BY 'delight2024team';
+GRANT ALL PRIVILEGES ON *.* TO 'delight'@'13.212.207.187' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
+sudo systemctl restart mysql
+
+SET GLOBAL validate_password.policy=MEDIUM;
+SET GLOBAL validate_password.policy=LOW;
+
+
+CREATE USER 'javauser'@'%' IDENTIFIED BY 'strongpassword';
+GRANT ALL PRIVILEGES ON *.* TO 'javauser'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
