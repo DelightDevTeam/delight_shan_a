@@ -9,22 +9,41 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
-
     <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
+    <style>
+        /* Default styles (desktop view) */
+        .login-page {
+            background-image: url(img/bg.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Mobile view adjustments */
+        @media (max-width: 768px) {
+            .login-page {
+                background-size: cover;
+                background-image: url(img/mobile.jpg);
+                padding: 20px; /* Add padding for smaller screens */
+            }
+
+        }
+    </style>
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{route('home')}}"><b>Delight</b>ShanKoMee</a>
+            <img src="{{asset('img/logo_bg.png')}}" alt="" width="200px">
         </div>
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
-
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="input-group mb-3">
-                        <input id="" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('user_name') }}" required autocomplete="user_name" autofocus>
+                        <input id="" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('user_name') }}" required placeholder="Enter User Name" autofocus>
                         @error('user_name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -37,7 +56,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required placeholder="Enter Password">
+
                         @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -45,7 +65,7 @@
                         @enderror
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                                <span class="fas fa-eye" onclick="PwdView()" id="eye" style="cursor: pointer;"></span>
                             </div>
                         </div>
                     </div>
@@ -65,24 +85,6 @@
 
                     </div>
                 </form>
-
-                {{-- <div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                    </a>
-                </div> --}}
-
-
-                {{-- <p class="mb-1">
-                    <a href="forgot-password.html">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a href="register.html" class="text-center">Register a new membership</a>
-                </p> --}}
             </div>
 
         </div>
@@ -91,6 +93,23 @@
     <script src="{{asset('plugins/js/jquery.min.js')}}"></script>
     <script src="{{asset('plugins/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('js/adminlte.min.js')}}"></script>
+    <script>
+        function PwdView() {
+            var x = document.getElementById("password");
+            var y = document.getElementById("eye");
+
+            if (x.type === "password") {
+                x.type = "text";
+                y.classList.remove('fa-eye');
+                y.classList.add('fa-eye-slash');
+            } else {
+                x.type = "password";
+                y.classList.remove('fa-eye-slash');
+                y.classList.add('fa-eye');
+            }
+        }
+    </script>
+
 </body>
 
 </html>

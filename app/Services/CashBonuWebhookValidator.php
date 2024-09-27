@@ -46,7 +46,7 @@ class CashBonuWebhookValidator
     {
         $requestTransaction = new CashBonuRequestTransaction(
             $transaction['Status'] ?? 1,
-            null, // ProductID is null since it's not present in CashBonus
+            null, // ProductID is null since it's not promotion in CashBonus
             null, // GameCode is null for CashBonus
             null, // GameType is null for CashBonus
             $transaction['TranId'], // Using TranId as BetId equivalent

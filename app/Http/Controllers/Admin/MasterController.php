@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MasterController extends Controller
 {
-    private const MASTER_ROLE = 3;
+    private const MASTER_ROLE = 2;
 
     public function index(): View
     {
@@ -27,9 +27,7 @@ class MasterController extends Controller
             abort(403);
         }
 
-        $query = User::query()->roleLimited()->with('wallet');
-
-        $users = $query->hasRole(self::MASTER_ROLE)
+        $users = User::hasRole(self::MASTER_ROLE)
             ->orderBy('id', 'desc')
             ->get();
 
@@ -57,9 +55,7 @@ class MasterController extends Controller
         $inputs = $request->validated();
 
         if (isset($inputs['amount']) && $inputs['amount'] > $senior->wallet->balance) {
-            throw ValidationException::withMessages([
-                'amount' => 'Insufficient balance for transfer.',
-            ]);
+            return redirect()->back()->with('error', 'Insufficient balance for transfer.');
         }
         $userPrepare = array_merge(
             $inputs,
@@ -78,7 +74,10 @@ class MasterController extends Controller
         }
 
         return redirect()->route('admin.master.index')
-            ->with('success', 'Master created successfully');
+            ->with('successMessage', 'Master created successfully')
+            ->with('user_name', $master->user_name)
+            ->with('password', $request->password)
+            ->with('amount', $request->amount);
     }
 
     public function edit(string $id): View
@@ -119,20 +118,24 @@ class MasterController extends Controller
         if (! Gate::allows('make_transfer')) {
             abort(403);
         }
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+        ]);
+
         $senior = Auth::user();
 
         if ($senior->wallet->balance < $request->amount) {
             return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
         }
 
-        app(WalletService::class)->transfer($senior, $master, $request->amount, TransactionName::CreditTransfer);
+        app(WalletService::class)->transfer($senior, $master, $request->amount, TransactionName::CreditTransfer, $request->note);
 
         return redirect()->route('admin.master.index')->with('success', 'Master transfer completed successfully');
     }
 
     public function withdraw(User $master): View
     {
-        return \view('admin.master.withdraw', compact('master'));
+        return view('admin.master.withdraw', compact('master'));
     }
 
     public function makeWithdraw(Request $request, User $master): RedirectResponse
@@ -140,6 +143,9 @@ class MasterController extends Controller
         if (! Gate::allows('make_transfer')) {
             abort(403);
         }
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+        ]);
 
         $senior = Auth::user();
 
@@ -147,7 +153,7 @@ class MasterController extends Controller
             return redirect()->back()->with(['error' => 'Insufficient balance for transfer.']);
         }
 
-        app(WalletService::class)->transfer($master, $senior, $request->amount, TransactionName::DebitTransfer);
+        app(WalletService::class)->transfer($master, $senior, $request->amount, TransactionName::DebitTransfer, $request->note);
 
         return redirect()->route('admin.master.index')->with('success', 'Master transfer completed successfully');
 
@@ -164,10 +170,30 @@ class MasterController extends Controller
         );
     }
 
+    public function changePassword(User $master): View
+    {
+        return view('admin.master.change_password', compact('master'));
+    }
+
+    public function makePassword(Request $request, User $master): RedirectResponse
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $master->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.master.index')->with(
+            'success',
+            'User Password has been changed successfully'
+        );
+    }
+
     private function generateRandomString(): string
     {
         $randomNumber = mt_rand(10000000, 99999999);
 
-        return 'SKM'.$randomNumber;
+        return 'M'.$randomNumber;
     }
 }

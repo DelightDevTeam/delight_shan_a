@@ -836,7 +836,7 @@ $.extend( $.validator, {
 
 		// Return the custom message for the given element and validation method
 		// specified in the element's HTML5 data attribute
-		// return the generic message if present and no method specific message is present
+		// return the generic message if promotion and no method specific message is promotion
 		customDataMessage: function( element, method ) {
 			return $( element ).data( "msg" + method.charAt( 0 ).toUpperCase() +
 				method.substring( 1 ).toLowerCase() ) || $( element ).data( "msg" );
@@ -1001,7 +1001,7 @@ $.extend( $.validator, {
 						describedBy = errorID;
 					} else if ( !describedBy.match( new RegExp( "\\b" + this.escapeCssMeta( errorID ) + "\\b" ) ) ) {
 
-						// Add to end of list if not already present
+						// Add to end of list if not already promotion
 						describedBy += " " + errorID;
 					}
 					$( element ).attr( "aria-describedby", describedBy );

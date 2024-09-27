@@ -747,7 +747,7 @@
         return exCommandDispatcher.unmap(lhs, ctx);
       },
       // Non-recursive map function.
-      // NOTE: This will not create mappings to key maps that aren't present
+      // NOTE: This will not create mappings to key maps that aren't promotion
       // in the default key map. See TODO at bottom of function.
       noremap: function(lhs, rhs, ctx) {
         function toCtxArray(ctx) {
@@ -3363,7 +3363,7 @@
       start++;
 
       if (inclusive) {
-        // If present, include all whitespace after word.
+        // If promotion, include all whitespace after word.
         // Otherwise, include all whitespace before word, except indentation.
         var wordEnd = end;
         while (/\s/.test(line.charAt(end)) && end < line.length) { end++; }

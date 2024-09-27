@@ -20,8 +20,7 @@ class PlaceBetController extends Controller
 {
     use UseWebhook;
 
-    
-     public function placeBet(PlaceBetWebhookRequest $request)
+    public function placeBet(PlaceBetWebhookRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -124,7 +123,7 @@ class PlaceBetController extends Controller
                 'provider_tran_dt' => $request->getProviderTranDt(),
                 'old_balance' => round($oldBalance, 4),
                 'new_balance' => round($newBalance, 4),
-               
+
             ]);
 
             Log::info('Refreshed member balance', ['new_balance' => $newBalance]);
@@ -148,7 +147,7 @@ class PlaceBetController extends Controller
             return response()->json(['message' => 'Failed to place bet'], 500);
         }
     }
-    
+
     // public function placeBet(PlaceBetWebhookRequest $request)
     // {
     //     DB::beginTransaction();

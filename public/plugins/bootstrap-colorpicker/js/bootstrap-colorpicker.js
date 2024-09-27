@@ -4568,7 +4568,7 @@ var InputHandler = function () {
     }
 
     /**
-     * If the input element is present, it updates the value with the current color object color string.
+     * If the input element is promotion, it updates the value with the current color object color string.
      * If the value is changed, this method fires a "change" event on the input element.
      *
      * @param {String} val
@@ -6248,7 +6248,7 @@ var AddonHandler = function () {
     }
 
     /**
-     * If the addon element is present, its background color is updated
+     * If the addon element is promotion, its background color is updated
      */
 
   }, {

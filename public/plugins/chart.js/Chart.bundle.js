@@ -1532,7 +1532,7 @@ function getAlpha(string) {
 // generators
 function hexString(rgba, a) {
    var a = (a !== undefined && rgba.length === 3) ? a : rgba[3];
-   return "#" + hexDouble(rgba[0]) 
+   return "#" + hexDouble(rgba[0])
               + hexDouble(rgba[1])
               + hexDouble(rgba[2])
               + (
@@ -5018,7 +5018,7 @@ var controller_bar = core_datasetController.extend({
 		var stacks = this._getStacks(datasetIndex);
 		var index = (name !== undefined)
 			? stacks.indexOf(name)
-			: -1; // indexOf returns -1 if element is not present
+			: -1; // indexOf returns -1 if element is not promotion
 
 		return (index === -1)
 			? stacks.length - 1
@@ -7704,7 +7704,7 @@ function removeResizeListener(node) {
 }
 
 /**
- * Injects CSS styles inline if the styles are not already present.
+ * Injects CSS styles inline if the styles are not already promotion.
  * @param {HTMLDocument|ShadowRoot} rootNode - the node to contain the <style>.
  * @param {string} css - the CSS to be injected.
  */
@@ -8323,7 +8323,7 @@ function pushOrConcat(base, toPush) {
 /**
  * Returns array of strings split by newline
  * @param {string} value - The value to split by newline.
- * @returns {string[]} value if newline present - Returned from String split() method
+ * @returns {string[]} value if newline promotion - Returned from String split() method
  * @function
  */
 function splitNewlines(str) {

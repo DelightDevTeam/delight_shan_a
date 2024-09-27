@@ -50,6 +50,36 @@ class GameResultWebhookRequest extends FormRequest
         return User::where('user_name', $playerId)->first();
     }
 
+    // public function getAgentId()
+    // {
+    //     $player = $this->getPlayerId();
+
+    //     $user = User::where('user_name', $player)->first();
+
+    //     return $user->agent_id;
+    // }
+
+    public function getAgentId()
+{
+    $player = $this->getPlayerId();
+
+    // Safely fetch the player using the 'user_name'
+    $user = User::where('user_name', $player)->first();
+
+    // Check if the user exists and has an 'agent_id'
+    if ($user && $user->agent_id) {
+        return $user->agent_id;
+    }
+
+    // Log a warning or handle cases where agent_id is not found
+    Log::warning('Agent ID not found for player', ['player' => $player]);
+
+    // Return a default value or handle the missing agent_id as necessary
+    return null;
+}
+
+
+
     public function getMemberName()
     {
         return $this->get('PlayerId');

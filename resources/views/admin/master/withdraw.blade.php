@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>SeniorId<span class="text-danger">*</span></label>
+                                    <label>MasterId<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="" value="{{$master->user_name}}" readonly>
                                 </div>
                                 <div class="form-group">
@@ -44,12 +44,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Current Balance<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="" value="{{$master->wallet->balance}}" readonly>
+                                    <input type="text" class="form-control" name="" value="{{number_format($master->wallet->balance, 2)}}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Amount<span class="text-danger">*</span></label>
                                     <span class="badge badge-success">Max:{{ number_format(optional($master->wallet)->balance, 2) }}</span>
                                     <input type="text" class="form-control" name="amount">
+                                    @error('amount')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label>Note</label>
+                                    <textarea name="note" id="" cols="30" rows="5" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>

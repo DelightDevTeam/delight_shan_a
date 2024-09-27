@@ -4,12 +4,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Senior Lists</h1>
+                <h1>Log Lists</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Senior List</li>
+                    <li class="breadcrumb-item active">Log List</li>
                 </ol>
             </div>
         </div>
@@ -22,9 +22,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-header">
-                   <a href="{{ route('admin.senior.index') }}" class="btn btn-success">
-                       <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back
-                   </a>
+{{--                   <a href="{{ route('admin.master.index') }}" class="btn btn-success">--}}
+{{--                       <i class="fas fa-arrow-left" style="font-size: 20px;"></i> Back--}}
+{{--                   </a>--}}
 
                 </div>
                 <div class="card">

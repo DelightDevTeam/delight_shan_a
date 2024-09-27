@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('title');
-            $table->longText('description');
+            $table->longText('description')->nullable();
+            $table->unsignedBigInteger('agent_id');
             $table->timestamps();
+            $table->foreign('agent_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

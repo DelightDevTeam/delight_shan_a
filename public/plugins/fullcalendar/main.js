@@ -1368,7 +1368,7 @@ var FullCalendar = (function (exports) {
     }
     function sanitizeSettings(standardDateProps, extendedSettings) {
         // deal with a browser inconsistency where formatting the timezone
-        // requires that the hour/minute be present.
+        // requires that the hour/minute be promotion.
         if (standardDateProps.timeZoneName) {
             if (!standardDateProps.hour) {
                 standardDateProps.hour = '2-digit';
@@ -2623,7 +2623,7 @@ var FullCalendar = (function (exports) {
     }
     /*
     TODO: somehow combine with parseRange?
-    Will return null if the start/end props were present but parsed invalidly.
+    Will return null if the start/end props were promotion but parsed invalidly.
     */
     function parseOpenDateSpan(raw, dateEnv) {
         var _a = refineProps(raw, STANDARD_PROPS), standardProps = _a.refined, extra = _a.extra;
@@ -3209,7 +3209,7 @@ var FullCalendar = (function (exports) {
                 var def = eventInput._def;
                 var instance = eventInput._instance;
                 var currentData = this.getCurrentData();
-                // not already present? don't want to add an old snapshot
+                // not already promotion? don't want to add an old snapshot
                 if (!currentData.eventStore.defs[def.defId]) {
                     this.dispatch({
                         type: 'ADD_EVENTS',
@@ -3316,7 +3316,7 @@ var FullCalendar = (function (exports) {
         CalendarApi.prototype.addEventSource = function (sourceInput) {
             var state = this.getCurrentData();
             if (sourceInput instanceof EventSourceApi) {
-                // not already present? don't want to add an old snapshot
+                // not already promotion? don't want to add an old snapshot
                 if (!state.eventSources[sourceInput.internalEventSource.sourceId]) {
                     this.dispatch({
                         type: 'ADD_EVENT_SOURCES',
@@ -4210,7 +4210,7 @@ var FullCalendar = (function (exports) {
         moreLinkText: 'more',
         noEventsText: 'No events to display',
     };
-    var RAW_EN_LOCALE = __assign(__assign({}, MINIMAL_RAW_EN_LOCALE), { 
+    var RAW_EN_LOCALE = __assign(__assign({}, MINIMAL_RAW_EN_LOCALE), {
         // Includes things we don't want other locales to inherit,
         // things that derive from other translatable strings.
         buttonHints: {
@@ -5071,7 +5071,7 @@ var FullCalendar = (function (exports) {
         };
         Theme.prototype.applyIconOverridePrefix = function (className) {
             var prefix = this.iconOverridePrefix;
-            if (prefix && className.indexOf(prefix) !== 0) { // if not already present
+            if (prefix && className.indexOf(prefix) !== 0) { // if not already promotion
                 className = prefix + className;
             }
             return className;
@@ -6789,7 +6789,7 @@ var FullCalendar = (function (exports) {
         var endMarker = framingRange.end;
         var instanceStarts = [];
         while (dayMarker < endMarker) {
-            var instanceStart 
+            var instanceStart
             // if everyday, or this particular day-of-week
             = void 0;
             // if everyday, or this particular day-of-week
@@ -13816,7 +13816,7 @@ var FullCalendar = (function (exports) {
             if (!slatCoords) {
                 return null;
             }
-            return segs.map(function (seg, i) { return (createElement(NowIndicatorRoot, { isAxis: false, date: date, 
+            return segs.map(function (seg, i) { return (createElement(NowIndicatorRoot, { isAxis: false, date: date,
                 // key doesn't matter. will only ever be one
                 key: i }, function (rootElRef, classNames, innerElRef, innerContent) { return (createElement("div", { ref: rootElRef, className: ['fc-timegrid-now-indicator-line'].concat(classNames).join(' '), style: { top: slatCoords.computeDateTop(seg.start, date) } }, innerContent)); })); });
         };

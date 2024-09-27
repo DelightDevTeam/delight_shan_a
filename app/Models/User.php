@@ -90,6 +90,11 @@ class User extends Authenticatable
         return $query;
     }
 
+    public function scopeChild($query, $agent_id)
+    {
+        return $query->where('agent_id', $agent_id)->count();
+    }
+
     public function scopeHasRole($query, $roleId)
     {
         return $query->whereRelation('roles', 'role_id', $roleId);

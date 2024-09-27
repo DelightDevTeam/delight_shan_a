@@ -14,21 +14,9 @@ class PermissionRoleTableSeeder extends Seeder
      */
     public function run(): void
     {
-        // Admin permissions
+        // Admin gets specific permissions
         $admin_permissions = Permission::whereIn('title', [
             'admin_access',
-            'senior_index',
-            'senior_create',
-            'senior_edit',
-            'senior_update',
-            'senior_delete',
-            'transfer_log',
-            'make_transfer',
-        ]);
-        Role::findOrFail(1)->permissions()->sync($admin_permissions->pluck('id'));
-
-        // Senior gets specific permissions
-        $senior_permissions = Permission::whereIn('title', [
             'master_index',
             'master_create',
             'master_edit',
@@ -37,7 +25,7 @@ class PermissionRoleTableSeeder extends Seeder
             'make_transfer',
         ])->pluck('id');
 
-        Role::findOrFail(2)->permissions()->sync($senior_permissions);
+        Role::findOrFail(1)->permissions()->sync($admin_permissions);
 
         // Master gets specific permissions
         $master_permissions = Permission::whereIn('title', [
@@ -49,7 +37,7 @@ class PermissionRoleTableSeeder extends Seeder
             'make_transfer',
         ])->pluck('id');
 
-        Role::findOrFail(3)->permissions()->sync($master_permissions);
+        Role::findOrFail(2)->permissions()->sync($master_permissions);
 
         // Agent gets specific permissions
         $agent_permissions = Permission::whereIn('title', [
@@ -62,8 +50,10 @@ class PermissionRoleTableSeeder extends Seeder
             'deposit',
             'withdraw',
             'bank',
+            'promotion',
+            'contact',
         ])->pluck('id');
 
-        Role::findOrFail(4)->permissions()->sync($agent_permissions);
+        Role::findOrFail(3)->permissions()->sync($agent_permissions);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TransactionName;
+use App\Enums\UserType;
 use App\Models\Admin\UserLog;
 use App\Models\SeamlessTransaction;
 use App\Models\User;
@@ -36,35 +37,33 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $isAdmin = $user->hasRole('Admin');
+        $role = $user->roles->pluck('title');
 
-        $getUserCounts = function ($roleTitle) use ($isAdmin, $user) {
-            return User::whereHas('roles', function ($query) use ($roleTitle) {
-                $query->where('title', '=', $roleTitle);
-            })->when(! $isAdmin, function ($query) use ($user) {
-                $query->where('agent_id', $user->id);
-            })->count();
-        };
+        $agent_count = User::where('type', UserType::Agent)->when($role[0] != 'Admin', function ($query) use ($user) {
+            $query->where('agent_id', $user->id);
+        })->count();
 
-        $deposit = $user->transactions()->with('targetUser')
-            ->select(DB::raw('SUM(transactions.amount) as amount'))
-            ->where('transactions.type', 'deposit')
-            ->first();
+        $player_count = User::where('type', UserType::Player)
+            ->when($role[0] === 'Master', function ($query) use ($user) {
+                $agentIds = User::where('type', UserType::Agent)
+                    ->where('agent_id', $user->id)
+                    ->pluck('id');
 
-        $withdraw = $user->transactions()->with('targetUser')
-            ->select(DB::raw('SUM(transactions.amount) as amount'))
-            ->where('transactions.type', 'withdraw')
-            ->first();
+                return $query->whereIn('agent_id', $agentIds);
+            })->when($role[0] === 'Agent', function ($query) use ($user) {
+                return $query->where('agent_id', $user->id);
+            })
+            ->count();
 
-        $agent_count = $getUserCounts('Agent');
-        $player_count = $getUserCounts('Player');
+        $totalBalance = DB::table('users')->join('wallets', 'wallets.user_id', '=', 'users.id')
+            ->where('agent_id', Auth::id())->select(DB::raw('SUM(wallets.balance) as balance'))->first();
 
         return view('admin.dashboard', compact(
             'agent_count',
             'player_count',
             'user',
-            'deposit',
-            'withdraw'
+            'totalBalance',
+            'role'
         ));
     }
 
@@ -89,5 +88,52 @@ class HomeController extends Controller
         $logs = UserLog::with('user')->where('user_id', $id)->get();
 
         return view('admin.login_logs.index', compact('logs'));
+    }
+
+    public function changePassword(Request $request, User $user)
+    {
+        return view('admin.change_password', compact('user'));
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('home')->with('success', 'Password has been changed Successfully.');
+    }
+
+    public function agentList()
+    {
+        $user = Auth::user();
+        $role = $user->roles->pluck('title');
+        $users = User::where('type', UserType::Agent)->when($role[0] != 'Admin', function ($query) use ($user) {
+            $query->where('agent_id', $user->id);
+        })->get();
+
+        return view('admin.agent_list', compact('users'));
+    }
+
+    public function playerList()
+    {
+        $user = Auth::user();
+        $role = $user->roles->pluck('title');
+        $users = User::where('type', UserType::Player)
+            ->when($role[0] === 'Master', function ($query) use ($user) {
+                $agentIds = User::where('type', UserType::Agent)
+                    ->where('agent_id', $user->id)
+                    ->pluck('id');
+
+                return $query->whereIn('agent_id', $agentIds);
+            })->when($role[0] === 'Agent', function ($query) use ($user) {
+                return $query->where('agent_id', $user->id);
+            })
+            ->get();
+
+        return view('admin.player_list', compact('users'));
     }
 }

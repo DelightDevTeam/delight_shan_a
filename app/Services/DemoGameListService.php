@@ -23,7 +23,7 @@ class DemoGameListService
         try {
             $response = Http::get($url);
 
-             Log::info('Making API request', ['url' => $url]);
+            Log::info('Making API request', ['url' => $url]);
 
             $response = Http::get($url);
 
@@ -31,7 +31,7 @@ class DemoGameListService
             Log::info('API response details', [
                 'status' => $response->status(),
                 'headers' => $response->headers(),
-                'body' => $response->body()
+                'body' => $response->body(),
             ]);
 
             if ($response->successful()) {
